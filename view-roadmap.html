@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sonar — 6-Week Sprint Roadmap (29 Apr → 9 Jun 2026)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.6.1/github-markdown-dark.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<style>
+  :root { color-scheme: dark; }
+  html, body { background: #0a0e17; margin: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif; }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 56px 64px 96px;
+  }
+  .markdown-body {
+    background: transparent !important;
+    color: #e6edf3;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .markdown-body h1 { border-bottom: 1px solid rgba(54,166,186,0.4); }
+  .markdown-body h2 { border-bottom: 1px solid rgba(54,166,186,0.25); margin-top: 2.2em; }
+  .markdown-body table { display: table; width: 100%; }
+  .markdown-body table th { background: #0f1a26; }
+  .markdown-body table tr { background: transparent; border-top-color: rgba(54,166,186,0.2); }
+  .markdown-body table tr:nth-child(2n) { background: rgba(54,166,186,0.04); }
+  .markdown-body code { background: rgba(54,166,186,0.12); color: #00e5ff; }
+  .markdown-body pre { background: #0f1a26; border: 1px solid rgba(54,166,186,0.25); }
+  .markdown-body blockquote { border-left-color: #00e5ff; color: #b8c4d4; }
+  .markdown-body a { color: #00e5ff; }
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: linear-gradient(180deg, rgba(10,14,23,0.96), rgba(10,14,23,0.85));
+    border-bottom: 1px solid rgba(54,166,186,0.25);
+    padding: 14px 64px;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(8px);
+    font-size: 13px; color: #8fa3b8;
+  }
+  .topbar b { color: #00e5ff; letter-spacing: 0.5px; }
+  .topbar .actions { display: flex; gap: 12px; }
+  .topbar button {
+    background: transparent; color: #00e5ff;
+    border: 1px solid rgba(0,229,255,0.4);
+    border-radius: 6px; padding: 6px 12px; cursor: pointer;
+    font-size: 12px; font-family: inherit;
+  }
+  .topbar button:hover { background: rgba(0,229,255,0.1); }
+  @media print {
+    .topbar { display: none; }
+    .wrap { padding: 0; max-width: none; }
+    body, html, .markdown-body { background: white !important; color: black !important; }
+    .markdown-body a { color: #0366d6; }
+    .markdown-body table th { background: #f6f8fa; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div><b>SONAR · SPRINT 2026-04-29</b> &nbsp;·&nbsp; 6-week roadmap (Edu + Saif)</div>
+  <div class="actions">
+    <button onclick="window.print()">Print / PDF</button>
+  </div>
+</div>
+<div class="wrap">
+  <article id="content" class="markdown-body">Loading…</article>
+</div>
+<script>
+fetch('ROADMAP_6WEEK_SPRINT_2026-04-29.md', { cache: 'no-store' })
+  .then(r => r.text())
+  .then(md => {
+    document.getElementById('content').innerHTML = marked.parse(md, { gfm: true, breaks: false });
+  })
+  .catch(err => {
+    document.getElementById('content').innerHTML =
+      '<h1>Could not load the markdown file</h1>' +
+      '<p>This page must be opened from the same folder as <code>ROADMAP_6WEEK_SPRINT_2026-04-29.md</code>. ' +
+      'Some browsers block <code>fetch()</code> on local files. Use the bundled "view-roadmap.html" via VS Code Live Preview, ' +
+      'or run <code>python -m http.server</code> in this folder and open <code>http://localhost:8000/view-roadmap.html</code>.</p>' +
+      '<pre>' + (err && err.message ? err.message : err) + '</pre>';
+  });
+</script>
+</body>
+</html>

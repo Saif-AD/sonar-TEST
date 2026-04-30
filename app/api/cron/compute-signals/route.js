@@ -430,7 +430,10 @@ async function fetchWhaleTransactions(tokenSymbol) {
 
   const { data, error } = await supabaseAdmin
     .from('all_whale_transactions')
-    .select('transaction_hash,timestamp,classification,usd_value,whale_address,from_address,to_address,counterparty_type,whale_score,confidence')
+    // 2026-04-30: pull `reasoning`, `from_label`, `to_label` so tier1 can
+    // classify venue (CEX/DEX/OTHER) from the upstream classifier output —
+    // the legacy `counterparty_type` field is empty on 100% of recent rows.
+    .select('transaction_hash,timestamp,classification,usd_value,whale_address,from_address,to_address,counterparty_type,whale_score,confidence,reasoning,from_label,to_label')
     .eq('token_symbol', tokenSymbol)
     .gte('timestamp', since)
     .order('timestamp', { ascending: false })

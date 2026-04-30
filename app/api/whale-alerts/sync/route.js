@@ -17,46 +17,51 @@ export const revalidate = 0
 const WHALE_ALERT_API_KEY = process.env.WHALE_ALERT_API_KEY || ''
 const WHALE_ALERT_BASE_URL = 'https://api.whale-alert.io/v1'
 
-// Minimum transaction value to track (in USD)
-// Paid tier: can go as low as $100k for more comprehensive tracking
-const MIN_VALUE_USD = 100000 // $100k+ (paid tier — lower threshold catches more whale activity)
+// Whale Alert Free plan limits (verified 2026-04-30):
+//   - max start lookback: 3600 seconds (1 hour)
+//   - min transaction value: $500,000
+//   - rate limit: ~10 requests / minute
+// Going outside these returns HTTP 400 ("value out of range") or 429
+// ("usage limit reached"). The previous code requested a 6h window with
+// $100k min — that 400'd silently from 2026-03-25 onward, leaving the
+// `whale_alerts` table frozen for over a month and breaking ORCA's
+// multi-chain whale section for BTC / XRP / TRX / SOL / native ETH.
+const MIN_VALUE_USD = 500000   // Free plan minimum
+const LOOKBACK_SECONDS = 3600  // Free plan maximum (1 hour)
 
 /**
  * Fetch recent whale transactions from Whale Alert API
  */
 async function fetchWhaleAlerts() {
   try {
-    // Paid tier: can look back up to 24 hours and use cursor pagination
     const now = Math.floor(Date.now() / 1000)
-    const start = now - 3600 * 6 // 6 hours ago (paid tier allows much more than 1hr)
-    
+    const start = now - LOOKBACK_SECONDS
+
     const url = `${WHALE_ALERT_BASE_URL}/transactions?api_key=${WHALE_ALERT_API_KEY}&start=${start}&min_value=${MIN_VALUE_USD}&limit=100`
-    
-    console.log(`📡 Fetching whale alerts (paid tier, $${(MIN_VALUE_USD/1000).toFixed(0)}k+ min, 6h window)...`)
-    console.log(`URL: ${WHALE_ALERT_BASE_URL}/transactions?api_key=***&start=${start}&min_value=${MIN_VALUE_USD}`)
-    
+
+    console.log(`📡 Whale Alert sync: $${(MIN_VALUE_USD/1000).toFixed(0)}k+ min, ${LOOKBACK_SECONDS/60}min window`)
+
     const response = await fetch(url, {
-      headers: {
-        'Accept': 'application/json'
-      }
+      headers: { 'Accept': 'application/json' },
     })
-    
+
     if (!response.ok) {
       const errorText = await response.text()
-      console.error(`API Response: ${errorText}`)
+      // 429 = rate limit (transient, next cron will retry); 400 = bad params
+      // (likely plan limits changed). Surface both clearly.
+      console.error(`Whale Alert API ${response.status}: ${errorText.slice(0, 200)}`)
       throw new Error(`Whale Alert API error: ${response.status} ${response.statusText}`)
     }
-    
+
     const data = await response.json()
-    
+
     if (!data.transactions || data.transactions.length === 0) {
-      console.log('ℹ️ No new whale transactions found')
+      console.log('ℹ️ No new whale transactions in window')
       return []
     }
-    
+
     console.log(`✅ Fetched ${data.transactions.length} whale transactions`)
     return data.transactions
-    
   } catch (error) {
     console.error('❌ Error fetching whale alerts:', error)
     throw error

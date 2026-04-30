@@ -1145,8 +1145,15 @@ function processPriceData(priceData: any): PriceData {
 
 /**
  * Build formatted context string for GPT-4.0
+ *
+ * `isERC20` true => ERC-20 `whale_transactions` table has rows for this token.
+ * If false but `context.whaleAlerts.recent_alerts.length > 0` we still have
+ * multi-chain on-chain whale data (BTC, XRP, TRX, SOL native, etc.) from
+ * the Whale Alert API — we render that as the primary whale section instead
+ * of the misleading "not available" message.
  */
 export function buildGPTContext(context: OrcaContext, userMessage: string, isERC20: boolean = false): string {
+  const hasMultichainWhales = !!(context.whaleAlerts && context.whaleAlerts.recent_alerts && context.whaleAlerts.recent_alerts.length > 0)
   // Build whale section only for ERC-20 tokens
   // This matches the token page data exactly (using BUY/SELL classifications)
   const whaleSection = isERC20 && context.whales.transaction_count > 0 ? `
@@ -1178,22 +1185,30 @@ Whale volume as % of total 24h volume: ${context.price.volume_24h ? (context.wha
 
 Top Whale Moves:
 ${formatWhaleMovesDetailed(context.whales.top_moves)}
+` : hasMultichainWhales ? `
+WHALE ACTIVITY (Multi-Chain — Whale Alert API, $500k+ transactions, 24h):
+Data Source: whale_alerts table (covers BTC, ETH native, XRP, TRX, SOL, BSC and others — separate from the ERC-20 whale_transactions ingest used for ETH-based ERC-20 tokens).
+NOTE TO MODEL: This token DOES have on-chain whale data — render it. Do NOT say whale data is unavailable. The reason it doesn't appear in the ERC-20 buy/sell breakdown above is purely that the token is not an ERC-20; the multi-chain feed below is the authoritative on-chain source for this asset.
 ` : `
-WHALE ACTIVITY: Not available for ${context.ticker} (ERC-20 only for now, more chains coming soon)
-Do NOT show whale data in your response. Skip this section entirely.
+WHALE ACTIVITY: Not available for ${context.ticker} in the current dataset.
+The ERC-20 whale_transactions ingest covers ETH-based ERC-20 tokens; the multi-chain Whale Alert feed had no $500k+ transactions for this asset in the last 24h. Do NOT show whale data in your response. State the unavailability plainly and move on.
 `
 
-  // Build whale alerts section (from Whale Alert API)
+  // Build whale alerts section (from Whale Alert API).
+  // For non-ERC-20 assets (BTC, XRP, TRX, SOL, native ETH, etc.) this IS
+  // the primary on-chain whale source, so we annotate accordingly.
   const whaleAlertsSection = context.whaleAlerts && context.whaleAlerts.recent_alerts.length > 0 ? `
-WHALE ALERT API DATA (Multi-Chain - $500k+ transactions):
-Total 24h Volume: ${formatLargeNumber(context.whaleAlerts.total_volume_usd)}
-Accumulation Signals: ${context.whaleAlerts.accumulation_signals} (exchange to wallet movements)
-Distribution Signals: ${context.whaleAlerts.distribution_signals} (wallet to exchange movements)
-Notable Movements:
-${context.whaleAlerts.notable_movements.join('\n') || 'No major movements detected'}
-Recent Large Transactions:
+WHALE ALERT API DATA${!isERC20 ? ' (PRIMARY on-chain source for this asset)' : ' (Multi-Chain supplement)'} — $500k+ transactions, 24h window:
+Total 24h Volume Tracked: ${formatLargeNumber(context.whaleAlerts.total_volume_usd)}
+Accumulation Signals: ${context.whaleAlerts.accumulation_signals} (exchange → wallet movements)
+Distribution Signals: ${context.whaleAlerts.distribution_signals} (wallet → exchange movements)
+Net On-Chain Bias (24h): ${context.whaleAlerts.accumulation_signals > context.whaleAlerts.distribution_signals ? `NET ACCUMULATION (${context.whaleAlerts.accumulation_signals - context.whaleAlerts.distribution_signals} more inflow tx than outflow)` : context.whaleAlerts.distribution_signals > context.whaleAlerts.accumulation_signals ? `NET DISTRIBUTION (${context.whaleAlerts.distribution_signals - context.whaleAlerts.accumulation_signals} more outflow tx than inflow)` : 'BALANCED'}
+${context.price?.volume_24h ? `Tracked whale volume vs total 24h volume: ${(context.whaleAlerts.total_volume_usd / context.price.volume_24h * 100).toFixed(1)}% (whales are NOT the entire market)` : ''}
+Notable Movements (>$10M):
+${context.whaleAlerts.notable_movements.map(s => s.replace(/[\u{1F7E2}\u{1F534}\u{1F535}\u{1F7E1}\u{1F7E0}]/gu, '').trim()).join('\n') || 'No single tx above $10M in window'}
+Recent Largest Transactions:
 ${context.whaleAlerts.recent_alerts.slice(0, 5).map((a: any) => 
-  `- ${formatLargeNumber(a.amount_usd)} ${a.symbol} | ${a.type.toUpperCase()} | ${a.from} → ${a.to} | ${a.blockchain}`
+  `- ${formatLargeNumber(a.amount_usd)} ${a.symbol} | ${a.type ? a.type.toUpperCase() : 'TRANSFER'} | ${a.from || 'unknown'} -> ${a.to || 'unknown'} | chain: ${a.blockchain || 'n/a'}`
 ).join('\n')}
 ` : ''
 
@@ -1278,15 +1293,14 @@ ${formatNewsHeadlinesDetailed(context.news.headlines.slice(0, 10))}
 ${'='.repeat(50)}
 
 INSTRUCTIONS:
-1. Use the 3-part structure: Data, News and Market Impact, Bottom Line
-2. NO emojis in your response
-3. NO dashes for lists (use colons or numbers)
-4. ${isERC20 ? 'Include whale data with exact net flow amount' : 'SKIP whale data entirely (not available for this token)'}
-5. Include 5 news articles as markdown links with WHY each impacts sentiment
-6. Analyze short-term (days/weeks) and long-term (months/years) impact
-7. CONNECT to macro events and geopolitical factors when relevant
-8. Be conversational and ask a follow-up question
-9. End with disclaimer: "This is educational analysis based on on-chain data — not financial advice. Always DYOR and consult a qualified financial advisor."
+1. Follow the response format defined in the system prompt exactly: **Data**, **News and Market Impact**, **Bottom Line**, **Follow-up question**, then the mandatory disclaimer.
+2. NO emojis anywhere in the response.
+3. NO em-dash bullet lists (use colons or numbered lists).
+4. ON-CHAIN WHALE DATA: ${isERC20 ? 'Use the ERC-20 whale_transactions block above as the primary source — quote exact net flow, buy/sell tx counts and ratio, CEX/DEX split, and the divergence-vs-price flag.' : (context.whaleAlerts && context.whaleAlerts.recent_alerts && context.whaleAlerts.recent_alerts.length > 0) ? `Use the WHALE ALERT API DATA block above as the PRIMARY on-chain source for ${context.ticker}. Quote total tracked $500k+ flow, accumulation vs distribution counts, the net on-chain bias label, and quote the 2-3 largest named exchange/wallet movements verbatim. Do NOT say whale data is unavailable — it is right there in the context block.` : `State plainly that no on-chain whale data is available for ${context.ticker} in the current dataset (neither ERC-20 nor multi-chain $500k+ alerts) and move on. Do not fabricate.`}
+5. NEWS: Cover the 5 most relevant articles with a paragraph each. Every paragraph must include the headline as a markdown link, the supplied LLM sentiment score, a SHORT-TERM mechanism (name the transmission channel — dollar liquidity, regulatory overhang, exchange supply, derivatives positioning, etc.), a LONG-TERM consideration (structural trend or one-off), and a closing classification tag in brackets: [MACRO: rates / dollar / geopolitics / liquidity] OR [MICRO: regulation / flows / protocol / supply / market structure / sentiment].
+6. CONNECT EVERY MACRO CLAIM TO A NUMBER: when you mention rates, dollar, liquidity, risk-off, etc., tie it back to a concrete metric in the context block (the 24h volume, volatility figure, net whale flow, sentiment score, social engagement change, etc.).
+7. BOTTOM LINE: name the dominant macro factor and the dominant micro factor visible TODAY for THIS asset, note any flow-vs-price divergence already flagged above, and close with what the data does NOT tell you.
+8. End with the mandatory disclaimer from the system prompt, verbatim, on its own line. Do NOT replace it with shorter wording.
 
 User's question: "${userMessage}"`
 }

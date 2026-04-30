@@ -154,6 +154,21 @@ export async function GET(req) {
     let skipped = 0
     const errors = []
 
+    // 2026-04-29: Exclusion-reason counters. The IC audit on 2026-04-29
+    // showed 51,000 signals → 11,533 outcomes → 7,794 usable rows (≈85%
+    // attrition end-to-end). To diagnose where the loss happens, every
+    // skip path increments a labelled bucket. The response surfaces these
+    // so we can monitor the funnel without parsing logs.
+    const skipReasons = {
+      no_current_price: 0,        // Token wasn't in any price feed
+      no_signal_price: 0,         // price_at_signal was NULL at signal time
+      already_evaluated: 0,       // Idempotency hit
+      below_noise_floor: 0,       // |move| < 5bps → correct=null (not a fail, but excluded from accuracy)
+      neutral_signal: 0,          // Always excluded by SQL filter, counted indirectly
+      btc_benchmark_missing: 0,   // alpha_pct ended up NULL
+    }
+    let totalCandidateSignals = 0
+
     // BTC is our risk-free-ish benchmark for crypto-relative alpha.
     // Current BTC price comes from the live priceMap; historical BTC for
     // each eval window comes from price_snapshots.
@@ -200,10 +215,17 @@ export async function GET(req) {
       }
 
       if (!signals || signals.length === 0) continue
+      totalCandidateSignals += signals.length
 
       for (const sig of signals) {
         const currentPrice = priceMap.get(sig.token)
-        if (!currentPrice || !sig.price_at_signal) {
+        if (!currentPrice) {
+          skipReasons.no_current_price++
+          skipped++
+          continue
+        }
+        if (!sig.price_at_signal) {
+          skipReasons.no_signal_price++
           skipped++
           continue
         }
@@ -217,6 +239,7 @@ export async function GET(req) {
           .maybeSingle()
 
         if (existing) {
+          skipReasons.already_evaluated++
           skipped++
           continue
         }
@@ -232,6 +255,8 @@ export async function GET(req) {
         if (Math.abs(priceChange) >= NOISE_FLOOR_PCT) {
           if (isBullish) correct = priceChange > 0
           else if (isBearish) correct = priceChange < 0
+        } else {
+          skipReasons.below_noise_floor++
         }
 
         // Alpha vs BTC benchmark. NULL when we couldn't pin down a BTC
@@ -242,6 +267,8 @@ export async function GET(req) {
           alphaPct = priceChange - btcChangePct
           if (isBullish) beatBenchmark = alphaPct > 0
           else if (isBearish) beatBenchmark = alphaPct < 0
+        } else {
+          skipReasons.btc_benchmark_missing++
         }
 
         const { error: insertErr } = await supabaseAdmin
@@ -278,6 +305,17 @@ export async function GET(req) {
       message: 'Signal accuracy evaluation complete',
       evaluated,
       skipped,
+      total_candidate_signals: totalCandidateSignals,
+      skip_reasons: skipReasons,
+      // Quick health metrics — eyeball these in Vercel logs.
+      // healthy ranges (rule of thumb):
+      //   no_current_price < 5%   (price feed coverage gap)
+      //   no_signal_price   ~ 0   (compute-signals must always set price)
+      //   below_noise_floor < 30% (otherwise the universe is too quiet for 1h)
+      //   btc_benchmark_missing < 2% (BTC snapshot coverage)
+      coverage_pct: totalCandidateSignals > 0
+        ? Math.round((evaluated / totalCandidateSignals) * 1000) / 10
+        : 0,
       errors_count: errors.length,
       errors: errors.slice(0, 10),
     })

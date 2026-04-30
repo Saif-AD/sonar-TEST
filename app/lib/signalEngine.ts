@@ -44,7 +44,16 @@ export interface WhaleTransaction {
   whale_score?: number
   whale_address?: string
   from_address?: string
+  to_address?: string
   counterparty_type?: string
+  // 2026-04-30: per-transaction classifier confidence (0..1) and entity
+  // tags from the upstream `whale-transactions` classifier. Tier 1 uses
+  // these to (a) downweight contested labels, (b) infer venue when the
+  // legacy `counterparty_type` field is empty.
+  confidence?: number | string
+  reasoning?: string
+  from_label?: string
+  to_label?: string
 }
 
 export interface TierResult {
@@ -181,6 +190,54 @@ export interface ComputeSignalParams {
 
 // ─── TIER 1: CEX WHALE FLOW ──────────────────────────────────────────────
 
+// ─── Venue / confidence helpers (2026-04-30) ─────────────────────────────
+// The legacy `counterparty_type` column on all_whale_transactions is empty
+// on 100% of recent rows. The upstream classifier instead writes structured
+// hints into `reasoning` and entity tags into `from_label`/`to_label`. These
+// helpers extract the venue context the rest of tier 1 needs.
+
+const CEX_HINTS = [
+  'binance', 'coinbase', 'kraken', 'okx', 'bybit', 'kucoin', 'bitfinex',
+  'huobi', 'gate.io', 'gemini', 'bitstamp', 'crypto.com', 'mexc', 'upbit',
+  'cex_classification', 'cex deposit', 'cex withdrawal',
+]
+const DEX_HINTS = [
+  'uniswap', 'sushiswap', 'pancakeswap', 'curve', 'balancer', '1inch',
+  'cow protocol', 'cowswap', '0x protocol', 'paraswap', 'permit2', 'router',
+  'aggregator', 'dex buy', 'dex sell', 'jupiter', 'raydium',
+]
+
+function classifyVenue(tx: WhaleTransaction): 'CEX' | 'DEX' | 'OTHER' {
+  // Legacy field still wins when populated.
+  const legacy = (tx.counterparty_type || '').toUpperCase()
+  if (legacy === 'CEX' || legacy === 'DEX') return legacy
+
+  const hay = [
+    tx.reasoning || '',
+    tx.from_label || '',
+    tx.to_label || '',
+  ].join(' ').toLowerCase()
+  if (!hay.trim()) return 'OTHER'
+
+  // CEX wins on tie — CEX flow carries more directional intent than DEX rotation.
+  for (const h of CEX_HINTS) if (hay.includes(h)) return 'CEX'
+  for (const h of DEX_HINTS) if (hay.includes(h)) return 'DEX'
+  return 'OTHER'
+}
+
+// Per-tx classifier confidence (0..1). Default to 0.6 when missing — i.e.
+// neither penalize nor reward unknown rows. Coerce strings → numbers.
+function txConfidence(tx: WhaleTransaction): number {
+  const c = Number(tx.confidence)
+  if (!Number.isFinite(c)) return 0.6
+  return Math.max(0, Math.min(1, c))
+}
+
+// Drop rows the upstream classifier itself flagged as low-confidence ("Stage
+// 1 contested"). Including them is including known noise. Threshold matches
+// the upstream Stage-1 cutoff (0.50) per recent reasoning samples.
+const MIN_TX_CONFIDENCE = 0.5
+
 export function computeTier1_CexWhaleFlow(
   transactions: WhaleTransaction[] = [],
   lookbackMs: number = 24 * 60 * 60 * 1000
@@ -189,16 +246,21 @@ export function computeTier1_CexWhaleFlow(
   const cutoff = now - lookbackMs
   const prevCutoff = now - 2 * lookbackMs
 
-  // Use ALL BUY/SELL whale transactions (not just CEX) — matches dashboard data
+  // 2026-04-30: filter on (a) BUY/SELL classification, (b) timestamp,
+  // (c) classifier confidence ≥ MIN_TX_CONFIDENCE. The third filter excludes
+  // the upstream's own "contested" rows — confirmed via reasoning samples
+  // ("Stage 1 confidence (0.x) below threshold or contested").
   const allTxs = transactions.filter(tx =>
     ['BUY', 'SELL'].includes((tx.classification || '').toUpperCase()) &&
-    new Date(tx.timestamp).getTime() >= cutoff
+    new Date(tx.timestamp).getTime() >= cutoff &&
+    txConfidence(tx) >= MIN_TX_CONFIDENCE
   )
 
   const prevTxs = transactions.filter(tx =>
     ['BUY', 'SELL'].includes((tx.classification || '').toUpperCase()) &&
     new Date(tx.timestamp).getTime() >= prevCutoff &&
-    new Date(tx.timestamp).getTime() < cutoff
+    new Date(tx.timestamp).getTime() < cutoff &&
+    txConfidence(tx) >= MIN_TX_CONFIDENCE
   )
 
   if (allTxs.length === 0) {
@@ -207,10 +269,12 @@ export function computeTier1_CexWhaleFlow(
 
   let buyVol = 0, sellVol = 0, buyVolWeighted = 0, sellVolWeighted = 0
   let buys = 0, sells = 0
-  let cexBuyVol = 0, cexSellVol = 0 // CEX sub-signal (higher conviction)
+  let cexBuyVol = 0, cexSellVol = 0   // CEX sub-signal (higher conviction)
+  let dexBuyVol = 0, dexSellVol = 0   // DEX sub-signal (rotation, lower weight)
   const uniqueBuyAddrs = new Set<string>()
   const uniqueSellAddrs = new Set<string>()
   let largeTxBuyVol = 0, largeTxSellVol = 0
+  let confSum = 0  // for avg classifier confidence factor
 
   const recentCutoff = now - 3 * 60 * 60 * 1000
   let recentBuyVol = 0, recentSellVol = 0
@@ -220,16 +284,30 @@ export function computeTier1_CexWhaleFlow(
     const side = (tx.classification || '').toUpperCase()
     const whale = tx.whale_address || tx.from_address || ''
     const txTime = new Date(tx.timestamp).getTime()
-    const isCex = tx.counterparty_type === 'CEX'
+
+    // 2026-04-30: venue + confidence-aware weighting.
+    //   venue: classify from reasoning/labels (legacy counterparty_type is empty).
+    //     CEX flow → 1.5x  (deposit/withdrawal signals intent to liquidate / accumulate)
+    //     DEX flow → 1.0x  (rotation, weaker directional signal)
+    //     OTHER    → 0.85x (uncertain venue, slight discount)
+    //   confidence: linear blend on classifier confidence so a 0.95-conf tx
+    //     counts ~2x a 0.50-conf tx (after the floor filter above).
+    const venue = classifyVenue(tx)
+    const isCex = venue === 'CEX'
+    const isDex = venue === 'DEX'
+    const venueBoost = isCex ? 1.5 : isDex ? 1.0 : 0.85
+
+    const conf = txConfidence(tx)
+    confSum += conf
+    // Linear remap: conf 0.5 → 0.65,  conf 1.0 → 1.30. Floor at 0.5 already enforced.
+    const confWeight = 0.3 + 1.0 * conf
 
     // Exponential time-decay (half-life = 6h)
     const decay = Math.exp(-(now - txTime) / (6 * 60 * 60 * 1000))
     // Size emphasis (sqrt scaling)
     const sizeWeight = Math.sqrt(Math.max(1, usd / 10000))
-    // CEX transactions get 1.5x weight (higher conviction than EOA transfers)
-    const cexBoost = isCex ? 1.5 : 1.0
 
-    const weighted = usd * decay * sizeWeight * cexBoost
+    const weighted = usd * decay * sizeWeight * venueBoost * confWeight
 
     if (side === 'BUY') {
       buys++
@@ -239,6 +317,7 @@ export function computeTier1_CexWhaleFlow(
       if (usd > 500000) largeTxBuyVol += usd
       if (txTime >= recentCutoff) recentBuyVol += usd
       if (isCex) cexBuyVol += usd
+      if (isDex) dexBuyVol += usd
     } else if (side === 'SELL') {
       sells++
       sellVol += usd
@@ -247,6 +326,7 @@ export function computeTier1_CexWhaleFlow(
       if (usd > 500000) largeTxSellVol += usd
       if (txTime >= recentCutoff) recentSellVol += usd
       if (isCex) cexSellVol += usd
+      if (isDex) dexSellVol += usd
     }
   }
 
@@ -298,6 +378,10 @@ export function computeTier1_CexWhaleFlow(
   const largeTxConf = (largeTxBuyVol + largeTxSellVol) > 0 ? 0.2 : 0
   const confidence = Math.round((txCountConf * 0.5 + whaleCountConf * 0.3 + largeTxConf) * 100)
 
+  // 2026-04-30: surface classifier-aware diagnostics so the IC audit can
+  // segment by venue and avg classifier confidence going forward.
+  const avgClassifierConfidence = totalTxs > 0 ? confSum / totalTxs : 0
+
   return {
     score: Math.round(score),
     confidence,
@@ -311,6 +395,8 @@ export function computeTier1_CexWhaleFlow(
       sellVol: Math.round(sellVol),
       cexBuyVol: Math.round(cexBuyVol),
       cexSellVol: Math.round(cexSellVol),
+      dexBuyVol: Math.round(dexBuyVol),
+      dexSellVol: Math.round(dexSellVol),
       uniqueWhales,
       volumeChangeVsPrev: +(volumeChange * 100).toFixed(1),
       largeTxBuyVol: Math.round(largeTxBuyVol),
@@ -319,6 +405,7 @@ export function computeTier1_CexWhaleFlow(
       recentSellVol3h: Math.round(recentSellVol),
       weightedFlowSignal: +weightedFlowSignal.toFixed(3),
       velocitySignal: +velocitySignal.toFixed(3),
+      avgClassifierConfidence: +avgClassifierConfidence.toFixed(3),
     }
   }
 }

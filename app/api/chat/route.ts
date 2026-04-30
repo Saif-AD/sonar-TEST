@@ -12,35 +12,46 @@ import { buildOrcaContext, buildGPTContext } from '@/lib/orca/context-builder'
 
 export const dynamic = 'force-dynamic'
 
-// Use Grok (xAI) as primary AI, fallback to OpenAI if no xAI key
-// v2 — force cache invalidation
+// Use Grok (xAI) as primary AI, fallback to OpenAI if no xAI key.
+// Model selection prioritises the largest context window available so the
+// full ORCA context block (price + chart + whale + sentiment + 10 news
+// articles + LunarCrush + dev/community data) survives without truncation.
+//   - Grok primary:  grok-4-fast-reasoning   (2,000,000 token context, reasoning)
+//   - Grok mini:     grok-4-fast-non-reasoning (2,000,000 ctx, lower latency)
+//   - OpenAI fallback: gpt-4.1 (1,000,000 token context)
 const getAIClient = () => {
   const xaiKey = process.env.XAI_API_KEY
   console.log(`🤖 AI Provider: ${xaiKey ? 'Grok (xAI)' : 'OpenAI (fallback)'}`)
   if (xaiKey) {
     return {
       client: new OpenAI({ apiKey: xaiKey, baseURL: 'https://api.x.ai/v1' }),
-      model: 'grok-4.20-beta-0309-reasoning',
-      miniModel: 'grok-4.20-beta-0309-non-reasoning',
+      model: 'grok-4-fast-reasoning',
+      miniModel: 'grok-4-fast-non-reasoning',
       provider: 'grok'
     }
   }
   return {
     client: new OpenAI({ apiKey: process.env.OPENAI_API_KEY }),
-    model: 'gpt-4o',
-    miniModel: 'gpt-4o',
+    model: 'gpt-4.1',
+    miniModel: 'gpt-4.1-mini',
     provider: 'openai'
   }
 }
 
 /**
- * Dynamically determine if whale data exists for a token
- * This checks the actual fetched data instead of relying on a hardcoded list
+ * Dynamically determine if any on-chain whale data exists for a token.
+ * Two independent sources can satisfy this:
+ *   1. ERC-20 `whale_transactions` table (Etherscan ingest, ETH-chain ERC-20s)
+ *   2. Multi-chain `whale_alerts` table (Whale Alert API, $500k+ tx, covers
+ *      BTC, ETH native, TRX, XRP, SOL, BSC, etc.)
+ * Previously this only checked source #1, so BTC/XRP/TRX/SOL responses
+ * incorrectly told users "on-chain whale data is not available".
  */
 function hasWhaleData(context: any): boolean {
-  // A token has whale data if it has transactions in our database
-  return context?.whales?.transaction_count > 0 || 
-         context?.whales?.net_flow_24h !== 0
+  const erc20 = (context?.whales?.transaction_count || 0) > 0 ||
+                (context?.whales?.net_flow_24h || 0) !== 0
+  const multichain = (context?.whaleAlerts?.recent_alerts?.length || 0) > 0
+  return erc20 || multichain
 }
 
 // ORCA System Prompt v6.0 — Non-advisory, data-analysis mode
@@ -86,17 +97,40 @@ Where live web / X search is available, you may cite publicly posted information
 
 ## RESPONSE FORMAT
 
-Keep responses factual and descriptive. Structure:
+You are writing a long-form, in-depth research note. Aim for substance and density. Every claim must trace back to a specific number in the context block. Required structure:
 
-**Price and market data (factual):** Current price, 24h change, market cap, volume — from context block only. State that these are snapshots, not forecasts.
+**Data**
+Open with a one-sentence positioning of the asset (sector, current cycle context inferred from the supplied multi-timeframe % changes — 1h / 24h / 7d / 30d). Then walk through:
+- Price action across all available timeframes, calling out where the 7d and 30d changes diverge from the 24h move and what that asymmetry mechanically implies (compression, expansion, consolidation, breakout, mean-reversion attempt).
+- Volatility regime (use the 7d volatility figure and label it explicitly: high / moderate / low) and what that implies for spot vs. derivatives liquidity behaviour.
+- Volume / market-cap ratio and what it indicates about turnover.
+- FDV / mcap ratio and what it implies about future supply dilution risk.
+- Distance from ATH and market-cap rank as positioning context.
+- On-chain whale data — render whichever source is populated:
+  - If the ERC-20 whale_transactions block is supplied: report exact net flow, buy/sell tx counts, buy/sell ratio, CEX vs DEX split, the divergence flag (if any), and whales' share of total 24h volume.
+  - If the multi-chain WHALE ALERT API block is supplied (BTC, XRP, TRX, SOL, native ETH, etc.): report total tracked $500k+ flow, accumulation vs distribution counts, and quote the largest 2-3 named exchange↔wallet movements verbatim from the block. Frame these as descriptive observations of what the public Whale Alert feed reported, not as forecasts.
+  - If neither is supplied: state "On-chain whale data not available for this asset in the current dataset" — do not fabricate.
+- Sentiment composite (combined score, provider score, LLM score, news count behind it) and Galaxy Score / Alt Rank with their natural-language interpretation already supplied.
+- Social: % bullish, raw interaction count, mention count, supportive vs critical themes.
 
-**On-chain data (factual):** Net whale flow value, transaction count, exchange inflow vs outflow totals, number of unique whales active — from context block only. State that whale activity is a small subset of total market volume and is not predictive on its own.
+**News and Market Impact**
+For EACH of the 5 most relevant supplied articles produce a paragraph that contains, in this order:
+1. The headline as a markdown link.
+2. The supplied LLM sentiment score for that article.
+3. A SHORT-TERM (hours to weeks) mechanism: name the specific transmission channel — e.g. "tightens dollar liquidity → typically pressures risk assets including high-beta crypto", "removes a regulatory overhang for US spot products → reduces uncertainty premium", "increases realised supply on exchanges → adds short-term sell-side depth". Tie the channel back to a concrete metric in the supplied data when possible (the 24h volume, the volatility figure, the net whale flow direction).
+4. A LONG-TERM (months to years) consideration: is this a one-off headline or part of a structural trend (institutional adoption, regulation, monetary regime, supply schedule, network upgrade, jurisdictional fragmentation)?
+5. A factor classification at the end of the paragraph in brackets: [MACRO: rates / dollar / geopolitics / liquidity] OR [MICRO: regulation / flows / protocol / supply / market structure / sentiment].
 
-**Public news and sentiment (factual):** Recent headlines and public sentiment metrics from the context block. Attribute every claim to the originating source.
+Avoid generic phrasing like "this could affect sentiment". Be specific about the mechanism.
 
-**What the data does NOT tell you:** Briefly note what the data cannot answer (e.g., future price, motivation of the actors, whether a move is part of a larger strategy).
+**Bottom Line**
+A 3-4 sentence synthesis that:
+- Names the dominant macro factor visible in today's data for THIS asset (rates, dollar, risk appetite, regulatory cycle, etc.).
+- Names the dominant micro factor (on-chain flow direction, social momentum, derivatives positioning hint, supply event, exchange listings).
+- Notes any divergence between price action and on-chain flow (already flagged in the context block) without telling the user what to do about it.
+- Closes with what the data does NOT tell you (motivation of the actors, off-exchange OTC, dark-pool flow, future price).
 
-**Follow-up question:** Offer one neutral, data-oriented follow-up the user can ask.
+**Follow-up question:** One neutral, data-oriented follow-up the user can ask.
 
 ## MANDATORY DISCLAIMER
 
@@ -110,10 +144,11 @@ This output is an automated summary of public data for informational and educati
 
 1. No emojis.
 2. Wrap all numbers, prices, percentages, and metrics in \`backticks\`.
-3. Bold section headers.
-4. Maximum 900 words for the first response, 400 for follow-ups.
-5. If required data is missing from the context block, say so plainly — do not guess.
-6. Never omit the mandatory disclaimer.`
+3. Bold section headers exactly as labelled above (**Data**, **News and Market Impact**, **Bottom Line**).
+4. Target length: 1100-1600 words on the first response, 400-600 on follow-ups. Density over brevity — every paragraph must contain at least one specific number from the context block.
+5. If required data is missing from the context block, say so plainly — do not guess and do not leave the section empty.
+6. Never omit the mandatory disclaimer.
+7. Never recycle the same explanatory sentence across sections — each token's report must read as bespoke to that token's actual numbers.`
 
 export async function POST(request: Request) {
   const startTime = Date.now()
@@ -332,8 +367,8 @@ Available coins: BTC, ETH, SOL, DOGE, SHIB, PEPE, STRK, LINK, UNI, AAVE, ARB, OP
               { role: 'system', content: ORCA_SYSTEM_PROMPT },
               { role: 'user', content: gptContext }
             ],
-            temperature: 0.7,
-            max_tokens: isFollowUp ? 1500 : 4000
+            temperature: 0.6,
+            max_tokens: isFollowUp ? 2000 : 6000
           }
 
           if (provider === 'grok') {
