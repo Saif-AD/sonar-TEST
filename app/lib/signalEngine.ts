@@ -792,12 +792,31 @@ export function computeUnifiedSignal({
 
   // v5 weights with derivatives: T1=20%, T2=30%, T3=15%, T4=5%, derivatives=30%
   // Without derivatives: fallback to v3 weights T1=25%, T2=40%, T3=25%, T4=10%
-  // IC_FIX_ENABLED: zero out T2 (no measurable edge per IC audit) and
-  // redistribute to T1 + T3, the only tiers with ranking power.
+  //
+  // 2026-04-30 — Conservative balanced weights pending post-deploy IC re-audit.
+  //   The April 29 attempts to re-weight (first to tier2-spine on raw IC,
+  //   then to tier1-spine on alpha IC) were both unstable: the +0.20 60d
+  //   tier1 alpha IC decayed to −0.25 on the most recent 7 days. That swing
+  //   is ~2σ — could be regime, could be the 60d edge was in-sample noise.
+  //   Either way, betting heavily on either tier without re-validation is
+  //   overconfident.
+  //
+  //   The transform-layer fix shipped today (tier1 now uses per-tx
+  //   classifier confidence + reasoning-based venue detection, drops
+  //   contested rows) materially changes what tier1 measures. ALL prior IC
+  //   numbers on tier1 are stale — they applied to the dead `cexBoost=1`
+  //   transform, not the new confidence-weighted one.
+  //
+  //   Holding pattern until 7 days of post-deploy data:
+  //     - tier1 at 0.30 (meaningful but bounded blast radius)
+  //     - tier2 at 0.30/0.40 (proven beta capture, honest baseline)
+  //     - tier3 at 0.10 (small experimental sleeve, kept non-zero for audit)
+  //     - tier4 at 0.05/0.10
+  //   Re-audit alpha IC after 2026-05-07 and re-weight then with evidence.
   const baseWeights = IC_FIX_ENABLED
     ? (hasDeriv
-        ? { tier1: 0.30, tier2: 0.00, tier3: 0.30, tier4: 0.05 }
-        : { tier1: 0.45, tier2: 0.00, tier3: 0.45, tier4: 0.10 })
+        ? { tier1: 0.30, tier2: 0.30, tier3: 0.10, tier4: 0.05 } // + derivatives 0.25
+        : { tier1: 0.40, tier2: 0.40, tier3: 0.10, tier4: 0.10 })
     : (hasDeriv
         ? { tier1: 0.20, tier2: 0.30, tier3: 0.15, tier4: 0.05 }
         : { tier1: 0.25, tier2: 0.40, tier3: 0.25, tier4: 0.10 })

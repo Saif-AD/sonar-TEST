@@ -1103,7 +1103,7 @@ const Landing = () => {
       <V2Hero>
         <Globe />
         <V2HeroContent>
-          <V2Eyebrow><V2EyebrowDot />LIVE ON 14 CHAINS</V2Eyebrow>
+          <V2Eyebrow><V2EyebrowDot />LIVE ON 7 CHAINS</V2Eyebrow>
           <V2Headline>
             <V2HeadlineAccent>Sonar</V2HeadlineAccent> Real-Time<br />
             Crypto Intelligence
