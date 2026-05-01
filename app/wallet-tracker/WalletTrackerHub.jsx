@@ -11,6 +11,7 @@ import {
   truncateAddress,
 } from '@/app/lib/entityHelpers'
 import { supabaseBrowser } from '@/app/lib/supabaseBrowserClient'
+import AlertBanner from '@/components/wallet-tracker/AlertBanner'
 
 // `/wallet-tracker` hub that sits above the existing leaderboard
 // wrapper. Renders the new unified header, shared tab bar (Research
@@ -30,6 +31,7 @@ export default function WalletTrackerHub({ featuredFigures = [] }) {
       }}
       className="sonar-wt-hub"
     >
+      <AlertBanner />
       <HubHeader />
       <WalletTrackerTabs activeOverride="research" />
       <HeroSearch />
