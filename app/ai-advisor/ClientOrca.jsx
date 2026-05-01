@@ -16,9 +16,8 @@ import OrcaWelcome from './OrcaWelcome'
 import { useSearchParams } from 'next/navigation'
 import TokenIcon from '@/components/TokenIcon'
 import SonarLoader from '@/components/wallet-tracker/SonarLoader'
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
-const SANS_FONT = "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
 const colors = {
   bgDark: '#0a0e17',
   bgCard: 'rgba(13, 17, 28, 0.8)',
@@ -63,21 +62,21 @@ const PremiumIcon = styled.div`font-size: 3rem; margin-bottom: 1.5rem;`
 
 const PremiumTitle = styled.h2`
   font-size: 1.6rem; font-weight: 700; color: ${colors.textPrimary}; margin-bottom: 1rem;
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
   background: linear-gradient(135deg, ${colors.primary} 0%, #00b8d4 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 `
 
 const PremiumDescription = styled.p`
   font-size: 0.95rem; color: ${colors.textMuted}; margin-bottom: 2rem;
-  line-height: 1.6; font-family: ${SANS_FONT};
+  line-height: 1.6; font-family: ${FONT_SANS};
 `
 
 const PremiumFeatureList = styled.ul`
   list-style: none; padding: 0; margin: 1.5rem 0; text-align: left;
   li {
     color: ${colors.textSecondary}; padding: 0.6rem 0; display: flex;
-    align-items: center; gap: 0.75rem; font-size: 0.9rem; font-family: ${SANS_FONT};
+    align-items: center; gap: 0.75rem; font-size: 0.9rem; font-family: ${FONT_SANS};
     &::before { content: '▸'; color: ${colors.primary}; font-weight: bold; }
   }
 `
@@ -87,14 +86,18 @@ const PremiumButton = styled(motion.a)`
   background: linear-gradient(135deg, ${colors.primary} 0%, #00b8d4 100%);
   color: #0a0e17; padding: 0.9rem 2rem; border-radius: 8px; font-weight: 700;
   font-size: 1rem; text-decoration: none; cursor: pointer; border: none;
-  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25); font-family: ${SANS_FONT};
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25); font-family: ${FONT_SANS};
 `
 
 // Outer wrapper for sidebar + chat
+// height: 100% so we fill the available main column (set by AppShell's MainInner)
+// and don't trigger a second outer scroll due to a viewport-height mismatch
+// with the new top chrome.
 const PageWrapper = styled.div`
-  display: flex; height: calc(100vh - 100px); max-width: 1300px; margin: 0 auto;
+  display: flex; height: 100%; max-width: 1300px; margin: 0 auto;
+  width: 100%;
   gap: 0;
-  @media (max-width: 768px) { flex-direction: column; }
+  @media (max-width: 768px) { flex-direction: column; height: auto; min-height: 100%; }
 `
 
 // Sidebar (desktop: static, mobile: overlay drawer)
@@ -134,7 +137,7 @@ const MobileHistoryButton = styled.button`
 `
 
 const SessionPreview = styled.div`
-  font-family: ${SANS_FONT}; font-size: 0.68rem; color: ${colors.textMuted};
+  font-family: ${FONT_SANS}; font-size: 0.68rem; color: ${colors.textMuted};
   margin-top: 0.15rem; line-height: 1.3;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
@@ -166,12 +169,12 @@ const ConfirmCard = styled(motion.div)`
 `
 
 const ConfirmTitle = styled.h3`
-  font-family: ${MONO_FONT}; font-size: 0.9rem; font-weight: 700;
+  font-family: ${FONT_MONO}; font-size: 0.9rem; font-weight: 700;
   color: ${colors.primary}; margin-bottom: 0.75rem; letter-spacing: 1px;
 `
 
 const ConfirmText = styled.p`
-  font-family: ${SANS_FONT}; font-size: 0.85rem; color: ${colors.textSecondary};
+  font-family: ${FONT_SANS}; font-size: 0.85rem; color: ${colors.textSecondary};
   margin-bottom: 1.5rem; line-height: 1.5;
 `
 
@@ -180,7 +183,7 @@ const ConfirmButtons = styled.div`
 `
 
 const ConfirmBtn = styled(motion.button)`
-  font-family: ${MONO_FONT}; font-size: 0.75rem; font-weight: 600;
+  font-family: ${FONT_MONO}; font-size: 0.75rem; font-weight: 600;
   padding: 0.6rem 1.25rem; border-radius: 6px; cursor: pointer; border: none;
   transition: all 0.15s ease;
 `
@@ -205,7 +208,7 @@ const SidebarHeader = styled.div`
 const NewChatButton = styled.button`
   background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.2);
   color: ${colors.primary}; padding: 0.5rem 1rem; border-radius: 6px;
-  font-family: ${MONO_FONT}; font-size: 0.75rem; font-weight: 600;
+  font-family: ${FONT_MONO}; font-size: 0.75rem; font-weight: 600;
   cursor: pointer; width: 100%; transition: all 0.2s ease;
   &:hover { background: rgba(0, 229, 255, 0.2); }
 `
@@ -225,23 +228,24 @@ const SessionItem = styled.div`
 `
 
 const SessionTitle = styled.div`
-  font-family: ${SANS_FONT}; font-size: 0.8rem; font-weight: 600;
+  font-family: ${FONT_SANS}; font-size: 0.8rem; font-weight: 600;
   color: ${colors.textPrimary}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 `
 
 const SessionMeta = styled.div`
-  font-family: ${MONO_FONT}; font-size: 0.6rem; color: ${colors.textMuted};
+  font-family: ${FONT_MONO}; font-size: 0.6rem; color: ${colors.textMuted};
   margin-top: 0.2rem; display: flex; gap: 0.5rem; align-items: center;
 `
 
 // Main Container
 const ChatContainer = styled.div`
   display: flex; flex-direction: column; flex: 1;
-  height: calc(100vh - 100px);
+  min-width: 0; min-height: 0;
+  height: 100%;
   background: ${colors.bgDark}; border-radius: 0 8px 8px 0; overflow: hidden;
   border: 1px solid ${colors.borderLight}; border-left: none;
   position: relative;
-  @media (max-width: 768px) { border-radius: 8px; border-left: 1px solid ${colors.borderLight}; }
+  @media (max-width: 768px) { border-radius: 8px; border-left: 1px solid ${colors.borderLight}; height: auto; min-height: 600px; }
   
   &::before {
     content: '';
@@ -254,7 +258,7 @@ const ChatContainer = styled.div`
 const ChatHeader = styled.div`
   display: flex; align-items: center; gap: 1rem;
   padding: 0.75rem 1.5rem; border-bottom: 1px solid ${colors.borderLight};
-  font-family: ${MONO_FONT}; background: rgba(13, 17, 28, 0.6);
+  font-family: ${FONT_MONO}; background: rgba(13, 17, 28, 0.6);
   position: relative; z-index: 1;
 `
 
@@ -278,7 +282,7 @@ const Avatar = styled.div`
   background: ${props => props.$isUser ? `rgba(0, 229, 255, 0.1)` : `rgba(13, 17, 28, 0.9)`};
   border: 1px solid ${props => props.$isUser ? 'rgba(0, 229, 255, 0.2)' : colors.borderLight};
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  font-size: 0.65rem; font-weight: 700; font-family: ${MONO_FONT};
+  font-size: 0.65rem; font-weight: 700; font-family: ${FONT_MONO};
   color: ${props => props.$isUser ? colors.primary : colors.primary};
   svg { width: 20px; height: 20px; fill: ${colors.primary}; }
 `
@@ -293,7 +297,7 @@ const WhaleIcon = () => (
 const MessageContent = styled.div`flex: 1; min-width: 0;`
 
 const SenderName = styled.div`
-  font-size: 0.7rem; font-weight: 600; font-family: ${MONO_FONT};
+  font-size: 0.7rem; font-weight: 600; font-family: ${FONT_MONO};
   color: ${props => props.$isUser ? colors.primary : colors.textMuted};
   margin-bottom: 0.4rem; letter-spacing: 0.5px; text-transform: uppercase;
   ${props => props.$isUser && 'text-align: right;'}
@@ -308,9 +312,9 @@ const MessageText = styled.div`
   border: 1px solid ${props => props.$isUser ? 'rgba(0, 229, 255, 0.12)' : colors.borderLight};
   line-height: 1.7;
   font-size: 0.95rem;
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
   
-  h3, h4 { font-family: ${SANS_FONT}; color: ${colors.primary}; margin: 1.25rem 0 0.75rem 0; font-size: 1rem; }
+  h3, h4 { font-family: ${FONT_SANS}; color: ${colors.primary}; margin: 1.25rem 0 0.75rem 0; font-size: 1rem; }
   & > p:first-child strong:first-child { margin-top: 0; }
   strong { color: ${colors.primary}; font-weight: 600; }
   p { margin: 0.6rem 0; line-height: 1.7; }
@@ -330,7 +334,7 @@ const MessageText = styled.div`
   }
   code {
     background: rgba(0, 229, 255, 0.08); padding: 0.15rem 0.4rem; border-radius: 3px;
-    font-family: ${MONO_FONT}; font-size: 0.85em; color: ${colors.primary};
+    font-family: ${FONT_MONO}; font-size: 0.85em; color: ${colors.primary};
     border: 1px solid rgba(0, 229, 255, 0.1);
   }
   pre > code { display: block; padding: 1rem; border-radius: 6px; overflow-x: auto; }
@@ -338,7 +342,7 @@ const MessageText = styled.div`
 
 const MessageTime = styled.div`
   font-size: 0.65rem; color: ${colors.textMuted}; margin-top: 0.4rem;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   ${props => props.$isUser && 'text-align: right;'}
 `
 
@@ -357,12 +361,12 @@ const MiniCard = styled(motion.div)`
     width: 24px; height: 24px; border-radius: 4px; display: flex;
     align-items: center; justify-content: center; font-size: 0.75rem;
     background: ${props => props.$color || colors.primary}15;
-    color: ${props => props.$color || colors.primary}; font-family: ${MONO_FONT};
+    color: ${props => props.$color || colors.primary}; font-family: ${FONT_MONO};
   }
   .content {
     flex: 1;
-    .label { font-size: 0.6rem; color: ${colors.textMuted}; text-transform: uppercase; letter-spacing: 1px; font-family: ${SANS_FONT}; font-weight: 600; }
-    .value { font-size: 0.85rem; font-weight: 700; color: ${colors.textPrimary}; font-family: ${MONO_FONT}; }
+    .label { font-size: 0.6rem; color: ${colors.textMuted}; text-transform: uppercase; letter-spacing: 1px; font-family: ${FONT_SANS}; font-weight: 600; }
+    .value { font-size: 0.85rem; font-weight: 700; color: ${colors.textPrimary}; font-family: ${FONT_MONO}; }
   }
 `
 
@@ -385,16 +389,16 @@ const Input = styled.input`
   flex: 1; background: rgba(10, 14, 23, 0.9);
   border: 1px solid ${colors.borderLight}; border-radius: 6px;
   padding: 0.75rem 1rem; color: ${colors.textPrimary};
-  font-size: 0.9rem; font-family: ${MONO_FONT}; outline: none;
+  font-size: 0.9rem; font-family: ${FONT_MONO}; outline: none;
   transition: border-color 0.15s ease;
   &:focus { border-color: ${colors.primary}; box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.06); }
-  &::placeholder { color: ${colors.textMuted}; font-family: ${MONO_FONT}; }
+  &::placeholder { color: ${colors.textMuted}; font-family: ${FONT_MONO}; }
 `
 
 const SendButton = styled.button`
   background: linear-gradient(135deg, ${colors.primary} 0%, #00b8d4 100%);
   color: #0a0e17; padding: 0.75rem 1.25rem; border-radius: 6px;
-  font-weight: 700; font-size: 0.8rem; font-family: ${MONO_FONT};
+  font-weight: 700; font-size: 0.8rem; font-family: ${FONT_MONO};
   transition: all 0.15s ease; display: flex; align-items: center; gap: 0.4rem;
   border: none; cursor: pointer;
   &:hover:not(:disabled) { box-shadow: 0 4px 16px rgba(0, 229, 255, 0.3); }
@@ -405,7 +409,7 @@ const SendButton = styled.button`
 
 const TypingIndicator = styled(motion.div)`
   display: flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1rem;
-  font-family: ${MONO_FONT}; font-size: 0.8rem; color: ${colors.primary};
+  font-family: ${FONT_MONO}; font-size: 0.8rem; color: ${colors.primary};
   
   &::after {
     content: '▎';
@@ -416,7 +420,7 @@ const TypingIndicator = styled(motion.div)`
 const Disclaimer = styled.div`
   background: rgba(0, 229, 255, 0.03); border: 1px solid ${colors.borderLight};
   padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; border-radius: 4px;
-  font-size: 0.7rem; color: ${colors.textMuted}; text-align: center; font-family: ${SANS_FONT};
+  font-size: 0.7rem; color: ${colors.textMuted}; text-align: center; font-family: ${FONT_SANS};
   a { color: ${colors.primary}; text-decoration: underline; }
 `
 
@@ -856,7 +860,7 @@ export default function ClientOrca() {
       </SidebarHeader>
       <SessionList>
         {sessions.length === 0 ? (
-          <div style={{ padding: '1rem', textAlign: 'center', color: colors.textMuted, fontSize: '0.75rem', fontFamily: SANS_FONT }}>
+          <div style={{ padding: '1rem', textAlign: 'center', color: colors.textMuted, fontSize: '0.75rem', fontFamily: FONT_SANS }}>
             Your conversations will appear here
           </div>
         ) : (
@@ -925,7 +929,7 @@ export default function ClientOrca() {
         <span style={{ fontWeight: 800, color: colors.primary, fontSize: '0.8rem', letterSpacing: '2px' }}>ORCA_TERMINAL</span>
         <span style={{ color: colors.textMuted, fontSize: '0.7rem' }}>v5.0</span>
         {serverQuota && isPremium && (
-          <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: colors.textMuted, marginLeft: '0.5rem' }}>
+          <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: colors.textMuted, marginLeft: '0.5rem' }}>
             {serverQuota.remaining}/{serverQuota.limit} left
           </span>
         )}
@@ -1025,17 +1029,17 @@ export default function ClientOrca() {
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <TokenIcon symbol={message.ticker} size={28} />
-                        <span style={{ fontSize: '1rem', fontWeight: 700, color: colors.textPrimary, fontFamily: MONO_FONT, letterSpacing: '1px' }}>
+                        <span style={{ fontSize: '1rem', fontWeight: 700, color: colors.textPrimary, fontFamily: FONT_MONO, letterSpacing: '1px' }}>
                           {message.ticker}
                         </span>
                         {message.data?.price?.current > 0 && (
-                          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: colors.primary, fontFamily: MONO_FONT }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: colors.primary, fontFamily: FONT_MONO }}>
                             {formatPrice(message.data.price.current)}
                           </span>
                         )}
                         {message.data?.price?.change_24h != null && (
                           <span style={{
-                            fontSize: '0.75rem', fontWeight: 700, fontFamily: MONO_FONT,
+                            fontSize: '0.75rem', fontWeight: 700, fontFamily: FONT_MONO,
                             color: message.data.price.change_24h >= 0 ? colors.sentimentBull : colors.sentimentBear,
                             padding: '0.15rem 0.35rem', borderRadius: '3px',
                             background: message.data.price.change_24h >= 0 ? 'rgba(0, 230, 118, 0.08)' : 'rgba(255, 23, 68, 0.08)',
@@ -1045,7 +1049,7 @@ export default function ClientOrca() {
                         )}
                       </div>
                       <a href={`/token/${encodeURIComponent(message.ticker)}?sinceHours=24`} style={{
-                        fontSize: '0.7rem', fontFamily: MONO_FONT, fontWeight: 600,
+                        fontSize: '0.7rem', fontFamily: FONT_MONO, fontWeight: 600,
                         color: colors.primary, textDecoration: 'none',
                         padding: '0.25rem 0.6rem', borderRadius: '4px',
                         border: `1px solid ${colors.borderLight}`,
@@ -1068,39 +1072,39 @@ export default function ClientOrca() {
                         gap: '0.5rem', marginBottom: message.data.whale_summary || message.data.lunarcrush ? '0.6rem' : 0,
                       }}>
                         <div style={{ textAlign: 'center' }}>
-                          <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: SANS_FONT, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Price</div>
-                          <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: MONO_FONT, color: colors.textPrimary }}>{formatPrice(message.data.price.current)}</div>
+                          <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: FONT_SANS, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Price</div>
+                          <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: FONT_MONO, color: colors.textPrimary }}>{formatPrice(message.data.price.current)}</div>
                         </div>
                         <div style={{ textAlign: 'center' }}>
-                          <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: SANS_FONT, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>24h</div>
-                          <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: MONO_FONT, color: message.data.price.change_24h >= 0 ? colors.sentimentBull : colors.sentimentBear }}>
+                          <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: FONT_SANS, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>24h</div>
+                          <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: FONT_MONO, color: message.data.price.change_24h >= 0 ? colors.sentimentBull : colors.sentimentBear }}>
                             {message.data.price.change_24h >= 0 ? '+' : ''}{message.data.price.change_24h?.toFixed(2)}%
                           </div>
                         </div>
                         {message.data.price.market_cap > 0 && (
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: SANS_FONT, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>MCap</div>
-                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: MONO_FONT, color: colors.textPrimary }}>{formatCompact(message.data.price.market_cap)}</div>
+                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: FONT_SANS, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>MCap</div>
+                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: FONT_MONO, color: colors.textPrimary }}>{formatCompact(message.data.price.market_cap)}</div>
                           </div>
                         )}
                         {message.data.price.volume_24h > 0 && (
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: SANS_FONT, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Volume</div>
-                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: MONO_FONT, color: colors.textPrimary }}>{formatCompact(message.data.price.volume_24h)}</div>
+                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: FONT_SANS, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Volume</div>
+                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: FONT_MONO, color: colors.textPrimary }}>{formatCompact(message.data.price.volume_24h)}</div>
                           </div>
                         )}
                         {message.data.sentiment && (
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: SANS_FONT, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Sentiment</div>
-                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: MONO_FONT, color: message.data.sentiment.score > 0.2 ? colors.sentimentBull : message.data.sentiment.score < -0.2 ? colors.sentimentBear : colors.sentimentNeutral }}>
+                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: FONT_SANS, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Sentiment</div>
+                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: FONT_MONO, color: message.data.sentiment.score > 0.2 ? colors.sentimentBull : message.data.sentiment.score < -0.2 ? colors.sentimentBear : colors.sentimentNeutral }}>
                               {message.data.sentiment.score > 0.2 ? 'Bullish' : message.data.sentiment.score < -0.2 ? 'Bearish' : 'Neutral'}
                             </div>
                           </div>
                         )}
                         {message.data.social?.sentiment_pct && (
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: SANS_FONT, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Social</div>
-                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: MONO_FONT, color: colors.primary }}>{message.data.social.sentiment_pct}%</div>
+                            <div style={{ fontSize: '0.55rem', color: colors.textMuted, fontFamily: FONT_SANS, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>Social</div>
+                            <div style={{ fontSize: '0.95rem', fontWeight: 800, fontFamily: FONT_MONO, color: colors.primary }}>{message.data.social.sentiment_pct}%</div>
                           </div>
                         )}
                       </div>
@@ -1138,10 +1142,10 @@ export default function ClientOrca() {
                             background: 'rgba(0, 229, 255, 0.03)', border: `1px solid ${colors.borderLight}`,
                           }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                              <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: colors.primary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
+                              <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: colors.primary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
                                 24H PRICE CHART
                               </span>
-                              <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: isPositive ? colors.sentimentBull : colors.sentimentBear, fontWeight: 700 }}>
+                              <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: isPositive ? colors.sentimentBull : colors.sentimentBear, fontWeight: 700 }}>
                                 {isPositive ? '▲' : '▼'} {Math.abs(displayChange).toFixed(2)}%
                               </span>
                             </div>
@@ -1160,8 +1164,8 @@ export default function ClientOrca() {
                               <circle cx={lastX} cy={padding + (1 - (prices[prices.length-1] - min) / range) * (height - padding * 2)} r="3" fill={color} />
                             </svg>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.25rem' }}>
-                              <span style={{ fontSize: '0.55rem', fontFamily: MONO_FONT, color: colors.textMuted }}>Low: {formatPrice(min)}</span>
-                              <span style={{ fontSize: '0.55rem', fontFamily: MONO_FONT, color: colors.textMuted }}>High: {formatPrice(max)}</span>
+                              <span style={{ fontSize: '0.55rem', fontFamily: FONT_MONO, color: colors.textMuted }}>Low: {formatPrice(min)}</span>
+                              <span style={{ fontSize: '0.55rem', fontFamily: FONT_MONO, color: colors.textMuted }}>High: {formatPrice(max)}</span>
                             </div>
                           </div>
                         )
@@ -1196,10 +1200,10 @@ export default function ClientOrca() {
                             background: 'rgba(0, 229, 255, 0.02)', border: `1px solid ${colors.borderLight}`,
                           }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                              <span style={{ fontSize: '0.6rem', fontFamily: MONO_FONT, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+                              <span style={{ fontSize: '0.6rem', fontFamily: FONT_MONO, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
                                 7D PRICE CHART
                               </span>
-                              <span style={{ fontSize: '0.6rem', fontFamily: MONO_FONT, color: isPositive ? colors.sentimentBull : colors.sentimentBear, fontWeight: 700 }}>
+                              <span style={{ fontSize: '0.6rem', fontFamily: FONT_MONO, color: isPositive ? colors.sentimentBull : colors.sentimentBear, fontWeight: 700 }}>
                                 {isPositive ? '▲' : '▼'} {((prices[prices.length-1] - prices[0]) / prices[0] * 100).toFixed(2)}%
                               </span>
                             </div>
@@ -1222,8 +1226,8 @@ export default function ClientOrca() {
                               <circle cx={lastX} cy={padding + (1 - (prices[prices.length-1] - min) / range) * (height - padding * 2)} r="2.5" fill={color} />
                             </svg>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.2rem' }}>
-                              <span style={{ fontSize: '0.55rem', fontFamily: MONO_FONT, color: colors.textMuted }}>{formatPrice(min)}</span>
-                              <span style={{ fontSize: '0.55rem', fontFamily: MONO_FONT, color: colors.textMuted }}>{formatPrice(max)}</span>
+                              <span style={{ fontSize: '0.55rem', fontFamily: FONT_MONO, color: colors.textMuted }}>{formatPrice(min)}</span>
+                              <span style={{ fontSize: '0.55rem', fontFamily: FONT_MONO, color: colors.textMuted }}>{formatPrice(max)}</span>
                             </div>
                           </div>
                         )
@@ -1237,26 +1241,26 @@ export default function ClientOrca() {
                         }}>
                           {message.data.whale_summary && (
                             <>
-                              <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: message.data.whale_summary.net_flow >= 0 ? colors.sentimentBull : colors.sentimentBear, padding: '0.15rem 0.4rem', borderRadius: '3px', background: message.data.whale_summary.net_flow >= 0 ? 'rgba(0, 230, 118, 0.06)' : 'rgba(255, 23, 68, 0.06)', border: `1px solid ${message.data.whale_summary.net_flow >= 0 ? 'rgba(0, 230, 118, 0.1)' : 'rgba(255, 23, 68, 0.1)'}` }}>
+                              <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: message.data.whale_summary.net_flow >= 0 ? colors.sentimentBull : colors.sentimentBear, padding: '0.15rem 0.4rem', borderRadius: '3px', background: message.data.whale_summary.net_flow >= 0 ? 'rgba(0, 230, 118, 0.06)' : 'rgba(255, 23, 68, 0.06)', border: `1px solid ${message.data.whale_summary.net_flow >= 0 ? 'rgba(0, 230, 118, 0.1)' : 'rgba(255, 23, 68, 0.1)'}` }}>
                                 WHALE: {message.data.whale_summary.net_flow >= 0 ? '+' : ''}{formatCompact(message.data.whale_summary.net_flow)}
                               </span>
-                              <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: colors.textMuted, padding: '0.15rem 0.4rem', borderRadius: '3px', border: `1px solid ${colors.borderLight}` }}>
+                              <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: colors.textMuted, padding: '0.15rem 0.4rem', borderRadius: '3px', border: `1px solid ${colors.borderLight}` }}>
                                 {message.data.whale_summary.transactions} TXN ({message.data.whale_summary.buy_sell_ratio})
                               </span>
                             </>
                           )}
                           {message.data.lunarcrush?.galaxy_score > 0 && (
-                            <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: message.data.lunarcrush.galaxy_score >= 60 ? colors.sentimentBull : message.data.lunarcrush.galaxy_score >= 40 ? colors.sentimentNeutral : colors.sentimentBear, padding: '0.15rem 0.4rem', borderRadius: '3px', background: 'rgba(0, 229, 255, 0.04)', border: `1px solid ${colors.borderLight}` }}>
+                            <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: message.data.lunarcrush.galaxy_score >= 60 ? colors.sentimentBull : message.data.lunarcrush.galaxy_score >= 40 ? colors.sentimentNeutral : colors.sentimentBear, padding: '0.15rem 0.4rem', borderRadius: '3px', background: 'rgba(0, 229, 255, 0.04)', border: `1px solid ${colors.borderLight}` }}>
                               GALAXY: {message.data.lunarcrush.galaxy_score}/100
                             </span>
                           )}
                           {message.data.lunarcrush?.alt_rank > 0 && (
-                            <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: colors.primary, padding: '0.15rem 0.4rem', borderRadius: '3px', border: `1px solid ${colors.borderLight}` }}>
+                            <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: colors.primary, padding: '0.15rem 0.4rem', borderRadius: '3px', border: `1px solid ${colors.borderLight}` }}>
                               ALT RANK: #{message.data.lunarcrush.alt_rank}
                             </span>
                           )}
                           {message.data.price.ath_distance != null && (
-                            <span style={{ fontSize: '0.65rem', fontFamily: MONO_FONT, color: colors.textMuted, padding: '0.15rem 0.4rem', borderRadius: '3px', border: `1px solid ${colors.borderLight}` }}>
+                            <span style={{ fontSize: '0.65rem', fontFamily: FONT_MONO, color: colors.textMuted, padding: '0.15rem 0.4rem', borderRadius: '3px', border: `1px solid ${colors.borderLight}` }}>
                               ATH: {message.data.price.ath_distance.toFixed(1)}%
                             </span>
                           )}
@@ -1304,7 +1308,7 @@ export default function ClientOrca() {
                       alignItems: 'center',
                       gap: '0.6rem',
                       padding: '0.3rem 0',
-                      fontFamily: MONO_FONT,
+                      fontFamily: FONT_MONO,
                       fontSize: '0.75rem',
                     }}
                   >
@@ -1340,7 +1344,7 @@ export default function ClientOrca() {
                         alignItems: 'center',
                         gap: '0.6rem',
                         padding: '0.3rem 0',
-                        fontFamily: MONO_FONT,
+                        fontFamily: FONT_MONO,
                         fontSize: '0.75rem',
                         opacity: 0.3,
                       }}

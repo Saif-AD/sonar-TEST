@@ -128,7 +128,7 @@ export default function GlossaryTermPage({ params }) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <div style={{ minHeight: '100vh', background: '#0a1621', color: '#e8edf2', fontFamily: "'Inter', -apple-system, sans-serif" }}>
+      <div style={{ minHeight: '100vh', background: '#0a1621', color: '#e8edf2', fontFamily: 'var(--font-sans)' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '8rem 2rem 4rem' }}>
           {/* Breadcrumb */}
           <nav style={{ marginBottom: '2rem', fontSize: '0.85rem', color: '#6b7d8f' }}>

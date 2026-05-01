@@ -210,7 +210,7 @@ export default function WatchlistClient() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
               gap: '1rem',
             }}
           >
@@ -236,7 +236,7 @@ export default function WatchlistClient() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
               gap: '1rem',
             }}
           >
@@ -458,43 +458,38 @@ function FigureCard({ f, onUnfollow }) {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.75rem',
-          background: hover
-            ? 'linear-gradient(135deg, #112a40 0%, #1a3550 100%)'
-            : 'linear-gradient(135deg, #0d2134 0%, #112a40 100%)',
+          gap: '0.55rem',
+          background: hover ? 'rgba(10, 22, 32, 0.7)' : 'rgba(6, 14, 22, 0.6)',
           border: hover
-            ? '1px solid rgba(54, 166, 186, 0.55)'
-            : '1px solid rgba(54, 166, 186, 0.2)',
-          borderRadius: '18px',
-          padding: '1.35rem 1.25rem',
+            ? '1px solid rgba(34, 211, 238, 0.32)'
+            : '1px solid rgba(34, 211, 238, 0.12)',
+          borderRadius: '10px',
+          padding: '0.85rem 0.95rem',
           textDecoration: 'none',
           color: 'var(--text-primary)',
           minWidth: 0,
-          transform: hover ? 'scale(1.02) translateY(-2px)' : 'scale(1) translateY(0)',
-          boxShadow: hover
-            ? '0 8px 24px rgba(54, 166, 186, 0.18)'
-            : '0 2px 6px rgba(0, 0, 0, 0.15)',
-          transition: 'all 160ms ease',
+          boxShadow: hover ? '0 4px 16px rgba(34, 211, 238, 0.1)' : 'none',
+          transition: 'background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', minWidth: 0 }}>
           <EntityAvatar
             avatarUrl={f.avatar_url}
             twitterHandle={f.twitter_handle}
             displayName={f.display_name}
             category={f.category}
-            size={64}
+            size={36}
           />
           <div style={{ minWidth: 0, flex: 1 }}>
             <div
               style={{
-                fontSize: '1.125rem',
-                fontWeight: 500,
+                fontSize: '0.92rem',
+                fontWeight: 600,
                 color: 'var(--text-primary)',
                 lineHeight: 1.2,
-                marginBottom: '0.3rem',
+                marginBottom: '0.25rem',
                 wordBreak: 'break-word',
-                paddingRight: '5.5rem',
+                paddingRight: '4.5rem',
               }}
             >
               {f.display_name}
@@ -572,22 +567,17 @@ function EntityCard({ entity, onUnfollow }) {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.65rem',
-          background: hover
-            ? 'linear-gradient(135deg, #112a40 0%, #1a3550 100%)'
-            : 'linear-gradient(135deg, #0d2134 0%, #112a40 100%)',
+          gap: '0.5rem',
+          background: hover ? 'rgba(10, 22, 32, 0.7)' : 'rgba(6, 14, 22, 0.6)',
           border: hover
-            ? '1px solid rgba(54, 166, 186, 0.55)'
-            : '1px solid rgba(54, 166, 186, 0.2)',
-          borderRadius: '16px',
-          padding: '1.2rem 1.25rem',
+            ? '1px solid rgba(34, 211, 238, 0.32)'
+            : '1px solid rgba(34, 211, 238, 0.12)',
+          borderRadius: '10px',
+          padding: '0.85rem 0.95rem',
           color: 'var(--text-primary)',
           textDecoration: 'none',
-          transform: hover ? 'scale(1.02) translateY(-2px)' : 'scale(1) translateY(0)',
-          boxShadow: hover
-            ? '0 8px 24px rgba(54, 166, 186, 0.18)'
-            : '0 2px 6px rgba(0, 0, 0, 0.15)',
-          transition: 'all 160ms ease',
+          boxShadow: hover ? '0 4px 16px rgba(34, 211, 238, 0.1)' : 'none',
+          transition: 'background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
           minWidth: 0,
         }}
       >
@@ -601,13 +591,13 @@ function EntityCard({ entity, onUnfollow }) {
         >
           <div
             style={{
-              fontSize: '1.05rem',
-              fontWeight: 800,
-              lineHeight: 1.3,
+              fontSize: '0.92rem',
+              fontWeight: 700,
+              lineHeight: 1.25,
               color: 'var(--text-primary)',
               wordBreak: 'break-word',
               minWidth: 0,
-              paddingRight: '6rem',
+              paddingRight: '5rem',
             }}
           >
             {entity.entity_name}
@@ -682,26 +672,23 @@ function WalletRow({ w, onUnfollow }) {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '1rem',
-          background: hover
-            ? 'linear-gradient(135deg, #112a40 0%, #1a3550 100%)'
-            : 'linear-gradient(135deg, #0d2134 0%, #112a40 100%)',
+          gap: '0.85rem',
+          background: hover ? 'rgba(10, 22, 32, 0.7)' : 'rgba(6, 14, 22, 0.6)',
           border: hover
-            ? '1px solid rgba(54, 166, 186, 0.55)'
-            : '1px solid rgba(54, 166, 186, 0.2)',
-          borderRadius: '12px',
-          padding: '0.7rem 1rem',
+            ? '1px solid rgba(34, 211, 238, 0.32)'
+            : '1px solid rgba(34, 211, 238, 0.12)',
+          borderRadius: '10px',
+          padding: '0.6rem 0.9rem',
           color: 'var(--text-primary)',
           textDecoration: 'none',
-          transition: 'all 160ms ease',
+          transition: 'background 160ms ease, border-color 160ms ease',
           minWidth: 0,
-          paddingRight: '7rem',
+          paddingRight: '6rem',
         }}
       >
         <div
           style={{
-            fontFamily:
-              'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+            fontFamily: 'var(--font-mono)',
             fontSize: '0.9rem',
             fontWeight: 600,
             color: 'var(--text-primary)',

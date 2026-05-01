@@ -8,9 +8,7 @@ import TokenIcon from '@/components/TokenIcon'
 import AuthGuard from '@/app/components/AuthGuard'
 import { supabaseBrowser } from '@/app/lib/supabaseBrowserClient'
 import SonarLoader from '@/components/wallet-tracker/SonarLoader'
-
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
-const SANS_FONT = "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 const COLORS = {
   cyan: '#00e5ff', green: '#00e676', red: '#ff1744', amber: '#ffab00',
   textPrimary: '#e0e6ed', textMuted: '#5a6a7a',
@@ -44,11 +42,11 @@ const Container = styled.div`
 
 const PageTitle = styled.div`
   display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
-  font-family: ${MONO_FONT}; flex-wrap: wrap;
+  font-family: ${FONT_MONO}; flex-wrap: wrap;
 `
 
 const TitleText = styled.h1`
-  font-family: ${MONO_FONT}; font-size: 0.9rem; font-weight: 700;
+  font-family: ${FONT_MONO}; font-size: 0.9rem; font-weight: 700;
   color: ${COLORS.cyan}; letter-spacing: 1.5px; text-transform: uppercase; margin: 0;
   &::before { content: '> '; color: ${COLORS.green}; font-weight: 800; }
 `
@@ -56,7 +54,7 @@ const TitleText = styled.h1`
 const LiveDot = styled.span`
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-size: 0.7rem; font-weight: 600; color: ${COLORS.green};
-  text-transform: uppercase; letter-spacing: 1px; font-family: ${MONO_FONT};
+  text-transform: uppercase; letter-spacing: 1px; font-family: ${FONT_MONO};
   &::before {
     content: ''; width: 7px; height: 7px; border-radius: 50%;
     background: ${COLORS.green}; animation: ${pulseGlow} 2s ease-in-out infinite;
@@ -72,7 +70,7 @@ const FilterButton = styled.button`
   color: ${props => props.$active ? COLORS.cyan : COLORS.textMuted};
   border: 1px solid ${props => props.$active ? 'rgba(0, 229, 255, 0.3)' : COLORS.borderSubtle};
   border-radius: 4px; padding: 0.4rem 0.85rem; font-size: 0.75rem;
-  font-weight: 600; font-family: ${MONO_FONT}; cursor: pointer;
+  font-weight: 600; font-family: ${FONT_MONO}; cursor: pointer;
   transition: all 0.15s ease;
   &:hover { border-color: rgba(0, 229, 255, 0.2); color: ${COLORS.textPrimary}; }
 `
@@ -84,7 +82,7 @@ const Panel = styled.div`
 `
 
 const TerminalPrompt = styled.h2`
-  font-family: ${MONO_FONT}; font-size: 0.85rem; font-weight: 700;
+  font-family: ${FONT_MONO}; font-size: 0.85rem; font-weight: 700;
   color: ${COLORS.cyan}; letter-spacing: 1px; text-transform: uppercase;
   margin: 0 0 1.25rem 0; display: flex; align-items: center; gap: 0.5rem;
   &::before { content: '>'; color: ${COLORS.green}; font-weight: 800; }
@@ -112,18 +110,18 @@ const CoinInfo = styled.div`flex: 1;`
 
 const CoinName = styled.div`
   font-size: 0.95rem; font-weight: 700; color: ${COLORS.textPrimary};
-  font-family: ${SANS_FONT}; margin-bottom: 2px;
+  font-family: ${FONT_SANS}; margin-bottom: 2px;
 `
 
 const CoinSymbol = styled.div`
   font-size: 0.75rem; color: ${COLORS.textMuted}; text-transform: uppercase;
-  font-family: ${MONO_FONT}; letter-spacing: 0.5px;
+  font-family: ${FONT_MONO}; letter-spacing: 0.5px;
 `
 
 const Rank = styled.div`
   background: rgba(0, 229, 255, 0.08); color: ${COLORS.cyan};
   padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem;
-  font-weight: 700; font-family: ${MONO_FONT};
+  font-weight: 700; font-family: ${FONT_MONO};
   border: 1px solid rgba(0, 229, 255, 0.12);
 `
 
@@ -135,30 +133,30 @@ const Metric = styled.div`display: flex; flex-direction: column; gap: 2px;`
 
 const MetricLabel = styled.div`
   font-size: 0.6rem; color: ${COLORS.textMuted}; text-transform: uppercase;
-  letter-spacing: 1.5px; font-family: ${SANS_FONT}; font-weight: 600;
+  letter-spacing: 1.5px; font-family: ${FONT_SANS}; font-weight: 600;
 `
 
 const MetricValue = styled.div`
   font-size: 0.9rem; font-weight: 700; color: ${COLORS.textPrimary};
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
 `
 
 const ChangeValue = styled.div`
-  font-size: 0.9rem; font-weight: 700; font-family: ${MONO_FONT};
+  font-size: 0.9rem; font-weight: 700; font-family: ${FONT_MONO};
   color: ${props => props.$positive ? COLORS.green : COLORS.red};
   text-shadow: 0 0 15px ${props => props.$positive ? 'rgba(0, 230, 118, 0.2)' : 'rgba(255, 23, 68, 0.2)'};
 `
 
 const LoadingState = styled.div`
   display: flex; align-items: center; justify-content: center;
-  min-height: 400px; color: ${COLORS.textMuted}; font-family: ${MONO_FONT}; font-size: 0.85rem;
+  min-height: 400px; color: ${COLORS.textMuted}; font-family: ${FONT_MONO}; font-size: 0.85rem;
 `
 
 const ErrorState = styled(LoadingState)`color: ${COLORS.red};`
 
 const WhaleBadge = styled.div`
   display: inline-flex; align-items: center; gap: 0.3rem;
-  font-size: 0.65rem; font-weight: 700; font-family: ${MONO_FONT};
+  font-size: 0.65rem; font-weight: 700; font-family: ${FONT_MONO};
   padding: 0.2rem 0.5rem; border-radius: 4px; margin-top: 0.6rem;
   color: ${props => props.$bullish ? COLORS.green : COLORS.red};
   background: ${props => props.$bullish ? 'rgba(0, 230, 118, 0.08)' : 'rgba(255, 23, 68, 0.08)'};
@@ -449,7 +447,7 @@ export default function TrendingPage() {
                 <div style={{
                   textAlign: 'center', padding: '1.25rem', marginBottom: '1.5rem',
                   background: COLORS.panelBg, border: `1px solid ${COLORS.borderSubtle}`,
-                  borderRadius: '8px', fontFamily: SANS_FONT,
+                  borderRadius: '8px', fontFamily: FONT_SANS,
                 }}>
                   <div style={{ fontSize: '0.8rem', color: COLORS.textMuted, marginBottom: '0.5rem' }}>
                     Showing top 10 per section. Premium shows all 12+ coins with full data.
@@ -457,7 +455,7 @@ export default function TrendingPage() {
                   <a href="/subscribe" style={{
                     display: 'inline-block', padding: '0.4rem 1rem', borderRadius: '4px',
                     background: 'linear-gradient(135deg, #00e5ff, #00b8d4)', color: '#0a0e17',
-                    fontFamily: MONO_FONT, fontSize: '0.7rem', fontWeight: 700, textDecoration: 'none',
+                    fontFamily: FONT_MONO, fontSize: '0.7rem', fontWeight: 700, textDecoration: 'none',
                     letterSpacing: '0.5px',
                   }}>
                     UPGRADE →
@@ -479,7 +477,7 @@ export default function TrendingPage() {
                     </FilterButton>
                   ))}
                 </div>
-                {categoryLoading && <div style={{ padding: '2rem', textAlign: 'center', fontFamily: MONO_FONT, fontSize: '0.7rem', color: COLORS.textMuted }}>Loading {activeCategory} data...</div>}
+                {categoryLoading && <div style={{ padding: '2rem', textAlign: 'center', fontFamily: FONT_MONO, fontSize: '0.7rem', color: COLORS.textMuted }}>Loading {activeCategory} data...</div>}
                 {!categoryLoading && categoryTopics.length > 0 && (
                   <Grid>
                     {categoryTopics.slice(0, isPremium ? 20 : 10).map((topic, idx) => (
@@ -493,7 +491,7 @@ export default function TrendingPage() {
                             </CoinInfo>
                             {topic.galaxy_score != null && (
                               <span style={{
-                                fontSize: '0.6rem', fontFamily: MONO_FONT, fontWeight: 700,
+                                fontSize: '0.6rem', fontFamily: FONT_MONO, fontWeight: 700,
                                 color: topic.galaxy_score >= 60 ? COLORS.green : topic.galaxy_score >= 40 ? COLORS.amber : COLORS.red,
                                 padding: '0.15rem 0.4rem', borderRadius: '3px',
                                 background: 'rgba(0, 229, 255, 0.04)',
@@ -530,7 +528,7 @@ export default function TrendingPage() {
                   </Grid>
                 )}
                 {!categoryLoading && categoryTopics.length === 0 && (
-                  <div style={{ padding: '2rem', textAlign: 'center', fontFamily: MONO_FONT, fontSize: '0.7rem', color: COLORS.textMuted }}>No data for {activeCategory}</div>
+                  <div style={{ padding: '2rem', textAlign: 'center', fontFamily: FONT_MONO, fontSize: '0.7rem', color: COLORS.textMuted }}>No data for {activeCategory}</div>
                 )}
               </Panel>
             </>

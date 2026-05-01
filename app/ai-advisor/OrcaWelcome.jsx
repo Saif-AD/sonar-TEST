@@ -3,9 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
-
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
-const SANS_FONT = "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 const COLORS = {
   cyan: '#00e5ff', green: '#00e676', textPrimary: '#e0e6ed',
   textMuted: '#5a6a7a', panelBg: 'rgba(13, 17, 28, 0.8)',
@@ -33,7 +31,7 @@ const OrcaLogo = styled.div`
   color: ${COLORS.cyan};
   margin-bottom: 0.75rem;
   text-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
 `
 
 const Title = styled.h1`
@@ -41,13 +39,13 @@ const Title = styled.h1`
   font-weight: 600;
   color: ${COLORS.textPrimary};
   margin-bottom: 0.4rem;
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
 `
 
 const Subtitle = styled.p`
   font-size: 0.85rem;
   color: ${COLORS.textMuted};
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   letter-spacing: 0.5px;
 `
 
@@ -66,7 +64,7 @@ const Description = styled.p`
   color: ${COLORS.textMuted};
   line-height: 1.8;
   margin: 0;
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
   
   strong { color: ${COLORS.textPrimary}; font-weight: 600; }
   span.highlight { color: ${COLORS.cyan}; }
@@ -88,7 +86,7 @@ const StatValue = styled.div`
   font-weight: 700;
   color: ${COLORS.cyan};
   margin-bottom: 0.25rem;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   text-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
 `
 
@@ -97,7 +95,7 @@ const StatLabel = styled.div`
   color: ${COLORS.textMuted};
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
   font-weight: 600;
 `
 
@@ -113,7 +111,7 @@ const ExamplesTitle = styled.h3`
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 1rem;
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
 `
 
 const ExamplesGrid = styled.div`
@@ -130,7 +128,7 @@ const ExampleButton = styled.button`
   padding: 0.85rem 1rem;
   color: ${COLORS.textMuted};
   font-size: 0.85rem;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   text-align: left;
   cursor: pointer;
   transition: all 0.15s ease;

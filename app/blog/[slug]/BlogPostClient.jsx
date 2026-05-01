@@ -225,7 +225,7 @@ const BlogContent = styled.div`
     background: var(--background-secondary);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
-    font-family: 'Monaco', 'Menlo', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9rem;
     color: var(--primary);
   }

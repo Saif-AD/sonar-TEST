@@ -104,7 +104,7 @@ const WhaleAddress = styled.h1`
   font-weight: 800;
   color: var(--text-primary);
   margin: 0 0 1rem 0;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
   word-break: break-all;
   
   @media (max-width: 768px) {
@@ -556,7 +556,7 @@ export default function WhaleDetailClient({
         borderRadius: '12px'
       }}>
         Full Address: <code style={{ 
-          fontFamily: 'monospace', 
+          fontFamily: 'var(--font-mono)', 
           fontSize: '0.9rem',
           color: 'var(--primary)',
           background: 'rgba(54, 166, 186, 0.1)',

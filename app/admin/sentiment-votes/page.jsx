@@ -365,13 +365,13 @@ export default function SentimentVotesAdmin() {
                     <Badge type={vote.vote}>{vote.vote}</Badge>
                   </td>
                   <td style={{ 
-                    fontFamily: 'monospace', 
+                    fontFamily: 'var(--font-mono)', 
                     fontSize: '0.85rem',
                     color: vote.email === 'Anonymous' ? 'var(--text-secondary)' : 'var(--text-primary)'
                   }}>
                     {vote.email}
                   </td>
-                  <td style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
                     {vote.fingerprint || '—'}
                   </td>
                   <td style={{ maxWidth: '300px', wordWrap: 'break-word' }}>

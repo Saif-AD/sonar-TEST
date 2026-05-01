@@ -2,6 +2,11 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   :root {
+    /* Geist loaded via <link> in app/layout.jsx (next/font Geist requires Next 15+) */
+    --font-geist-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-geist-mono: 'Geist Mono', ui-monospace, monospace;
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
     --background-dark: #0a1621;
     --background-card: #0d2134;
     --primary: #36a6ba;
@@ -24,11 +29,24 @@ const GlobalStyles = createGlobalStyle`
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
     /* Landing page tokens */
     --landing-border: rgba(120, 220, 240, 0.14);
+    /* V2 landing / demo neon cyan (see Landing.js V2Hero, HeroTitle) */
+    --neon-bright: #7af8ff;
+    --neon-cyan: #22d3ee;
+    --neon-mid: #5dd5ed;
+    --neon-deep: #0e7490;
+    --shell-deep-a: #060c14;
+    --shell-deep-b: #081019;
+    --neon-line: rgba(34, 211, 238, 0.32);
+    --neon-border: rgba(34, 211, 238, 0.16);
+    --neon-fill: rgba(34, 211, 238, 0.1);
+    --neon-fill-strong: rgba(34, 211, 238, 0.16);
+    --neon-glow: rgba(34, 211, 238, 0.45);
   }
 
   html { scroll-behavior: smooth; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Roboto', 'Arial', sans-serif; background-color: var(--background-dark); color: var(--text-primary); line-height: 1.5; }
+  body { font-family: var(--font-sans); background-color: var(--background-dark); color: var(--text-primary); line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  code, kbd, pre, samp { font-family: var(--font-mono); }
 
   h1, h2, h3, h4, h5, h6 { font-weight: 500; margin-bottom: 1rem; }
   a { text-decoration: none; color: var(--primary); transition: color 0.3s ease; }

@@ -54,7 +54,7 @@ const AddressSection = styled.div`
 `
 
 const Address = styled.div`
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
   font-size: 0.875rem;
   color: ${colors.textPrimary};
   font-weight: 500;

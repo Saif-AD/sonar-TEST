@@ -7,9 +7,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import styled, { keyframes } from 'styled-components'
-
-const MONO = "'JetBrains Mono', 'Fira Code', monospace"
-const SANS = "'Inter', 'Segoe UI', system-ui, sans-serif"
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 
 const slideIn = keyframes`
   from { opacity: 0; transform: translateY(-8px); max-height: 0; }
@@ -39,7 +37,7 @@ const Row = styled.div`
   gap: 0.6rem;
   padding: 0.5rem 0.6rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  font-family: ${MONO};
+  font-family: ${FONT_MONO};
   font-size: 0.68rem;
   transition: background 0.15s;
   border-left: 2px solid transparent;
@@ -83,7 +81,7 @@ const LiveDot = styled.span`
 const Header = styled.div`
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 0.6rem 0.5rem; border-bottom: 1px solid rgba(0, 229, 255, 0.08);
-  font-family: ${MONO}; font-size: 0.65rem; color: #5a6a7a;
+  font-family: ${FONT_MONO}; font-size: 0.65rem; color: #5a6a7a;
 `
 
 const FilterBar = styled.div`
@@ -91,7 +89,7 @@ const FilterBar = styled.div`
 `
 
 const FilterBtn = styled.button`
-  padding: 0.15rem 0.4rem; border-radius: 3px; font-family: ${MONO};
+  padding: 0.15rem 0.4rem; border-radius: 3px; font-family: ${FONT_MONO};
   font-size: 0.6rem; font-weight: 600; cursor: pointer; transition: all 0.12s;
   border: 1px solid ${p => p.$active ? 'rgba(0, 229, 255, 0.3)' : 'rgba(255,255,255,0.06)'};
   background: ${p => p.$active ? 'rgba(0, 229, 255, 0.08)' : 'transparent'};
@@ -176,7 +174,7 @@ export default function WhaleTransactionFeed({ symbol = null, limit = 30, pollIn
       </Header>
       <Wrapper>
         {filtered.length === 0 && (
-          <div style={{ padding: '2rem', textAlign: 'center', fontFamily: MONO, fontSize: '0.7rem', color: '#5a6a7a' }}>
+          <div style={{ padding: '2rem', textAlign: 'center', fontFamily: FONT_MONO, fontSize: '0.7rem', color: '#5a6a7a' }}>
             {txns.length === 0 ? 'Loading transactions...' : 'No transactions match filter'}
           </div>
         )}

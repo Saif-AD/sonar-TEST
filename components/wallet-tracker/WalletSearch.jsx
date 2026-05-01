@@ -4,45 +4,74 @@ import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
 import { shortenAddress } from '@/lib/wallet-tracker'
 
+/**
+ * Leaderboard wallet search.
+ * Visually distinct from the top-bar token search — sharper rectangle (not
+ * pill), darker bg, leading magnifying-glass glyph, mono input text. Reads as
+ * a "find a row in this leaderboard" tool rather than the global token search.
+ */
 const SearchContainer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
+`
+
+const SearchShell = styled.form`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.85rem;
+  background: rgba(6, 14, 22, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 8px;
+  transition: border-color 160ms ease;
+
+  &:focus-within {
+    border-color: rgba(34, 211, 238, 0.4);
+  }
+
+  .leading-icon {
+    flex-shrink: 0;
+    color: var(--neon-bright);
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+  }
 `
 
 const SearchInput = styled.input`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--background-card);
-  border: 1px solid var(--secondary);
-  border-radius: 8px;
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem 0;
+  background: transparent;
+  border: none;
   color: var(--text-primary);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
+  font-family: var(--font-mono);
   outline: none;
-  transition: border-color 0.2s;
-
-  &:focus {
-    border-color: var(--primary);
-  }
 
   &::placeholder {
     color: var(--text-secondary);
+    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
   }
 `
 
 const Dropdown = styled.ul`
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px);
   left: 0;
   right: 0;
-  background: var(--background-card);
-  border: 1px solid var(--secondary);
-  border-radius: 8px;
+  background: rgba(4, 12, 20, 0.98);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(34, 211, 238, 0.06);
+  border-radius: 10px;
   list-style: none;
   padding: 0.25rem;
   margin: 0;
   z-index: 200;
-  max-height: 300px;
+  max-height: 320px;
   overflow-y: auto;
 `
 
@@ -62,7 +91,7 @@ const DropdownItem = styled.li`
 const AddrText = styled.span`
   font-weight: 600;
   color: var(--text-primary);
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.9rem;
 `
 
@@ -148,14 +177,26 @@ export default function WalletSearch() {
 
   return (
     <SearchContainer ref={containerRef}>
-      <form onSubmit={onSubmit}>
+      <SearchShell onSubmit={onSubmit}>
+        <span className="leading-icon" aria-hidden>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15zM21 21l-4.35-4.35"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
         <SearchInput
-          placeholder="Search by wallet address or entity name..."
+          placeholder="Search by wallet or entity"
+          aria-label="Search by wallet address or entity name"
           value={query}
           onChange={onChange}
           onFocus={() => results.length > 0 && setShowDropdown(true)}
         />
-      </form>
+      </SearchShell>
       {showDropdown && results.length > 0 && (
         <Dropdown>
           {results.map((r) => (

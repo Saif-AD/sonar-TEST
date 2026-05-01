@@ -278,7 +278,7 @@ export default function WatchlistPanel() {
                   <div key={a.address} style={{ marginBottom: '0.4rem' }}>
                     <AddressItem>
                       <Link href={`/wallet-tracker/${encodeURIComponent(a.address)}`}
-                        style={{ fontFamily: 'monospace', color: 'var(--primary)', fontSize: '0.8rem' }}>
+                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)', fontSize: '0.8rem' }}>
                         {a.custom_label || shortenAddress(a.address)}
                       </Link>
                       <DeleteBtn onClick={() => removeAddress(wl.id, a.address)}>×</DeleteBtn>

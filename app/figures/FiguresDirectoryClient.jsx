@@ -151,7 +151,7 @@ export default function FiguresDirectoryClient({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
             gap: '1rem',
           }}
         >
@@ -331,32 +331,25 @@ function FigureCard({ f }) {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.75rem',
-        background: hover
-          ? 'linear-gradient(135deg, #112a40 0%, #1a3550 100%)'
-          : 'linear-gradient(135deg, #0d2134 0%, #112a40 100%)',
+        gap: '0.55rem',
+        background: hover ? 'rgba(10, 22, 32, 0.7)' : 'rgba(6, 14, 22, 0.6)',
         border: hover
-          ? '1px solid rgba(54, 166, 186, 0.55)'
+          ? '1px solid rgba(34, 211, 238, 0.32)'
           : isFollowed || isFeatured
-            ? '1px solid rgba(54, 166, 186, 0.4)'
-            : '1px solid rgba(54, 166, 186, 0.2)',
-        // Featured figures get a subtle teal accent on the left edge —
-        // cheaper than adding another card variant.
+            ? '1px solid rgba(34, 211, 238, 0.2)'
+            : '1px solid rgba(34, 211, 238, 0.12)',
         borderLeft: isFeatured
-          ? '3px solid #36a6ba'
+          ? '2px solid var(--neon-cyan)'
           : hover
-            ? '1px solid rgba(54, 166, 186, 0.55)'
-            : '1px solid rgba(54, 166, 186, 0.2)',
-        borderRadius: '18px',
-        padding: '1.35rem 1.25rem',
+            ? '1px solid rgba(34, 211, 238, 0.32)'
+            : '1px solid rgba(34, 211, 238, 0.12)',
+        borderRadius: '10px',
+        padding: '0.85rem 0.95rem',
         textDecoration: 'none',
         color: 'var(--text-primary)',
         minWidth: 0,
-        transform: hover ? 'scale(1.02) translateY(-2px)' : 'scale(1) translateY(0)',
-        boxShadow: hover
-          ? '0 8px 24px rgba(54, 166, 186, 0.18)'
-          : '0 2px 6px rgba(0, 0, 0, 0.15)',
-        transition: 'all 160ms ease',
+        boxShadow: hover ? '0 4px 16px rgba(34, 211, 238, 0.1)' : 'none',
+        transition: 'background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
       }}
     >
       {isFollowed ? (
@@ -385,24 +378,24 @@ function FigureCard({ f }) {
         </span>
       ) : null}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', minWidth: 0 }}>
         <EntityAvatar
           avatarUrl={f.avatar_url}
           twitterHandle={f.twitter_handle}
           displayName={f.display_name}
           category={f.category}
-          size={40}
+          size={34}
         />
         <div style={{ minWidth: 0 }}>
           <div
             style={{
-              fontSize: '1.125rem',
-              fontWeight: 500,
+              fontSize: '0.92rem',
+              fontWeight: 600,
               color: 'var(--text-primary)',
               lineHeight: 1.2,
-              marginBottom: '0.3rem',
+              marginBottom: '0.25rem',
               wordBreak: 'break-word',
-              paddingRight: isFollowed ? '1.75rem' : 0,
+              paddingRight: isFollowed ? '1.5rem' : 0,
             }}
           >
             {f.display_name}

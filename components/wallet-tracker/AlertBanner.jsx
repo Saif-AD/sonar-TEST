@@ -4,8 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import styled, { keyframes } from 'styled-components'
 import { shortenAddress, formatUsd, timeAgo } from '@/lib/wallet-tracker'
-
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
+import { FONT_MONO } from '@/src/styles/fontStacks'
 
 const slideIn = keyframes`
   from { transform: translateX(10px); opacity: 0; }
@@ -45,7 +44,7 @@ const LiveDot = styled.span`
 `
 
 const Label = styled.span`
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   font-size: 0.65rem;
   font-weight: 700;
   color: #00e5ff;
@@ -59,7 +58,7 @@ const SignalText = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   font-size: 0.75rem;
   color: #e0e6ed;
   text-decoration: none;

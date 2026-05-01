@@ -625,8 +625,8 @@ const WhaleFeedItem = styled(motion.div)`
   }
   .buy { background: rgba(46,204,113,0.15); color: #2ecc71; }
   .sell { background: rgba(231,76,60,0.15); color: #e74c3c; }
-  .amount { color: #e8edf2; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
-  .addr { color: #4a5568; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
+  .amount { color: #e8edf2; font-weight: 600; font-family: var(--font-mono); }
+  .addr { color: #4a5568; font-family: var(--font-mono); font-size: 0.75rem; }
   .time { color: #4a5568; font-size: 0.75rem; margin-left: auto; white-space: nowrap; }
 `
 
@@ -661,7 +661,7 @@ const ChartLabel = styled.div`
   margin-top: 0.75rem;
   font-size: 0.7rem;
   color: #4a5568;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 `
 
 const MetricRow = styled.div`
@@ -672,7 +672,7 @@ const MetricRow = styled.div`
 
 const MetricItem = styled.div`
   .label { font-size: 0.65rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }
-  .value { font-size: 1rem; font-weight: 700; color: #e8edf2; font-family: 'JetBrains Mono', monospace; }
+  .value { font-size: 1rem; font-weight: 700; color: #e8edf2; font-family: var(--font-mono); }
   .change { font-size: 0.75rem; font-weight: 600; }
   .positive { color: #2ecc71; }
   .negative { color: #e74c3c; }
@@ -705,7 +705,7 @@ const TickerItem = styled.span`
   font-size: 0.8rem;
   color: #6b7d8f;
   white-space: nowrap;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 
   strong { color: #e8edf2; font-weight: 600; }
   .pos { color: #2ecc71; }

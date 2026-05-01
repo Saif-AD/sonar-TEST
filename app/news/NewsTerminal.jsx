@@ -5,10 +5,9 @@ import styled, { keyframes } from 'styled-components'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { supabaseBrowser } from '@/app/lib/supabaseBrowserClient'
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 
 // ─── CONSTANTS ──────────────────────────────────────────────────────
-const MONO = "'JetBrains Mono','SF Mono','Fira Code','Consolas',monospace"
-const SANS = "'Inter','Segoe UI',system-ui,sans-serif"
 const C = {
   bg: '#070c14', panel: '#0b1520', panelHover: '#0e1d2e',
   cyan: '#00e5ff', primary: '#36a6ba', green: '#00e676', red: '#ff1744',
@@ -51,7 +50,7 @@ const typewriter = keyframes`from{width:0}to{width:100%}`
 const BootOverlay = styled(motion.div)`
   position:fixed;inset:0;z-index:9999;background:${C.bg};
   display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;
-  font-family:${MONO};color:${C.cyan};
+  font-family:${FONT_MONO};color:${C.cyan};
 `
 const BootLine = styled(motion.div)`
   font-size:.8rem;letter-spacing:1px;opacity:.7;
@@ -73,7 +72,7 @@ const TopBar = styled.div`
   height:44px;background:rgba(7,12,20,0.92);backdrop-filter:blur(12px);
   border-bottom:1px solid ${C.border};
   display:flex;align-items:center;justify-content:space-between;padding:0 2rem;
-  font-family:${MONO};
+  font-family:${FONT_MONO};
   @media(max-width:768px){padding:0 1rem;}
 `
 const TopLeft = styled.div`display:flex;align-items:center;gap:.75rem;`
@@ -82,7 +81,7 @@ const LiveDot = styled.span`
   display:flex;align-items:center;gap:.3rem;font-size:.6rem;font-weight:600;color:${C.green};letter-spacing:.5px;
   &::before{content:'';width:6px;height:6px;border-radius:50%;background:${C.green};animation:${pulse} 2s infinite;}
 `
-const TopRight = styled.div`display:flex;align-items:center;gap:.75rem;font-size:.65rem;color:${C.textMuted};font-family:${MONO};`
+const TopRight = styled.div`display:flex;align-items:center;gap:.75rem;font-size:.65rem;color:${C.textMuted};font-family:${FONT_MONO};`
 
 const Content = styled.div`
   display:grid;grid-template-columns:300px 1fr;gap:0;max-width:1600px;margin:0 auto;
@@ -108,7 +107,7 @@ const SideHeader = styled.div`
   display:flex;align-items:center;justify-content:space-between;gap:.5rem;
 `
 const SideLabel = styled.span`
-  font-size:.6rem;font-weight:700;color:${p => p.$color || C.cyan};font-family:${MONO};
+  font-size:.6rem;font-weight:700;color:${p => p.$color || C.cyan};font-family:${FONT_MONO};
   text-transform:uppercase;letter-spacing:1px;
 `
 const SideBadge = styled.span`
@@ -150,7 +149,7 @@ const VoiceQuote = styled.div`
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 `
 const VoiceContext = styled.div`
-  font-size:.55rem;color:${C.textMuted};font-family:${MONO};margin-top:.15rem;
+  font-size:.55rem;color:${C.textMuted};font-family:${FONT_MONO};margin-top:.15rem;
   display:flex;align-items:center;gap:.35rem;
 `
 
@@ -159,7 +158,7 @@ const OrcaBox = styled.div`padding:.75rem;`
 const OrcaInput = styled.input`
   width:100%;padding:.5rem .65rem;background:rgba(0,229,255,0.04);
   border:1px solid ${C.border};border-radius:5px;color:${C.text};
-  font-size:.72rem;font-family:${MONO};outline:none;
+  font-size:.72rem;font-family:${FONT_MONO};outline:none;
   &::placeholder{color:${C.textMuted};}
   &:focus{border-color:${C.primary};}
 `
@@ -174,7 +173,7 @@ const FilterBar = styled.div`
   display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem;
 `
 const Pill = styled.button`
-  padding:.25rem .6rem;font-size:.6rem;font-weight:600;font-family:${MONO};
+  padding:.25rem .6rem;font-size:.6rem;font-weight:600;font-family:${FONT_MONO};
   background:${p => p.$on ? 'rgba(0,229,255,0.12)' : 'transparent'};
   color:${p => p.$on ? C.cyan : C.textMuted};
   border:1px solid ${p => p.$on ? 'rgba(0,229,255,0.2)' : 'rgba(0,229,255,0.06)'};
@@ -188,7 +187,7 @@ const TabRow = styled.div`
   display:flex;gap:0;margin-bottom:1rem;border-bottom:1px solid ${C.border};
 `
 const Tab = styled.button`
-  padding:.5rem 1.2rem;font-size:.65rem;font-weight:700;font-family:${MONO};
+  padding:.5rem 1.2rem;font-size:.65rem;font-weight:700;font-family:${FONT_MONO};
   background:none;color:${p => p.$on ? C.cyan : C.textMuted};cursor:pointer;
   border:none;border-bottom:2px solid ${p => p.$on ? C.cyan : 'transparent'};
   letter-spacing:.5px;transition:all .15s;
@@ -212,11 +211,11 @@ const ArticleDesc = styled.div`
 `
 const ArticleMeta = styled.div`
   display:flex;align-items:center;gap:.5rem;margin-top:.4rem;flex-wrap:wrap;
-  font-size:.6rem;color:${C.textMuted};font-family:${MONO};
+  font-size:.6rem;color:${C.textMuted};font-family:${FONT_MONO};
 `
 const TokenChip = styled.span`
   padding:.1rem .35rem;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.1);
-  border-radius:3px;font-size:.55rem;font-weight:600;color:${C.cyan};font-family:${MONO};
+  border-radius:3px;font-size:.55rem;font-weight:600;color:${C.cyan};font-family:${FONT_MONO};
 `
 const SentBadge = styled.span`
   padding:.1rem .35rem;border-radius:3px;font-size:.5rem;font-weight:700;letter-spacing:.3px;
@@ -233,7 +232,7 @@ const SocialCard = styled(motion.div)`
 `
 const SocialHandle = styled.div`
   font-size:.72rem;font-weight:700;color:${C.text};
-  span{color:${C.textMuted};font-weight:400;font-family:${MONO};font-size:.6rem;margin-left:.35rem;}
+  span{color:${C.textMuted};font-weight:400;font-family:${FONT_MONO};font-size:.6rem;margin-left:.35rem;}
 `
 const SocialBody = styled.div`
   font-size:.72rem;color:${C.textSec};line-height:1.55;margin-top:.3rem;
@@ -241,15 +240,15 @@ const SocialBody = styled.div`
 `
 const SocialMeta = styled.div`
   display:flex;align-items:center;gap:.6rem;margin-top:.35rem;
-  font-size:.58rem;color:${C.textMuted};font-family:${MONO};
+  font-size:.58rem;color:${C.textMuted};font-family:${FONT_MONO};
 `
 
 const EmptyState = styled.div`
-  text-align:center;padding:3rem 1rem;color:${C.textMuted};font-size:.8rem;font-family:${MONO};
+  text-align:center;padding:3rem 1rem;color:${C.textMuted};font-size:.8rem;font-family:${FONT_MONO};
 `
 
 const RefreshNote = styled.div`
-  font-size:.55rem;color:${C.textMuted};font-family:${MONO};text-align:center;
+  font-size:.55rem;color:${C.textMuted};font-family:${FONT_MONO};text-align:center;
   padding:.5rem 0;margin-top:.5rem;
 `
 
@@ -578,7 +577,7 @@ export default function NewsTerminal({ initialNews = [] }) {
                     onChange={e => setOrcaQ(e.target.value)}
                   />
                 </form>
-                <div style={{ fontSize: '.55rem', color: C.textMuted, marginTop: '.35rem', fontFamily: MONO }}>
+                <div style={{ fontSize: '.55rem', color: C.textMuted, marginTop: '.35rem', fontFamily: FONT_MONO }}>
                   Press Enter to ask ORCA AI
                 </div>
               </OrcaBox>

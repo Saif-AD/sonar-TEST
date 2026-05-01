@@ -175,7 +175,7 @@ export default function TransactionHistoryTable({ address, chain }) {
                   <td>
                     {counterparty ? (
                       <Link href={`/wallet-tracker/${encodeURIComponent(counterparty)}`}
-                        style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--primary)' }}>
+                        style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--primary)' }}>
                         {shortenAddress(counterparty, 4)}
                       </Link>
                     ) : '—'}

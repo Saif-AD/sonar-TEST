@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/app/lib/supabaseAdmin'
 import WalletTrackerTabs from '@/app/components/wallet-tracker/WalletTrackerTabs'
 import FiguresDirectoryClient from './FiguresDirectoryClient'
 import SubmitFigureButton from './SubmitFigureButton'
+import HubPageHeader from '@/app/components/wallet-tracker/HubPageHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -89,50 +90,24 @@ export default async function FiguresDirectoryPage({ searchParams }) {
 
   return (
     <main
-      className="container"
       style={{
-        padding: '2rem 1rem',
-        maxWidth: '1200px',
+        width: '100%',
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '1.5rem 2rem 2rem',
         color: 'var(--text-primary)',
       }}
     >
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #0d2134 0%, #1a2f42 100%)',
-          border: '1px solid rgba(54, 166, 186, 0.25)',
-          borderRadius: '20px',
-          padding: '1.75rem',
-          marginBottom: '1.25rem',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div style={{ minWidth: 0, flex: '1 1 auto' }}>
-            <h1
-              style={{
-                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                fontWeight: 800,
-                marginBottom: '0.35rem',
-                color: 'var(--text-primary)',
-              }}
-            >
-              Public figures
-            </h1>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
-              {totalCount.toLocaleString()} verified figure
-              {totalCount === 1 ? '' : 's'} · Page {clampedPage} of {totalPages}
-            </div>
-          </div>
-          <SubmitFigureButton />
-        </div>
-      </div>
+      <HubPageHeader
+        title="Public figures"
+        subtitle={
+          <>
+            {totalCount.toLocaleString()} verified figure
+            {totalCount === 1 ? '' : 's'} · Page {clampedPage} of {totalPages}
+          </>
+        }
+        right={<SubmitFigureButton />}
+      />
 
       <WalletTrackerTabs activeOverride="figures" />
 

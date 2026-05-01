@@ -565,21 +565,21 @@ export default function SubscribePage() {
               background: 'rgba(0, 229, 255, 0.06)', border: '1px solid rgba(0, 229, 255, 0.15)',
               borderRadius: '8px', padding: '0.75rem 1.25rem', textAlign: 'center',
             }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#00e5ff', fontFamily: "'JetBrains Mono', monospace" }}>$0.26</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#00e5ff', fontFamily: 'var(--font-mono)' }}>$0.26</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>per day</div>
             </div>
             <div style={{
               background: 'rgba(0, 230, 118, 0.06)', border: '1px solid rgba(0, 230, 118, 0.15)',
               borderRadius: '8px', padding: '0.75rem 1.25rem', textAlign: 'center',
             }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#00e676', fontFamily: "'JetBrains Mono', monospace" }}>Unlimited</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#00e676', fontFamily: 'var(--font-mono)' }}>Unlimited</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>ORCA AI queries</div>
             </div>
             <div style={{
               background: 'rgba(255, 171, 0, 0.06)', border: '1px solid rgba(255, 171, 0, 0.15)',
               borderRadius: '8px', padding: '0.75rem 1.25rem', textAlign: 'center',
             }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffab00', fontFamily: "'JetBrains Mono', monospace" }}>24/7</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffab00', fontFamily: 'var(--font-mono)' }}>24/7</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>whale tracking</div>
             </div>
           </motion.div>

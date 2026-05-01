@@ -4,8 +4,8 @@ import React, { useState, useEffect, useMemo } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import { FONT_MONO } from '@/src/styles/fontStacks'
 
-const MONO = "'SF Mono', 'Fira Code', 'Courier New', monospace"
 const c = {
   bg: '#080f18', panel: '#0b1724', panelHover: '#0e1e30', primary: '#36a6ba',
   accent: '#2ecc71', text: '#e8ecf1', textSec: '#8a9bb5', textMuted: '#556677',
@@ -21,14 +21,14 @@ const Container = styled.div`max-width:1440px;margin:0 auto;padding:1.5rem 2rem;
 
 const PageTitle = styled.div`
   display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;
-  h1{font-size:1.1rem;font-weight:700;color:${c.primary};font-family:${MONO};text-transform:uppercase;letter-spacing:1px;margin:0;}
+  h1{font-size:1.1rem;font-weight:700;color:${c.primary};font-family:${FONT_MONO};text-transform:uppercase;letter-spacing:1px;margin:0;}
 `
 const LiveIndicator = styled.span`
   display:inline-flex;align-items:center;gap:0.4rem;font-size:0.7rem;font-weight:600;color:${c.accent};
-  font-family:${MONO};text-transform:uppercase;
+  font-family:${FONT_MONO};text-transform:uppercase;
   &::before{content:'';width:6px;height:6px;background:${c.accent};border-radius:50%;animation:${pulse} 2s infinite;}
 `
-const SubText = styled.p`font-size:0.8rem;color:${c.textMuted};margin:0;font-family:${MONO};`
+const SubText = styled.p`font-size:0.8rem;color:${c.textMuted};margin:0;font-family:${FONT_MONO};`
 
 // ─── AI SUMMARIES ───────────────────────────────────────────────
 
@@ -38,18 +38,18 @@ const SummaryPanel = styled(motion.div)`
   cursor:pointer;transition:border-color 0.2s;
   &:hover{border-color:rgba(54,166,186,0.3);}
 `
-const SumLabel = styled.div`font-size:0.65rem;font-weight:700;color:${c.primary};font-family:${MONO};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;`
+const SumLabel = styled.div`font-size:0.65rem;font-weight:700;color:${c.primary};font-family:${FONT_MONO};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem;`
 const SumBody = styled.div`
   font-size:0.78rem;color:${c.textSec};line-height:1.5;
   display:-webkit-box;-webkit-line-clamp:${p => p.$open ? 'unset' : '3'};-webkit-box-orient:vertical;overflow:hidden;
 `
-const SumMeta = styled.div`font-size:0.6rem;color:${c.textMuted};font-family:${MONO};margin-top:0.5rem;`
+const SumMeta = styled.div`font-size:0.6rem;color:${c.textMuted};font-family:${FONT_MONO};margin-top:0.5rem;`
 
 // ─── FILTERS ────────────────────────────────────────────────────
 
 const ControlBar = styled.div`display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;`
 const Tag = styled.button`
-  padding:0.3rem 0.7rem;font-size:0.7rem;font-weight:600;font-family:${MONO};
+  padding:0.3rem 0.7rem;font-size:0.7rem;font-weight:600;font-family:${FONT_MONO};
   background:${p => p.$active ? c.primary : 'transparent'};color:${p => p.$active ? '#000' : c.textMuted};
   border:1px solid ${p => p.$active ? c.primary : 'rgba(54,166,186,0.2)'};border-radius:4px;
   cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.3px;
@@ -77,41 +77,41 @@ const Avi = styled.img`width:28px;height:28px;border-radius:4px;object-fit:cover
 const AviFallback = styled.div`width:28px;height:28px;border-radius:4px;background:rgba(54,166,186,0.15);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:${c.primary};`
 const Handle = styled.div`flex:1;min-width:0;`
 const Name = styled.span`font-size:0.78rem;font-weight:700;color:${c.text};`
-const Screen = styled.span`font-size:0.65rem;color:${c.textMuted};font-family:${MONO};margin-left:0.375rem;`
-const VipTag = styled.span`font-size:0.55rem;font-weight:700;color:${c.gold};border:1px solid rgba(240,185,11,0.3);padding:0.075rem 0.35rem;border-radius:2px;font-family:${MONO};`
-const FollowCount = styled.span`font-size:0.6rem;color:${c.textMuted};font-family:${MONO};white-space:nowrap;`
+const Screen = styled.span`font-size:0.65rem;color:${c.textMuted};font-family:${FONT_MONO};margin-left:0.375rem;`
+const VipTag = styled.span`font-size:0.55rem;font-weight:700;color:${c.gold};border:1px solid rgba(240,185,11,0.3);padding:0.075rem 0.35rem;border-radius:2px;font-family:${FONT_MONO};`
+const FollowCount = styled.span`font-size:0.6rem;color:${c.textMuted};font-family:${FONT_MONO};white-space:nowrap;`
 
 const Body = styled.div`font-size:0.8rem;color:${c.textSec};line-height:1.5;margin-bottom:0.375rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;`
 const Tickers = styled.div`display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.375rem;`
-const Tick = styled.span`font-size:0.6rem;font-weight:700;color:${c.primary};font-family:${MONO};background:rgba(54,166,186,0.08);padding:0.1rem 0.35rem;border-radius:2px;cursor:pointer;&:hover{background:rgba(54,166,186,0.15);}`
-const PostBottom = styled.div`display:flex;justify-content:space-between;align-items:center;font-size:0.65rem;color:${c.textMuted};font-family:${MONO};`
+const Tick = styled.span`font-size:0.6rem;font-weight:700;color:${c.primary};font-family:${FONT_MONO};background:rgba(54,166,186,0.08);padding:0.1rem 0.35rem;border-radius:2px;cursor:pointer;&:hover{background:rgba(54,166,186,0.15);}`
+const PostBottom = styled.div`display:flex;justify-content:space-between;align-items:center;font-size:0.65rem;color:${c.textMuted};font-family:${FONT_MONO};`
 const Metric = styled.span`margin-right:0.75rem;`
 const SentBar = styled.span`width:8px;height:8px;border-radius:2px;display:inline-block;background:${p => p.$s > 0 ? c.bull : p.$s < 0 ? c.bear : c.neutral};margin-right:0.375rem;`
 
 // ─── INFLUENCER SIDEBAR ─────────────────────────────────────────
 
-const SideHeader = styled.div`font-size:0.75rem;font-weight:700;color:${c.primary};font-family:${MONO};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid ${c.border};`
+const SideHeader = styled.div`font-size:0.75rem;font-weight:700;color:${c.primary};font-family:${FONT_MONO};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid ${c.border};`
 const InflRow = styled.div`
   display:flex;align-items:center;gap:0.5rem;padding:0.5rem;border-radius:4px;cursor:pointer;transition:background 0.15s;
   &:hover{background:rgba(54,166,186,0.06);}
   & + &{border-top:1px solid rgba(255,255,255,0.03);}
 `
-const InflRank = styled.div`font-size:0.6rem;font-weight:700;color:${c.textMuted};width:18px;text-align:right;font-family:${MONO};`
+const InflRank = styled.div`font-size:0.6rem;font-weight:700;color:${c.textMuted};width:18px;text-align:right;font-family:${FONT_MONO};`
 const InflAvi = styled.img`width:26px;height:26px;border-radius:4px;object-fit:cover;`
 const InflInfo = styled.div`flex:1;min-width:0;`
 const InflName = styled.div`font-size:0.75rem;font-weight:700;color:${c.text};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;`
-const InflHandle = styled.div`font-size:0.6rem;color:${c.textMuted};font-family:${MONO};`
-const InflMetric = styled.div`text-align:right;font-family:${MONO};`
+const InflHandle = styled.div`font-size:0.6rem;color:${c.textMuted};font-family:${FONT_MONO};`
+const InflMetric = styled.div`text-align:right;font-family:${FONT_MONO};`
 const InflVal = styled.div`font-size:0.75rem;font-weight:700;color:${c.text};`
 const InflLabel = styled.div`font-size:0.55rem;color:${c.textMuted};text-transform:uppercase;`
 
 const LoadMore = styled.button`
   width:100%;padding:0.6rem;background:transparent;border:1px solid ${c.border};border-radius:4px;
-  color:${c.primary};font-size:0.75rem;font-weight:600;font-family:${MONO};cursor:pointer;margin-top:0.75rem;
+  color:${c.primary};font-size:0.75rem;font-weight:600;font-family:${FONT_MONO};cursor:pointer;margin-top:0.75rem;
   transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px;
   &:hover{background:rgba(54,166,186,0.06);border-color:rgba(54,166,186,0.3);}
 `
-const EmptyMsg = styled.div`padding:2.5rem;text-align:center;color:${c.textMuted};font-size:0.8rem;font-family:${MONO};`
+const EmptyMsg = styled.div`padding:2.5rem;text-align:center;color:${c.textMuted};font-size:0.8rem;font-family:${FONT_MONO};`
 
 // ─── COMPONENT ──────────────────────────────────────────────────
 
@@ -241,7 +241,7 @@ export default function CommunityClient() {
           {/* Macro Factors Panel */}
           {macroFactors?.factors && (
             <div style={{ background: c.panel, border: `1px solid ${c.border}`, borderTop: `2px solid ${c.gold}`, borderRadius: 6, padding: '1rem', marginBottom: '1rem' }}>
-              <div style={{ fontSize: '0.65rem', fontWeight: 700, color: c.gold, fontFamily: MONO, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ fontSize: '0.65rem', fontWeight: 700, color: c.gold, fontFamily: FONT_MONO, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 KEY MACRO FACTORS
                 {macroFactors.overall_sentiment && (
                   <span style={{ fontSize: '0.6rem', color: macroFactors.overall_sentiment === 'bullish' ? c.bull : macroFactors.overall_sentiment === 'bearish' ? c.bear : c.textMuted, fontWeight: 600, padding: '0.1rem 0.4rem', borderRadius: 4, background: macroFactors.overall_sentiment === 'bullish' ? 'rgba(46,204,113,0.1)' : macroFactors.overall_sentiment === 'bearish' ? 'rgba(231,76,60,0.1)' : 'rgba(138,155,181,0.1)' }}>
@@ -259,7 +259,7 @@ export default function CommunityClient() {
                 </div>
               ))}
               {macroFactors.last_updated && (
-                <div style={{ fontSize: '0.55rem', color: c.textMuted, fontFamily: MONO, marginTop: '0.5rem', textAlign: 'right' }}>Updated: {macroFactors.last_updated}</div>
+                <div style={{ fontSize: '0.55rem', color: c.textMuted, fontFamily: FONT_MONO, marginTop: '0.5rem', textAlign: 'right' }}>Updated: {macroFactors.last_updated}</div>
               )}
             </div>
           )}

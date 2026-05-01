@@ -3,9 +3,6 @@ export default function Head() {
     <>
       {/* Preload critical resources */}
       <link rel="preload" as="image" href="/logo2.png" fetchpriority="high" />
-      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
-
       {/* DNS prefetch for external resources */}
       <link rel="preconnect" href="https://fwbwfvqzomipoftgodof.supabase.co" crossOrigin="" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />

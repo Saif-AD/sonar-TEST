@@ -28,7 +28,7 @@ export default function WhaleTrackerPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <div style={{ minHeight: '100vh', background: '#0a1621', color: '#e8edf2', fontFamily: "'Inter', -apple-system, sans-serif" }}>
+      <div style={{ minHeight: '100vh', background: '#0a1621', color: '#e8edf2', fontFamily: 'var(--font-sans)' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', padding: '8rem 2rem 4rem' }}>
           {/* Hero */}
           <p style={{ color: '#36a6ba', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '1rem' }}>Whale Intelligence Platform</p>

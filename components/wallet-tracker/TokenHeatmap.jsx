@@ -123,7 +123,7 @@ const FilterBtn = styled.button`
   font-weight: 600;
   color: ${({ $active }) => $active ? '#36a6ba' : '#a0b2c6'};
   cursor: pointer;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   letter-spacing: 0.5px;
   transition: all 0.15s ease;
 
@@ -166,7 +166,7 @@ const Cell = styled.div`
 `
 
 const CellSymbol = styled.span`
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-weight: 800;
   color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -179,7 +179,7 @@ const CellSymbol = styled.span`
 `
 
 const CellDetail = styled.span`
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -211,14 +211,14 @@ const TooltipTitle = styled.div`
   font-size: 0.9rem;
   color: #fff;
   margin-bottom: 0.4rem;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
 `
 
 const TooltipRow = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
 `
 
@@ -240,7 +240,7 @@ const SentimentTag = styled.span`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   color: ${({ $sentiment }) => SENTIMENT_COLORS[$sentiment] || '#a0b2c6'};
   background: ${({ $sentiment }) =>
     $sentiment === 'bullish' ? 'rgba(0, 212, 170, 0.12)' :
@@ -254,7 +254,7 @@ const LoadingState = styled.div`
   justify-content: center;
   height: 400px;
   color: #5a6a7a;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
 `
 

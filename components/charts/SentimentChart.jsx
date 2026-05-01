@@ -20,13 +20,12 @@ import {
   Filler,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import { FONT_MONO } from '@/src/styles/fontStacks'
 
 ChartJS.register(
   CategoryScale, LinearScale, PointElement, LineElement,
   BarElement, Title, Tooltip, Legend, Filler
 )
-
-const MONO = "'JetBrains Mono', 'Fira Code', monospace"
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -52,7 +51,7 @@ const TfBtn = styled.button`
   color: ${p => p.$active ? '#00e5ff' : '#5a6a7a'};
   font-size: 0.65rem;
   font-weight: 600;
-  font-family: ${MONO};
+  font-family: ${FONT_MONO};
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -65,7 +64,7 @@ const TfBtn = styled.button`
 `
 
 const Label = styled.div`
-  font-family: ${MONO};
+  font-family: ${FONT_MONO};
   font-size: 0.65rem;
   font-weight: 600;
   color: #5a6a7a;
@@ -79,7 +78,7 @@ const LoadingText = styled.div`
   align-items: center;
   justify-content: center;
   height: 220px;
-  font-family: ${MONO};
+  font-family: ${FONT_MONO};
   font-size: 0.7rem;
   color: #5a6a7a;
 `
@@ -191,8 +190,8 @@ export default function SentimentChart({ symbol }) {
         borderColor: 'rgba(0, 229, 255, 0.2)',
         borderWidth: 1,
         padding: 10,
-        titleFont: { family: MONO, size: 11 },
-        bodyFont: { family: MONO, size: 11 },
+        titleFont: { family: FONT_MONO, size: 11 },
+        bodyFont: { family: FONT_MONO, size: 11 },
         displayColors: true,
         callbacks: {
           label: (ctx) => {
@@ -206,7 +205,7 @@ export default function SentimentChart({ symbol }) {
       x: {
         grid: { color: 'rgba(255, 255, 255, 0.03)' },
         ticks: {
-          color: '#5a6a7a', font: { family: MONO, size: 9 },
+          color: '#5a6a7a', font: { family: FONT_MONO, size: 9 },
           maxRotation: 0, autoSkipPadding: 30,
         },
       },
@@ -215,7 +214,7 @@ export default function SentimentChart({ symbol }) {
         min: 0, max: 100,
         grid: { color: 'rgba(255, 255, 255, 0.03)' },
         ticks: {
-          color: sentimentColor, font: { family: MONO, size: 9 },
+          color: sentimentColor, font: { family: FONT_MONO, size: 9 },
           callback: (v) => `${v}%`,
           stepSize: 25,
         },
@@ -224,7 +223,7 @@ export default function SentimentChart({ symbol }) {
         position: 'right',
         grid: { drawOnChartArea: false },
         ticks: {
-          color: 'rgba(0, 229, 255, 0.5)', font: { family: MONO, size: 9 },
+          color: 'rgba(0, 229, 255, 0.5)', font: { family: FONT_MONO, size: 9 },
           callback: (v) => {
             if (v >= 1000000) return `${(v / 1000000).toFixed(1)}M`
             if (v >= 1000) return `${(v / 1000).toFixed(0)}K`

@@ -4,10 +4,26 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
-  background-color: var(--background-card);
-  padding: 3rem 2rem 2rem;
+  background: rgba(6, 14, 22, 0.6);
+  padding: 2.75rem 2rem 1.75rem;
   margin-top: 4rem;
-  border-top: 1px solid rgba(54, 166, 186, 0.2);
+  border-top: 1px solid rgba(34, 211, 238, 0.12);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.3), transparent);
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem 1.5rem;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -16,36 +32,96 @@ const FooterContent = styled.div`
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: 2rem;
-  
+
   @media (max-width: 992px) { grid-template-columns: 1fr 1fr; }
   @media (max-width: 576px) { grid-template-columns: 1fr; }
 `;
 
 const Column = styled.div`
-  h3 { color: var(--text-primary); font-size: 1.2rem; margin-bottom: 1.5rem; position: relative; }
-  h3:after { content: ''; position: absolute; left: 0; bottom: -0.5rem; width: 40px; height: 3px; background-color: var(--primary); }
+  h3 {
+    color: var(--text-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    margin: 0 0 1.1rem 0;
+    color: var(--neon-bright);
+  }
   ul { list-style: none; padding: 0; margin: 0; }
-  li { margin-bottom: 0.75rem; }
-  a { color: var(--text-secondary); text-decoration: none; transition: color 0.2s ease; display: flex; align-items: center; }
-  a:hover { color: var(--primary); }
+  li { margin-bottom: 0.55rem; }
+  a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 160ms ease;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.88rem;
+  }
+  a:hover { color: var(--neon-bright); }
   a svg { margin-right: 0.5rem; }
 `;
 
 const BrandColumn = styled(Column)`
-  .brand { display: flex; align-items: center; margin-bottom: 1rem; }
-  .brand img { height: 40px; margin-right: 1rem; }
-  p { color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
+  .brand {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.9rem;
+  }
+  .brand img {
+    height: 36px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
+  }
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    font-size: 0.88rem;
+    max-width: 360px;
+  }
 `;
 
 const BottomBar = styled.div`
-  max-width: 1200px; margin: 3rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex; flex-direction: column; gap: 1rem;
-  .row { display: flex; justify-content: space-between; align-items: center; }
-  @media (max-width: 768px) { .row { flex-direction: column; gap: 1rem; text-align: center; } }
-  p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
-  nav { display: flex; gap: 1.5rem; }
-  nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.2s ease; }
-  nav a:hover { color: var(--primary); }
+  max-width: 1200px;
+  margin: 2.25rem auto 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(34, 211, 238, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 768px) {
+    .row { flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+  p {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin: 0;
+    font-family: var(--font-mono);
+  }
+  nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 160ms ease;
+  }
+  nav a:hover { color: var(--neon-bright); }
 `;
 
 const Footer = () => {

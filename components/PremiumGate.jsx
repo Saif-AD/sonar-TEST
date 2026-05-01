@@ -3,9 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
-const SANS_FONT = "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 
 const TEASERS = [
   'See which whales are transacting right now',
@@ -63,7 +61,7 @@ const LockIcon = styled.div`
 `
 
 const GateTitle = styled.div`
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   font-size: 0.75rem;
   font-weight: 700;
   color: #00e5ff;
@@ -73,7 +71,7 @@ const GateTitle = styled.div`
 `
 
 const GateDescription = styled.div`
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
   font-size: 0.8rem;
   color: #5a6a7a;
   margin-bottom: 0.5rem;
@@ -82,7 +80,7 @@ const GateDescription = styled.div`
 `
 
 const TeaserText = styled.div`
-  font-family: ${SANS_FONT};
+  font-family: ${FONT_SANS};
   font-size: 0.7rem;
   color: #8a9ab0;
   margin-bottom: 0.75rem;
@@ -99,7 +97,7 @@ const UpgradeButton = styled(Link)`
   border-radius: 4px;
   background: linear-gradient(135deg, #00e5ff 0%, #00b8d4 100%);
   color: #0a0e17;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   font-size: 0.7rem;
   font-weight: 700;
   text-decoration: none;
@@ -112,7 +110,7 @@ const UpgradeButton = styled(Link)`
 `
 
 const PriceTag = styled.span`
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   font-size: 0.6rem;
   color: #5a6a7a;
   margin-top: 0.5rem;

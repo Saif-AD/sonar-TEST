@@ -24,14 +24,13 @@ import TokenHeatmap from '@/components/wallet-tracker/TokenHeatmap'
 import PremiumGate from '@/components/PremiumGate'
 import { SkeletonKPIStrip, SkeletonBarRows } from '@/components/SkeletonLoader'
 import SonarLoader from '@/components/wallet-tracker/SonarLoader'
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 
 import { Filler } from 'chart.js'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Tooltip, Legend, Filler)
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
-const SANS_FONT = "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
 const COLORS = {
   cyan: '#00e5ff',
   green: '#00e676',
@@ -96,7 +95,7 @@ const CommandBar = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
   gap: 1rem;
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
@@ -135,7 +134,7 @@ const LiveDot = styled.span`
 `
 
 const StatChip = styled.span`
-  color: ${COLORS.textPrimary}; font-family: ${MONO_FONT}; font-size: 0.8rem; font-weight: 600;
+  color: ${COLORS.textPrimary}; font-family: ${FONT_MONO}; font-size: 0.8rem; font-weight: 600;
   .label { color: ${COLORS.textMuted}; margin-right: 0.35rem; font-weight: 400; }
 `
 
@@ -153,7 +152,7 @@ const UserChip = styled.span`
 const TutorialBtn = styled.button`
   background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.15);
   border-radius: 4px; padding: 0.25rem 0.65rem; color: ${COLORS.cyan};
-  font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: ${MONO_FONT};
+  font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: ${FONT_MONO};
   transition: all 0.15s ease; display: flex; align-items: center; gap: 0.35rem;
   &:hover { background: rgba(0, 229, 255, 0.15); border-color: rgba(0, 229, 255, 0.3); }
 `
@@ -161,7 +160,7 @@ const TutorialBtn = styled.button`
 const OrcaNavBtn = styled(Link)`
   background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.15);
   border-radius: 4px; padding: 0.25rem 0.65rem; color: ${COLORS.cyan};
-  font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: ${MONO_FONT};
+  font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: ${FONT_MONO};
   transition: all 0.15s ease; display: flex; align-items: center; gap: 0.35rem;
   text-decoration: none;
   &:hover { background: rgba(0, 229, 255, 0.15); border-color: rgba(0, 229, 255, 0.3); }
@@ -186,21 +185,21 @@ const PremiumCard = styled(motion.div)`
 const PremiumIcon = styled.div`font-size: 3.5rem; margin-bottom: 1.5rem;`;
 
 const PremiumTitle = styled.h2`
-  font-size: 2rem; font-weight: 700; font-family: ${SANS_FONT}; color: ${COLORS.textPrimary};
+  font-size: 2rem; font-weight: 700; font-family: ${FONT_SANS}; color: ${COLORS.textPrimary};
   margin-bottom: 1rem;
   background: linear-gradient(135deg, ${COLORS.cyan} 0%, #00b8d4 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 `;
 
 const PremiumDescription = styled.p`
-  font-size: 1rem; color: ${COLORS.textMuted}; margin-bottom: 2rem; line-height: 1.6; font-family: ${SANS_FONT};
+  font-size: 1rem; color: ${COLORS.textMuted}; margin-bottom: 2rem; line-height: 1.6; font-family: ${FONT_SANS};
 `;
 
 const PremiumFeatureList = styled.ul`
   list-style: none; padding: 0; margin: 2rem 0; text-align: left;
   li {
     display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0;
-    color: #8a9ab0; font-size: 0.95rem; font-family: ${SANS_FONT};
+    color: #8a9ab0; font-size: 0.95rem; font-family: ${FONT_SANS};
     &::before { content: '▸'; color: ${COLORS.cyan}; font-weight: bold; flex-shrink: 0; }
   }
 `;
@@ -208,7 +207,7 @@ const PremiumFeatureList = styled.ul`
 const PremiumButton = styled(motion.button)`
   background: linear-gradient(135deg, ${COLORS.cyan} 0%, #00b8d4 100%);
   color: #0a0e17; border: none; border-radius: 8px; padding: 1rem 2.5rem;
-  font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: ${SANS_FONT};
+  font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: ${FONT_SANS};
   box-shadow: 0 4px 24px rgba(0, 229, 255, 0.25); transition: all 0.2s ease;
   &:hover { box-shadow: 0 8px 32px rgba(0, 229, 255, 0.4); }
 `;
@@ -234,7 +233,7 @@ const PanelHeader = styled.div`
 `
 
 const TerminalPrompt = styled.h2`
-  font-family: ${MONO_FONT}; font-size: 0.85rem; font-weight: 700; color: ${COLORS.cyan};
+  font-family: ${FONT_MONO}; font-size: 0.85rem; font-weight: 700; color: ${COLORS.cyan};
   letter-spacing: 1px; text-transform: uppercase; margin: 0;
   display: flex; align-items: center; gap: 0.5rem;
   &::before { content: '>'; color: ${COLORS.green}; font-weight: 800; }
@@ -243,11 +242,11 @@ const TerminalPrompt = styled.h2`
 const PanelBadge = styled.span`
   background: rgba(0, 229, 255, 0.06); border: 1px solid rgba(0, 229, 255, 0.1);
   border-radius: 4px; padding: 0.2rem 0.65rem; font-size: 0.7rem; font-weight: 600;
-  color: ${COLORS.textMuted}; font-family: ${MONO_FONT}; letter-spacing: 0.5px; text-transform: uppercase;
+  color: ${COLORS.textMuted}; font-family: ${FONT_MONO}; letter-spacing: 0.5px; text-transform: uppercase;
 `
 
 const PanelSubtext = styled.p`
-  font-size: 0.8rem; color: ${COLORS.textMuted}; margin: 0.25rem 0 0 1.1rem; font-family: ${SANS_FONT};
+  font-size: 0.8rem; color: ${COLORS.textMuted}; margin: 0.25rem 0 0 1.1rem; font-family: ${FONT_SANS};
 `
 
 // ─── KPI STRIP ──────────────────────────────────────────────────────────────
@@ -273,11 +272,11 @@ const KPICell = styled.div`
 
 const KPILabel = styled.div`
   font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-  color: ${COLORS.textMuted}; margin-bottom: 0.5rem; font-family: ${SANS_FONT};
+  color: ${COLORS.textMuted}; margin-bottom: 0.5rem; font-family: ${FONT_SANS};
 `
 
 const KPIValue = styled.div`
-  font-size: 2.4rem; font-weight: 800; font-family: ${MONO_FONT};
+  font-size: 2.4rem; font-weight: 800; font-family: ${FONT_MONO};
   color: ${props => props.$color || COLORS.textPrimary};
   text-shadow: 0 0 24px ${props => (props.$color || COLORS.cyan) + '55'},
                0 0 48px ${props => (props.$color || COLORS.cyan) + '22'};
@@ -286,7 +285,7 @@ const KPIValue = styled.div`
 
 const KPISub = styled.div`
   font-size: 0.72rem; color: ${props => props.$color || COLORS.textMuted};
-  font-family: ${MONO_FONT}; font-weight: 500;
+  font-family: ${FONT_MONO}; font-weight: 500;
   display: inline-flex; align-items: center; gap: 0.3rem; justify-content: center;
 `
 
@@ -314,12 +313,12 @@ const SectionGap = styled.div`margin-bottom: 1.5rem;`
 // ─── DATA TABLE ─────────────────────────────────────────────────────────────
 const DataTable = styled.div`
   width: 100%; overflow-x: auto;
-  table { width: 100%; border-collapse: collapse; font-family: ${MONO_FONT}; }
+  table { width: 100%; border-collapse: collapse; font-family: ${FONT_MONO}; }
   thead th {
     padding: 0.75rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 600;
     color: ${COLORS.textMuted}; text-transform: uppercase; letter-spacing: 1px;
     border-bottom: 1px solid rgba(0, 229, 255, 0.06); background: rgba(0, 229, 255, 0.02);
-    white-space: nowrap; font-family: ${SANS_FONT};
+    white-space: nowrap; font-family: ${FONT_SANS};
   }
   thead th.right { text-align: right; }
   thead th.center { text-align: center; }
@@ -348,7 +347,7 @@ const HBarRow = styled.div`
 
 const HBarLabel = styled.div`
   display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;
-  font-weight: 600; color: ${COLORS.textPrimary}; font-family: ${MONO_FONT};
+  font-weight: 600; color: ${COLORS.textPrimary}; font-family: ${FONT_MONO};
 `
 
 const HBarTrack = styled.div`
@@ -365,7 +364,7 @@ const HBarFill = styled(motion.div)`
 
 const HBarValue = styled.div`
   font-size: 0.8rem; font-weight: 600; color: ${props => props.$color || COLORS.textPrimary};
-  font-family: ${MONO_FONT}; text-align: right;
+  font-family: ${FONT_MONO}; text-align: right;
 `
 
 // ─── PRESSURE ROW ───────────────────────────────────────────────────────────
@@ -407,7 +406,7 @@ const FlowDot = styled.span`
 const RankBadge = styled.div`
   display: inline-flex; align-items: center; justify-content: center;
   width: 28px; height: 28px; border-radius: 50%; font-weight: 800;
-  font-size: 0.75rem; font-family: ${MONO_FONT}; flex-shrink: 0;
+  font-size: 0.75rem; font-family: ${FONT_MONO}; flex-shrink: 0;
   background: ${p => p.$rank === 1 ? 'linear-gradient(135deg, #FFD700, #FFA500)' :
     p.$rank === 2 ? 'linear-gradient(135deg, #C0C0C0, #808080)' :
     p.$rank === 3 ? 'linear-gradient(135deg, #CD7F32, #8B4513)' : 'rgba(0, 229, 255, 0.1)'};
@@ -421,12 +420,12 @@ const TokenPill = styled.span`
   display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.5rem;
   background: rgba(0, 229, 255, 0.06); border: 1px solid rgba(0, 229, 255, 0.1);
   border-radius: 4px; font-size: 0.7rem; font-weight: 600; color: ${COLORS.cyan};
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
 `
 
 const EmptyState = styled.div`
   text-align: center; padding: 3rem 1rem; color: ${COLORS.textMuted};
-  font-family: ${SANS_FONT}; font-size: 0.9rem;
+  font-family: ${FONT_SANS}; font-size: 0.9rem;
 `
 
 // ─── LIVE WHALE FEED (Scrolling Ticker) ─────────────────────────────────────
@@ -448,7 +447,7 @@ const TickerTrack = styled.div`
 
 const TickerItem = styled.a`
   display: inline-flex; align-items: center; gap: 0.5rem; flex-shrink: 0;
-  font-family: ${MONO_FONT}; font-size: 0.75rem; color: ${COLORS.textPrimary};
+  font-family: ${FONT_MONO}; font-size: 0.75rem; color: ${COLORS.textPrimary};
   text-decoration: none; cursor: pointer; transition: color 0.15s ease;
   &:hover { color: ${COLORS.cyan}; }
 `
@@ -475,7 +474,7 @@ const GaugeArc = styled.svg`
 `
 
 const ConsensusLabel = styled.div`
-  font-family: ${MONO_FONT}; font-size: 1rem; font-weight: 800;
+  font-family: ${FONT_MONO}; font-size: 1rem; font-weight: 800;
   color: ${props => props.$color || COLORS.cyan}; letter-spacing: 1px;
   margin-bottom: 0.5rem;
 `
@@ -486,8 +485,8 @@ const ConsensusStats = styled.div`
 
 const ConsensusStat = styled.div`
   text-align: center;
-  .label { font-family: ${SANS_FONT}; font-size: 0.65rem; color: ${COLORS.textMuted}; text-transform: uppercase; letter-spacing: 0.5px; }
-  .value { font-family: ${MONO_FONT}; font-size: 0.9rem; font-weight: 700; color: ${props => props.$color || COLORS.textPrimary}; }
+  .label { font-family: ${FONT_SANS}; font-size: 0.65rem; color: ${COLORS.textMuted}; text-transform: uppercase; letter-spacing: 0.5px; }
+  .value { font-family: ${FONT_MONO}; font-size: 0.9rem; font-weight: 700; color: ${props => props.$color || COLORS.textPrimary}; }
 `
 
 // ─── MARKET PULSE CHART ─────────────────────────────────────────────────────
@@ -507,7 +506,7 @@ const TrophyRow = styled.div`
 `
 
 const TrophyRank = styled.span`
-  font-family: ${MONO_FONT}; font-weight: 800; font-size: 0.8rem;
+  font-family: ${FONT_MONO}; font-weight: 800; font-size: 0.8rem;
   color: ${props => props.$rank === 1 ? '#FFD700' : props.$rank === 2 ? '#C0C0C0' : props.$rank === 3 ? '#CD7F32' : COLORS.textMuted};
 `
 
@@ -521,19 +520,19 @@ const NewsItem = styled.a`
 `
 
 const NewsHeadline = styled.div`
-  font-family: ${SANS_FONT}; font-size: 0.8rem; font-weight: 600;
+  font-family: ${FONT_SANS}; font-size: 0.8rem; font-weight: 600;
   color: ${COLORS.textPrimary}; line-height: 1.3;
   overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
   -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 `
 
 const NewsMeta = styled.div`
-  display: flex; align-items: center; gap: 0.5rem; font-size: 0.65rem; font-family: ${MONO_FONT};
+  display: flex; align-items: center; gap: 0.5rem; font-size: 0.65rem; font-family: ${FONT_MONO};
 `
 
 const SentimentBadge = styled.span`
   padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.6rem; font-weight: 700;
-  font-family: ${MONO_FONT}; letter-spacing: 0.5px;
+  font-family: ${FONT_MONO}; letter-spacing: 0.5px;
   color: ${props => props.$sentiment === 'bullish' ? COLORS.green : props.$sentiment === 'bearish' ? COLORS.red : COLORS.amber};
   background: ${props => props.$sentiment === 'bullish' ? 'rgba(0,230,118,0.08)' : props.$sentiment === 'bearish' ? 'rgba(255,23,68,0.08)' : 'rgba(255,171,0,0.08)'};
   border: 1px solid ${props => props.$sentiment === 'bullish' ? 'rgba(0,230,118,0.15)' : props.$sentiment === 'bearish' ? 'rgba(255,23,68,0.15)' : 'rgba(255,171,0,0.15)'};
@@ -541,7 +540,7 @@ const SentimentBadge = styled.span`
 
 const BreakingTag = styled.span`
   padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.55rem; font-weight: 800;
-  font-family: ${MONO_FONT}; letter-spacing: 1px; color: #ff1744;
+  font-family: ${FONT_MONO}; letter-spacing: 1px; color: #ff1744;
   background: rgba(255,23,68,0.1); border: 1px solid rgba(255,23,68,0.2);
 `
 
@@ -982,7 +981,7 @@ const Dashboard = ({ isPremium = false }) => {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
                     <span style={{
-                      fontSize: '0.85rem', fontWeight: 700, color: COLORS.cyan, fontFamily: MONO_FONT,
+                      fontSize: '0.85rem', fontWeight: 700, color: COLORS.cyan, fontFamily: FONT_MONO,
                       textTransform: 'uppercase', letterSpacing: '1px',
                       display: 'flex', alignItems: 'center', gap: '0.5rem',
                     }}>
@@ -992,7 +991,7 @@ const Dashboard = ({ isPremium = false }) => {
                     {macroFactors.overall_sentiment && (
                       <span style={{
                         fontSize: '0.65rem', fontWeight: 700, padding: '0.25rem 0.6rem', borderRadius: 4,
-                        letterSpacing: '1px', textTransform: 'uppercase', fontFamily: MONO_FONT,
+                        letterSpacing: '1px', textTransform: 'uppercase', fontFamily: FONT_MONO,
                         color: sentColor, border: `1px solid ${sentColor}66`,
                         background: sentColor + '14',
                       }}>
@@ -1002,7 +1001,7 @@ const Dashboard = ({ isPremium = false }) => {
                     <Link
                       href={`/ai-advisor?q=${encodeURIComponent('Explain each of these macro factors in simple terms. What does each one mean and how could it affect the overall crypto market? Do NOT analyze any specific coin or pull price data — just explain the macro picture in plain English:\n\n' + macroFactors.factors.map(f => '• ' + f.title + ' (' + f.impact + '): ' + f.summary).join('\n'))}`}
                       style={{
-                        marginLeft: 'auto', fontSize: '0.6rem', fontWeight: 700, fontFamily: MONO_FONT,
+                        marginLeft: 'auto', fontSize: '0.6rem', fontWeight: 700, fontFamily: FONT_MONO,
                         color: COLORS.cyan, background: 'rgba(0,229,255,0.06)', border: `1px solid rgba(0,229,255,0.15)`,
                         borderRadius: 4, padding: '0.2rem 0.55rem', textDecoration: 'none', letterSpacing: '0.3px',
                         display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap',
@@ -1033,7 +1032,7 @@ const Dashboard = ({ isPremium = false }) => {
                             width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
                             background: dotColor, boxShadow: `0 0 8px ${dotColor}88`,
                           }}/>
-                          <span style={{ color: COLORS.textMuted, fontSize: '0.7rem', fontFamily: MONO_FONT }}>&#9656;</span>
+                          <span style={{ color: COLORS.textMuted, fontSize: '0.7rem', fontFamily: FONT_MONO }}>&#9656;</span>
                           <span style={{ fontSize: '0.85rem', fontWeight: 700, color: COLORS.textPrimary }}>{f.title}</span>
                         </div>
                         <div style={{ fontSize: '0.72rem', color: COLORS.textMuted, lineHeight: 1.5 }}>{f.summary}</div>
@@ -1209,13 +1208,13 @@ const Dashboard = ({ isPremium = false }) => {
                             <Link key={`buy-${item.coin}-${index}`} href={`/statistics?token=${encodeURIComponent(item.coin)}&sinceHours=24`} style={{ textDecoration: 'none' }}>
                               <PressureRow $accent={COLORS.green}>
                                 <TokenIcon symbol={item.coin} size={18} />
-                                <span style={{ fontFamily: MONO_FONT, fontWeight: 600, color: COLORS.textPrimary, fontSize: '0.85rem' }}>
+                                <span style={{ fontFamily: FONT_MONO, fontWeight: 600, color: COLORS.textPrimary, fontSize: '0.85rem' }}>
                                   {item.coin}
                                 </span>
                                 <PressureBar>
                                   <PressureFill $color={COLORS.green} style={{ width: `${item.percentage}%` }} />
                                 </PressureBar>
-                                <span style={{ fontFamily: MONO_FONT, fontWeight: 700, color: COLORS.green, fontSize: '0.8rem', textAlign: 'right' }}>
+                                <span style={{ fontFamily: FONT_MONO, fontWeight: 700, color: COLORS.green, fontSize: '0.8rem', textAlign: 'right' }}>
                                   {item.percentage.toFixed(1)}%
                                 </span>
                               </PressureRow>
@@ -1231,13 +1230,13 @@ const Dashboard = ({ isPremium = false }) => {
                             <Link key={`sell-${item.coin}-${index}`} href={`/statistics?token=${encodeURIComponent(item.coin)}&sinceHours=24`} style={{ textDecoration: 'none' }}>
                               <PressureRow $accent={COLORS.red}>
                                 <TokenIcon symbol={item.coin} size={18} />
-                                <span style={{ fontFamily: MONO_FONT, fontWeight: 600, color: COLORS.textPrimary, fontSize: '0.85rem' }}>
+                                <span style={{ fontFamily: FONT_MONO, fontWeight: 600, color: COLORS.textPrimary, fontSize: '0.85rem' }}>
                                   {item.coin}
                                 </span>
                                 <PressureBar>
                                   <PressureFill $color={COLORS.red} style={{ width: `${item.percentage}%` }} />
                                 </PressureBar>
-                                <span style={{ fontFamily: MONO_FONT, fontWeight: 700, color: COLORS.red, fontSize: '0.8rem', textAlign: 'right' }}>
+                                <span style={{ fontFamily: FONT_MONO, fontWeight: 700, color: COLORS.red, fontSize: '0.8rem', textAlign: 'right' }}>
                                   {item.percentage.toFixed(1)}%
                                 </span>
                               </PressureRow>
@@ -1479,7 +1478,7 @@ const TopWhalesSection = () => {
                             color: COLORS.cyan,
                             textDecoration: 'none',
                             fontWeight: 700,
-                            fontFamily: MONO_FONT,
+                            fontFamily: FONT_MONO,
                             fontSize: '0.85rem',
                           }}
                           onClick={(e) => e.stopPropagation()}
@@ -1492,7 +1491,7 @@ const TopWhalesSection = () => {
                           fontWeight: 800,
                           fontSize: '0.9rem',
                           color: whale.netUsd > 0 ? COLORS.green : whale.netUsd < 0 ? COLORS.red : COLORS.textPrimary,
-                          fontFamily: MONO_FONT,
+                          fontFamily: FONT_MONO,
                         }}>
                           {formatUSD(whale.netUsd)}
                         </span>
@@ -1501,7 +1500,7 @@ const TopWhalesSection = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
                           <span style={{
                             fontSize: '0.7rem',
-                            fontFamily: MONO_FONT,
+                            fontFamily: FONT_MONO,
                             fontWeight: 600,
                             color: buyPct > 65 ? COLORS.green : buyPct < 35 ? COLORS.red : COLORS.amber,
                           }}>
@@ -1526,7 +1525,7 @@ const TopWhalesSection = () => {
                           )}
                         </div>
                       </td>
-                      <td className="right muted" style={{ fontSize: '0.8rem', fontFamily: MONO_FONT }}>
+                      <td className="right muted" style={{ fontSize: '0.8rem', fontFamily: FONT_MONO }}>
                         {whale.lastSeen ? timeAgo(whale.lastSeen) : '—'}
                       </td>
                     </motion.tr>

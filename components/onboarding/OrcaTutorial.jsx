@@ -58,7 +58,7 @@ const Tip = styled(motion.div)`
   width: max-content;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(16px);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans);
   @media (max-width: 640px) {
     max-width: calc(100vw - 32px);
     left: 16px !important;
@@ -143,7 +143,7 @@ const Final = styled(motion.div)`
   width: 90vw;
   text-align: center;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans);
   @media (max-width: 640px) { padding: 24px; }
 `
 

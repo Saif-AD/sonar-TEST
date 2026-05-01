@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function DmcaPage() {
   return (
-    <main style={{ maxWidth: 820, margin: '0 auto', padding: '7rem 1.5rem 4rem', color: '#e0e6ed', fontFamily: 'Inter, system-ui, sans-serif', lineHeight: 1.65 }}>
+    <main style={{ maxWidth: 820, margin: '0 auto', padding: '7rem 1.5rem 4rem', color: '#e0e6ed', fontFamily: 'var(--font-sans)', lineHeight: 1.65 }}>
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>DMCA / Copyright Notice &amp; Counter-Notice</h1>
       <p style={{ color: '#8a9bb0', marginBottom: '2rem' }}>
         Sonar Tracker respects the intellectual property rights of others

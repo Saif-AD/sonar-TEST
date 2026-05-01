@@ -10,13 +10,12 @@ import PremiumGate from '@/components/PremiumGate'
 import TokenIcon from '@/components/TokenIcon'
 import { SkeletonMetrics } from '@/components/SkeletonLoader'
 import { calculateTokenScore, getScoreLabel } from '@/app/lib/tokenScore'
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 
 const TradingViewChart = dynamic(() => import('@/components/charts/TradingViewChart'), { ssr: false })
 const SentimentChart = dynamic(() => import('@/components/charts/SentimentChart'), { ssr: false })
 const WhaleTransactionFeed = dynamic(() => import('@/components/whales/WhaleTransactionFeed'), { ssr: false })
 
-const MONO_FONT = "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace"
-const SANS_FONT = "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif"
 const COLORS = {
   cyan: '#00e5ff', green: '#00e676', red: '#ff1744', amber: '#ffab00',
   textPrimary: '#e0e6ed', textMuted: '#5a6a7a',
@@ -55,7 +54,7 @@ const SideColumn = styled.div`
 
 const BackLink = styled(Link)`
   display: inline-flex; align-items: center; gap: 0.4rem; color: ${COLORS.cyan};
-  text-decoration: none; font-weight: 600; margin-bottom: 1.5rem; font-family: ${MONO_FONT};
+  text-decoration: none; font-weight: 600; margin-bottom: 1.5rem; font-family: ${FONT_MONO};
   font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase;
   &:hover { text-decoration: underline; }
 `
@@ -66,7 +65,7 @@ const Panel = styled.div`
 `
 
 const TerminalPrompt = styled.h2`
-  font-family: ${MONO_FONT}; font-size: 0.85rem; font-weight: 700; color: ${COLORS.cyan};
+  font-family: ${FONT_MONO}; font-size: 0.85rem; font-weight: 700; color: ${COLORS.cyan};
   letter-spacing: 1px; text-transform: uppercase; margin: 0 0 1.25rem 0;
   display: flex; align-items: center; gap: 0.5rem;
   &::before { content: '>'; color: ${COLORS.green}; font-weight: 800; }
@@ -82,13 +81,13 @@ const TokenImage = styled.img`
 `
 
 const TokenName = styled.h1`
-  font-size: 2rem; font-weight: 800; margin: 0; font-family: ${MONO_FONT};
+  font-size: 2rem; font-weight: 800; margin: 0; font-family: ${FONT_MONO};
   color: ${COLORS.cyan}; letter-spacing: 1px;
 `
 
 const SentimentBadge = styled.div`
   padding: 0.3rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;
-  font-family: ${MONO_FONT}; letter-spacing: 0.5px;
+  font-family: ${FONT_MONO}; letter-spacing: 0.5px;
   color: ${props => props.$color || COLORS.amber};
   background: ${props => (props.$color || COLORS.amber) + '15'};
   border: 1px solid ${props => (props.$color || COLORS.amber) + '30'};
@@ -101,12 +100,12 @@ const PriceRow = styled.div`
 const PriceStack = styled.div`display: flex; flex-direction: column; gap: 0.25rem;`
 
 const Price = styled.div`
-  font-size: 2.2rem; font-weight: 800; color: ${COLORS.textPrimary}; font-family: ${MONO_FONT};
+  font-size: 2.2rem; font-weight: 800; color: ${COLORS.textPrimary}; font-family: ${FONT_MONO};
   text-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
 `
 
 const PriceChange = styled.div`
-  font-size: 1rem; font-weight: 700; font-family: ${MONO_FONT};
+  font-size: 1rem; font-weight: 700; font-family: ${FONT_MONO};
   color: ${props => props.$positive ? COLORS.green : COLORS.red};
 `
 
@@ -118,17 +117,17 @@ const InlineSentimentWrapper = styled.div`
 const SentimentHeader = styled.div`display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;`
 
 const SentimentTitle = styled.div`
-  font-size: 0.75rem; font-weight: 700; color: ${COLORS.textPrimary}; font-family: ${SANS_FONT};
+  font-size: 0.75rem; font-weight: 700; color: ${COLORS.textPrimary}; font-family: ${FONT_SANS};
   display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px;
   svg { width: 16px; height: 16px; fill: ${COLORS.cyan}; }
 `
 
-const SentimentVoteCount = styled.div`font-size: 0.75rem; color: ${COLORS.textMuted}; font-family: ${MONO_FONT};`
+const SentimentVoteCount = styled.div`font-size: 0.75rem; color: ${COLORS.textMuted}; font-family: ${FONT_MONO};`
 
 const SentimentButtons = styled.div`display: flex; gap: 0.5rem; margin-bottom: 0.75rem;`
 
 const SentimentButton = styled.button`
-  flex: 1; border-radius: 6px; font-family: ${MONO_FONT};
+  flex: 1; border-radius: 6px; font-family: ${FONT_MONO};
   border: 1px solid ${props => {
     if (props.$active && props.$variant === 'bullish') return COLORS.green
     if (props.$active && props.$variant === 'bearish') return COLORS.red
@@ -168,11 +167,11 @@ const SentimentProgressBar = styled.div`
 const SentimentStats = styled.div`display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;`
 
 const SentimentStat = styled.div`
-  display: flex; align-items: center; gap: 0.25rem; font-weight: 700; font-family: ${MONO_FONT};
+  display: flex; align-items: center; gap: 0.25rem; font-weight: 700; font-family: ${FONT_MONO};
   color: ${props => props.$variant === 'bullish' ? COLORS.green : COLORS.red};
 `
 
-const SentimentMeta = styled.div`font-size: 0.7rem; color: ${COLORS.textMuted}; margin-top: 0.5rem; text-align: center; font-family: ${SANS_FONT};`
+const SentimentMeta = styled.div`font-size: 0.7rem; color: ${COLORS.textMuted}; margin-top: 0.5rem; text-align: center; font-family: ${FONT_SANS};`
 
 const MetricsGrid = styled.div`
   display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; margin-bottom: 1.5rem;
@@ -189,16 +188,16 @@ const MetricCard = styled.div`
 
 const MetricLabel = styled.div`
   font-size: 0.6rem; color: ${COLORS.textMuted}; margin-bottom: 0.4rem; text-transform: uppercase;
-  letter-spacing: 1.5px; font-family: ${SANS_FONT}; font-weight: 600;
+  letter-spacing: 1.5px; font-family: ${FONT_SANS}; font-weight: 600;
 `
 
-const MetricValue = styled.div`font-size: 1.1rem; font-weight: 700; color: ${COLORS.textPrimary}; font-family: ${MONO_FONT};`
+const MetricValue = styled.div`font-size: 1.1rem; font-weight: 700; color: ${COLORS.textPrimary}; font-family: ${FONT_MONO};`
 
 const TimeFilters = styled.div`display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem;`
 
 const TimeButton = styled(Link)`
   padding: 0.4rem 0.85rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.75rem;
-  font-family: ${MONO_FONT}; transition: all 0.15s ease;
+  font-family: ${FONT_MONO}; transition: all 0.15s ease;
   background: ${props => props.$active ? 'rgba(0, 229, 255, 0.15)' : 'transparent'};
   color: ${props => props.$active ? COLORS.cyan : COLORS.textMuted};
   border: 1px solid ${props => props.$active ? 'rgba(0, 229, 255, 0.3)' : COLORS.borderSubtle};
@@ -219,15 +218,15 @@ const AnalysisBlock = styled.div`
 
 const BlockTitle = styled.h4`
   color: ${COLORS.cyan}; font-size: 0.95rem; font-weight: 700; margin: 0 0 0.4rem 0;
-  display: flex; align-items: center; gap: 0.5rem; font-family: ${SANS_FONT};
+  display: flex; align-items: center; gap: 0.5rem; font-family: ${FONT_SANS};
 `
 
 const BlockSubtitle = styled.div`
-  color: ${COLORS.textMuted}; font-size: 0.8rem; font-style: italic; margin-bottom: 0.75rem; font-family: ${SANS_FONT};
+  color: ${COLORS.textMuted}; font-size: 0.8rem; font-style: italic; margin-bottom: 0.75rem; font-family: ${FONT_SANS};
 `
 
 const BlockContent = styled.div`
-  color: ${COLORS.textPrimary}; line-height: 1.7; font-family: ${SANS_FONT}; font-size: 0.9rem;
+  color: ${COLORS.textPrimary}; line-height: 1.7; font-family: ${FONT_SANS}; font-size: 0.9rem;
   p { margin: 0 0 0.75rem 0; &:last-child { margin-bottom: 0; } }
   strong { color: ${COLORS.cyan}; font-weight: 700; }
   em { color: ${COLORS.textMuted}; font-style: italic; }
@@ -238,16 +237,16 @@ const ConclusionBox = styled.div`
   border-left: 3px solid ${COLORS.cyan};
 `
 
-const ConclusionTitle = styled.h4`color: ${COLORS.cyan}; font-size: 1rem; font-weight: 700; margin: 0 0 0.75rem 0; font-family: ${SANS_FONT};`
+const ConclusionTitle = styled.h4`color: ${COLORS.cyan}; font-size: 1rem; font-weight: 700; margin: 0 0 0.75rem 0; font-family: ${FONT_SANS};`
 
 const ConclusionText = styled.div`
-  color: ${COLORS.textPrimary}; line-height: 1.7; font-family: ${SANS_FONT}; font-size: 0.9rem;
+  color: ${COLORS.textPrimary}; line-height: 1.7; font-family: ${FONT_SANS}; font-size: 0.9rem;
   strong { color: ${COLORS.cyan}; }
 `
 
 const DisclaimerText = styled.div`
   color: ${COLORS.textMuted}; font-size: 0.75rem; font-style: italic; text-align: center;
-  margin-top: 1rem; opacity: 0.6; font-family: ${SANS_FONT};
+  margin-top: 1rem; opacity: 0.6; font-family: ${FONT_SANS};
 `
 
 const SentimentSection = styled(motion.div)`
@@ -256,7 +255,7 @@ const SentimentSection = styled(motion.div)`
 `
 
 const SectionTitle = styled.h2`
-  font-family: ${MONO_FONT}; font-size: 0.85rem; font-weight: 700; color: ${COLORS.cyan};
+  font-family: ${FONT_MONO}; font-size: 0.85rem; font-weight: 700; color: ${COLORS.cyan};
   letter-spacing: 1px; text-transform: uppercase; margin: 0 0 1.25rem 0;
   &::before { content: '> '; color: ${COLORS.green}; font-weight: 800; }
 `
@@ -273,7 +272,7 @@ const ChartTabs = styled.div`
 const ChartTab = styled.button`
   padding: 0.6rem 1.25rem; border: none; background: transparent;
   color: ${props => props.$active ? COLORS.cyan : COLORS.textMuted};
-  font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: ${MONO_FONT};
+  font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: ${FONT_MONO};
   transition: all 0.15s ease; position: relative;
   border-bottom: 2px solid ${props => props.$active ? COLORS.cyan : 'transparent'};
   margin-bottom: -1px;
@@ -291,18 +290,18 @@ const ReasonCard = styled.div`
 
 const ReasonIcon = styled.div`font-size: 1.2rem; flex-shrink: 0;`
 const ReasonContent = styled.div`flex: 1;`
-const ReasonTitle = styled.div`font-weight: 700; color: ${COLORS.cyan}; margin-bottom: 0.2rem; font-family: ${SANS_FONT}; font-size: 0.9rem;`
-const ReasonText = styled.div`color: ${COLORS.textMuted}; line-height: 1.5; font-family: ${SANS_FONT}; font-size: 0.85rem;`
+const ReasonTitle = styled.div`font-weight: 700; color: ${COLORS.cyan}; margin-bottom: 0.2rem; font-family: ${FONT_SANS}; font-size: 0.9rem;`
+const ReasonText = styled.div`color: ${COLORS.textMuted}; line-height: 1.5; font-family: ${FONT_SANS}; font-size: 0.85rem;`
 
 const VoteStatusMessage = styled.div`
-  font-size: 0.8rem; font-weight: 600; font-family: ${SANS_FONT};
+  font-size: 0.8rem; font-weight: 600; font-family: ${FONT_SANS};
   color: ${props => props.$type === 'error' ? COLORS.red : COLORS.green};
 `
 
 const OrcaButton = styled(motion.button)`
   width: 100%; padding: 1rem; border-radius: 6px;
   background: transparent; color: ${COLORS.cyan}; font-size: 0.85rem; font-weight: 700;
-  border: 1px solid ${COLORS.borderSubtle}; cursor: pointer; font-family: ${MONO_FONT};
+  border: 1px solid ${COLORS.borderSubtle}; cursor: pointer; font-family: ${FONT_MONO};
   display: flex; align-items: center; justify-content: center; gap: 0.5rem;
   transition: all 0.15s ease; letter-spacing: 0.5px;
   &:hover { border-color: rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.04); }
@@ -328,14 +327,14 @@ const CloseButton = styled.button`
   background: rgba(255, 23, 68, 0.1); border: 1px solid rgba(255, 23, 68, 0.2);
   color: ${COLORS.red}; font-size: 1.2rem; width: 32px; height: 32px; border-radius: 4px;
   display: flex; align-items: center; justify-content: center; cursor: pointer;
-  font-family: ${MONO_FONT}; transition: all 0.15s ease;
+  font-family: ${FONT_MONO}; transition: all 0.15s ease;
   &:hover { background: rgba(255, 23, 68, 0.2); }
 `
 
 const AnalysisContent = styled.div`
-  h3 { color: ${COLORS.cyan}; font-size: 1.2rem; font-weight: 700; margin: 1.5rem 0 0.75rem 0; font-family: ${SANS_FONT}; &:first-child { margin-top: 0; } }
-  p { color: ${COLORS.textMuted}; line-height: 1.7; margin: 0.75rem 0; font-family: ${SANS_FONT}; }
-  ul, ol { color: ${COLORS.textMuted}; line-height: 1.8; padding-left: 1.25rem; font-family: ${SANS_FONT}; }
+  h3 { color: ${COLORS.cyan}; font-size: 1.2rem; font-weight: 700; margin: 1.5rem 0 0.75rem 0; font-family: ${FONT_SANS}; &:first-child { margin-top: 0; } }
+  p { color: ${COLORS.textMuted}; line-height: 1.7; margin: 0.75rem 0; font-family: ${FONT_SANS}; }
+  ul, ol { color: ${COLORS.textMuted}; line-height: 1.8; padding-left: 1.25rem; font-family: ${FONT_SANS}; }
   li { margin: 0.4rem 0; }
   strong { color: ${COLORS.textPrimary}; font-weight: 700; }
 `
@@ -347,25 +346,25 @@ const RecommendationCard = styled.div`
 `
 
 const RecType = styled.div`
-  font-size: 1.1rem; font-weight: 800; font-family: ${MONO_FONT};
+  font-size: 1.1rem; font-weight: 800; font-family: ${FONT_MONO};
   color: ${props => props.$type === 'BUY' ? COLORS.green : props.$type === 'AVOID' ? COLORS.red : COLORS.amber};
   margin-bottom: 0.4rem;
 `
 
-const RecConfidence = styled.div`font-size: 0.8rem; color: ${COLORS.textMuted}; margin-bottom: 0.75rem; font-family: ${MONO_FONT};`
+const RecConfidence = styled.div`font-size: 0.8rem; color: ${COLORS.textMuted}; margin-bottom: 0.75rem; font-family: ${FONT_MONO};`
 
 const TransactionsSection = styled(Panel)`
   overflow-x: auto;
 `
 
 const Table = styled.table`
-  width: 100%; border-collapse: collapse; font-family: ${MONO_FONT};
+  width: 100%; border-collapse: collapse; font-family: ${FONT_MONO};
   table-layout: fixed;
   th {
     padding: 0.65rem 0.5rem; text-align: left; font-size: 0.6rem; font-weight: 600;
     color: ${COLORS.textMuted}; text-transform: uppercase; letter-spacing: 0.5px;
     border-bottom: 1px solid rgba(0, 229, 255, 0.06); background: rgba(0, 229, 255, 0.02);
-    white-space: nowrap; font-family: ${SANS_FONT};
+    white-space: nowrap; font-family: ${FONT_SANS};
   }
   th:nth-child(1) { width: 110px; } /* Time */
   th:nth-child(2) { width: 160px; } /* Whale */
@@ -402,16 +401,16 @@ const CounterpartyTag = styled.span`
   display: inline-flex; align-items: center; padding: 0.15rem 0.4rem; border-radius: 3px;
   font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;
   border: 1px solid ${COLORS.borderSubtle}; color: ${COLORS.textMuted}; margin-top: 0.15rem;
-  font-family: ${MONO_FONT};
+  font-family: ${FONT_MONO};
 `
 
 const ReasoningCell = styled.div`
-  max-width: 280px; font-size: 0.75rem; color: ${COLORS.textMuted}; line-height: 1.4; font-family: ${SANS_FONT};
+  max-width: 280px; font-size: 0.75rem; color: ${COLORS.textMuted}; line-height: 1.4; font-family: ${FONT_SANS};
 `
 
 const TxBadge = styled.span`
   padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.7rem;
-  font-family: ${MONO_FONT}; letter-spacing: 0.5px; text-transform: uppercase;
+  font-family: ${FONT_MONO}; letter-spacing: 0.5px; text-transform: uppercase;
   background: ${props => props.$type === 'BUY' ? 'rgba(0, 230, 118, 0.08)' : props.$type === 'SELL' ? 'rgba(255, 23, 68, 0.08)' : 'rgba(255, 171, 0, 0.08)'};
   color: ${props => props.$type === 'BUY' ? COLORS.green : props.$type === 'SELL' ? COLORS.red : COLORS.amber};
   border: 1px solid ${props => props.$type === 'BUY' ? 'rgba(0, 230, 118, 0.12)' : props.$type === 'SELL' ? 'rgba(255, 23, 68, 0.12)' : 'rgba(255, 171, 0, 0.12)'};
@@ -1009,7 +1008,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                   color: COLORS.textMuted, 
                   fontSize: '0.85rem', 
                   fontWeight: 500,
-                  fontFamily: SANS_FONT
+                  fontFamily: FONT_SANS
                 }}>
                   {priceData.name}
                 </span>
@@ -1029,7 +1028,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
             {/* Token Score Badge */}
             <div style={{
               padding: '0.3rem 0.75rem', borderRadius: '4px', fontWeight: 700, fontSize: '0.75rem',
-              fontFamily: MONO_FONT, letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.4rem',
+              fontFamily: FONT_MONO, letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.4rem',
               color: scoreInfo.color, background: scoreInfo.color + '15', border: `1px solid ${scoreInfo.color}30`,
             }}>
               <span style={{ fontSize: '1rem', fontWeight: 800 }}>{tokenScore}</span>
@@ -1357,7 +1356,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
           <Panel style={{ marginBottom: '1.5rem' }}>
             <TerminalPrompt style={{ marginBottom: '1rem' }}>WHALE_PATTERNS</TerminalPrompt>
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: MONO_FONT, fontSize: '0.75rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: FONT_MONO, fontSize: '0.75rem' }}>
                 <thead>
                   <tr>
                     {['Address','Txns','Volume','Net Flow','Pattern'].map(h => (
@@ -1373,7 +1372,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                       <td style={{ padding: '0.4rem', textAlign: 'right' }}>{formatUSD(w.totalVolume)}</td>
                       <td style={{ padding: '0.4rem', textAlign: 'right', fontWeight: 700, color: w.netFlow >= 0 ? COLORS.green : COLORS.red }}>{w.netFlow >= 0 ? '+' : ''}{formatUSD(w.netFlow)}</td>
                       <td style={{ padding: '0.4rem' }}>
-                        <span style={{ fontSize: '0.6rem', fontFamily: MONO_FONT, fontWeight: 600, padding: '0.15rem 0.4rem', borderRadius: '3px', color: w.pattern.includes('ACCUMUL') ? COLORS.green : w.pattern.includes('DISTRIBUT') ? COLORS.red : COLORS.amber, background: w.pattern.includes('ACCUMUL') ? 'rgba(0,230,118,0.08)' : w.pattern.includes('DISTRIBUT') ? 'rgba(255,23,68,0.08)' : 'rgba(255,171,0,0.08)', border: `1px solid ${w.pattern.includes('ACCUMUL') ? 'rgba(0,230,118,0.12)' : w.pattern.includes('DISTRIBUT') ? 'rgba(255,23,68,0.12)' : 'rgba(255,171,0,0.12)'}` }}>{w.pattern}</span>
+                        <span style={{ fontSize: '0.6rem', fontFamily: FONT_MONO, fontWeight: 600, padding: '0.15rem 0.4rem', borderRadius: '3px', color: w.pattern.includes('ACCUMUL') ? COLORS.green : w.pattern.includes('DISTRIBUT') ? COLORS.red : COLORS.amber, background: w.pattern.includes('ACCUMUL') ? 'rgba(0,230,118,0.08)' : w.pattern.includes('DISTRIBUT') ? 'rgba(255,23,68,0.08)' : 'rgba(255,171,0,0.08)', border: `1px solid ${w.pattern.includes('ACCUMUL') ? 'rgba(0,230,118,0.12)' : w.pattern.includes('DISTRIBUT') ? 'rgba(255,23,68,0.12)' : 'rgba(255,171,0,0.12)'}` }}>{w.pattern}</span>
                       </td>
                     </tr>
                   ))}
@@ -1460,7 +1459,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                 {socialData.categories.slice(0, 6).map(cat => (
                   <span key={cat} style={{
                     padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.65rem',
-                    fontFamily: MONO_FONT, fontWeight: 600, color: COLORS.cyan,
+                    fontFamily: FONT_MONO, fontWeight: 600, color: COLORS.cyan,
                     background: 'rgba(0, 229, 255, 0.06)', border: `1px solid ${COLORS.borderSubtle}`,
                     textTransform: 'uppercase', letterSpacing: '0.5px'
                   }}>{cat}</span>
@@ -1495,13 +1494,13 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
                       fontSize: '0.85rem', fontWeight: 600, color: COLORS.textPrimary,
-                      fontFamily: SANS_FONT, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                      fontFamily: FONT_SANS, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                     }}>
                       {article.title}
                     </div>
                     <div style={{
                       fontSize: '0.7rem', color: COLORS.textMuted, marginTop: '0.2rem',
-                      fontFamily: MONO_FONT, display: 'flex', gap: '0.75rem'
+                      fontFamily: FONT_MONO, display: 'flex', gap: '0.75rem'
                     }}>
                       <span>{article.source}</span>
                       {article.published_at && (
@@ -1511,7 +1510,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                   </div>
                   {article.sentiment != null && (
                     <span style={{
-                      fontSize: '0.65rem', fontFamily: MONO_FONT, fontWeight: 600, flexShrink: 0,
+                      fontSize: '0.65rem', fontFamily: FONT_MONO, fontWeight: 600, flexShrink: 0,
                       padding: '0.15rem 0.4rem', borderRadius: '3px',
                       color: article.sentiment > 0.1 ? COLORS.green : article.sentiment < -0.1 ? COLORS.red : COLORS.amber,
                       background: article.sentiment > 0.1 ? 'rgba(0, 230, 118, 0.08)' : article.sentiment < -0.1 ? 'rgba(255, 23, 68, 0.08)' : 'rgba(255, 171, 0, 0.08)',
@@ -1550,13 +1549,13 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
                       fontSize: '0.85rem', fontWeight: 600, color: COLORS.textPrimary,
-                      fontFamily: SANS_FONT, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                      fontFamily: FONT_SANS, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                     }}>
                       {post.title || 'Social post'}
                     </div>
                     <div style={{
                       fontSize: '0.7rem', color: COLORS.textMuted, marginTop: '0.2rem',
-                      fontFamily: MONO_FONT, display: 'flex', gap: '0.75rem'
+                      fontFamily: FONT_MONO, display: 'flex', gap: '0.75rem'
                     }}>
                       <span>{post.creator}</span>
                       <span>{post.source}</span>
@@ -1853,7 +1852,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
               borderRadius: '6px',
               marginTop: '1rem'
             }}>
-              <div style={{ fontSize: '0.9rem', fontFamily: MONO_FONT, color: COLORS.cyan, fontWeight: 700, letterSpacing: '1px', marginBottom: '1rem' }}>
+              <div style={{ fontSize: '0.9rem', fontFamily: FONT_MONO, color: COLORS.cyan, fontWeight: 700, letterSpacing: '1px', marginBottom: '1rem' }}>
                 &gt; WHALE_TRACKING_STATUS
               </div>
               <p style={{ 
@@ -1862,7 +1861,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                 maxWidth: '500px',
                 margin: '0 auto',
                 lineHeight: '1.6',
-                fontFamily: SANS_FONT
+                fontFamily: FONT_SANS
               }}>
                 Whale transaction tracking for {symbol} is not yet active. Sonar currently tracks whale activity for ERC-20 tokens. We're expanding coverage — check back soon.
               </p>
@@ -1879,7 +1878,7 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                   <div style={{ 
                     fontSize: '0.7rem', fontWeight: 600, letterSpacing: '1.5px',
                     textTransform: 'uppercase', color: COLORS.textMuted, marginBottom: '0.75rem',
-                    fontFamily: SANS_FONT
+                    fontFamily: FONT_SANS
                   }}>
                     CoinGecko Market Data
                   </div>
@@ -1891,20 +1890,20 @@ export default function TokenDetailClient({ symbol, sinceHours, data, whaleMetri
                   }}>
                     {priceData.volume24h > 0 && (
                       <div>
-                        <div style={{ fontSize: '0.6rem', color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontFamily: SANS_FONT, fontWeight: 600 }}>24h Volume</div>
-                        <div style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.cyan, fontFamily: MONO_FONT }}>{formatUSD(priceData.volume24h)}</div>
+                        <div style={{ fontSize: '0.6rem', color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontFamily: FONT_SANS, fontWeight: 600 }}>24h Volume</div>
+                        <div style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.cyan, fontFamily: FONT_MONO }}>{formatUSD(priceData.volume24h)}</div>
                       </div>
                     )}
                     {priceData.marketCap > 0 && (
                       <div>
-                        <div style={{ fontSize: '0.6rem', color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontFamily: SANS_FONT, fontWeight: 600 }}>Market Cap</div>
-                        <div style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.cyan, fontFamily: MONO_FONT }}>{formatUSD(priceData.marketCap)}</div>
+                        <div style={{ fontSize: '0.6rem', color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontFamily: FONT_SANS, fontWeight: 600 }}>Market Cap</div>
+                        <div style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.cyan, fontFamily: FONT_MONO }}>{formatUSD(priceData.marketCap)}</div>
                       </div>
                     )}
                     {priceData.change24h !== undefined && priceData.change24h !== null && (
                       <div>
-                        <div style={{ fontSize: '0.6rem', color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontFamily: SANS_FONT, fontWeight: 600 }}>24h Change</div>
-                        <div style={{ fontSize: '1rem', fontWeight: 700, color: priceData.change24h >= 0 ? COLORS.green : COLORS.red, fontFamily: MONO_FONT }}>
+                        <div style={{ fontSize: '0.6rem', color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '1px', fontFamily: FONT_SANS, fontWeight: 600 }}>24h Change</div>
+                        <div style={{ fontSize: '1rem', fontWeight: 700, color: priceData.change24h >= 0 ? COLORS.green : COLORS.red, fontFamily: FONT_MONO }}>
                           {priceData.change24h >= 0 ? '+' : ''}{priceData.change24h.toFixed(2)}%
                         </div>
                       </div>

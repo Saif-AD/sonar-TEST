@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function DataRemovalRequestPage() {
   return (
-    <main style={{ maxWidth: 760, margin: '0 auto', padding: '7rem 1.5rem 4rem', color: '#e0e6ed', fontFamily: 'Inter, system-ui, sans-serif', lineHeight: 1.6 }}>
+    <main style={{ maxWidth: 760, margin: '0 auto', padding: '7rem 1.5rem 4rem', color: '#e0e6ed', fontFamily: 'var(--font-sans)', lineHeight: 1.6 }}>
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Data Removal Request</h1>
       <p style={{ color: '#8a9bb0', marginBottom: '2rem' }}>
         Use this page to request removal of personal data, an entity profile, a

@@ -71,7 +71,7 @@ export default function CounterpartiesTable({ data }) {
             <tr key={cp.address}>
               <td>
                 <Link href={`/wallet-tracker/${encodeURIComponent(cp.address)}`}
-                  style={{ fontFamily: 'monospace', color: 'var(--primary)', fontSize: '0.85rem' }}>
+                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)', fontSize: '0.85rem' }}>
                   {cp.label || shortenAddress(cp.address)}
                 </Link>
               </td>

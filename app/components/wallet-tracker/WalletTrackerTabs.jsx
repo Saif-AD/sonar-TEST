@@ -102,9 +102,8 @@ export default function WalletTrackerTabs({ activeOverride } = {}) {
           gap: '0.25rem',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
-          marginBottom: '1.5rem',
-          borderBottom: '1px solid rgba(54, 166, 186, 0.2)',
-          // Hide the scrollbar while keeping the scroll affordance on mobile.
+          marginBottom: '1.25rem',
+          borderBottom: '1px solid rgba(34, 211, 238, 0.12)',
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         }}
@@ -120,18 +119,18 @@ export default function WalletTrackerTabs({ activeOverride } = {}) {
               style={{
                 position: 'relative',
                 flexShrink: 0,
-                padding: '0.75rem 1.1rem',
-                fontSize: '0.95rem',
-                fontWeight: isActive ? 700 : 500,
-                color: isActive ? '#36a6ba' : 'var(--text-secondary)',
+                padding: '0.6rem 0.9rem',
+                fontSize: '0.88rem',
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? 'var(--neon-bright)' : 'var(--text-secondary)',
                 textDecoration: 'none',
                 whiteSpace: 'nowrap',
-                borderBottom: `2px solid ${isActive ? '#36a6ba' : 'transparent'}`,
+                borderBottom: `2px solid ${isActive ? 'var(--neon-cyan)' : 'transparent'}`,
                 marginBottom: '-1px',
-                transition: 'color 160ms ease',
+                transition: 'color 160ms ease, border-color 160ms ease',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.45rem',
+                gap: '0.4rem',
               }}
               aria-current={isActive ? 'page' : undefined}
             >
@@ -140,22 +139,12 @@ export default function WalletTrackerTabs({ activeOverride } = {}) {
                 <span
                   aria-label={`${count} items in watchlist`}
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minWidth: '20px',
-                    height: '20px',
-                    padding: '0 6px',
-                    borderRadius: '999px',
-                    background: 'rgba(54, 166, 186, 0.2)',
-                    border: '1px solid rgba(54, 166, 186, 0.55)',
-                    color: '#36a6ba',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    lineHeight: 1,
+                    color: 'var(--text-secondary)',
+                    fontSize: '0.78rem',
+                    fontWeight: 500,
                   }}
                 >
-                  {count}
+                  · {count}
                 </span>
               ) : null}
             </NextLink>

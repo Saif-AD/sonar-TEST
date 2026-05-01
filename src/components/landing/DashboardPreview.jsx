@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { motion } from 'framer-motion'
+import { FONT_MONO } from '@/src/styles/fontStacks'
 
 /* ── helpers ── */
 function gen(n, start, vol) {
@@ -124,7 +125,7 @@ const Traffic = styled.div`
 `
 
 const UrlBar = styled.div`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ${FONT_MONO};
   font-size: 11px;
   color: rgba(220, 240, 250, 0.6);
   text-align: center;
@@ -193,7 +194,7 @@ const StatCard = styled.div`
 `
 
 const StatLabel = styled.div`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ${FONT_MONO};
   font-size: 9px; letter-spacing: 1.4px;
   text-transform: uppercase;
   color: rgba(180, 230, 245, 0.4);
@@ -214,7 +215,7 @@ const Tabs = styled.div`
 const Tab = styled.div`
   background: transparent; border: none; cursor: default;
   padding: 10px 14px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ${FONT_MONO};
   font-size: 10px; letter-spacing: 1.4px;
   color: ${({ $active }) => $active ? '#7FE3F5' : 'rgba(180, 230, 245, 0.4)'};
   border-bottom: 2px solid ${({ $active }) => $active ? '#7FE3F5' : 'transparent'};
@@ -239,7 +240,7 @@ const TableCard = styled.div`
 `
 
 const TableTitle = styled.div`
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ${FONT_MONO};
   font-size: 10px; letter-spacing: 1.4px;
   text-transform: uppercase;
   color: rgba(180, 230, 245, 0.4);
@@ -317,7 +318,7 @@ export default function DashboardPreview() {
         </UrlBar>
         <Account>
           <Avatar />
-          <span style={{ fontSize: 11, color: 'rgba(220, 240, 250, 0.6)', fontFamily: "'JetBrains Mono', monospace" }}>pro</span>
+          <span style={{ fontSize: 11, color: 'rgba(220, 240, 250, 0.6)', fontFamily: FONT_MONO }}>pro</span>
         </Account>
       </TopChrome>
 
@@ -351,7 +352,7 @@ export default function DashboardPreview() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                     <div>
                       <StatVal>{s.val}</StatVal>
-                      <div style={{ fontSize: 11, color: '#5DF0B0', fontFamily: "'JetBrains Mono', monospace" }}>{s.delta}</div>
+                      <div style={{ fontSize: 11, color: '#5DF0B0', fontFamily: FONT_MONO }}>{s.delta}</div>
                     </div>
                     <SparkLine points={s.spark} width={80} height={32} />
                   </div>
@@ -379,13 +380,13 @@ export default function DashboardPreview() {
           <ChartCard>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
               <div>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: 1.4, textTransform: 'uppercase', color: 'rgba(180, 230, 245, 0.55)' }}>BTC / USD</div>
+                <div style={{ fontFamily: FONT_MONO, fontSize: 10, letterSpacing: 1.4, textTransform: 'uppercase', color: 'rgba(180, 230, 245, 0.55)' }}>BTC / USD</div>
                 <div style={{ fontSize: 22, fontWeight: 600, color: '#E6F7FB' }}>
                   $108,420.50{' '}
-                  <span style={{ fontSize: 13, color: '#5DF0B0', fontFamily: "'JetBrains Mono', monospace", fontWeight: 400 }}>+2.41%</span>
+                  <span style={{ fontSize: 13, color: '#5DF0B0', fontFamily: FONT_MONO, fontWeight: 400 }}>+2.41%</span>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: 4, fontFamily: "'JetBrains Mono', monospace", fontSize: 10 }}>
+              <div style={{ display: 'flex', gap: 4, fontFamily: FONT_MONO, fontSize: 10 }}>
                 {['1H', '24H', '7D', '30D', 'ALL'].map((r, i) => (
                   <span key={r} style={{
                     padding: '4px 10px', borderRadius: 4,
@@ -412,11 +413,11 @@ export default function DashboardPreview() {
               <TableTitle>Top whale movements</TableTitle>
               {WHALES.map((r, i) => (
                 <TableRow key={i}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>{r[0]}</span>
+                  <span style={{ fontFamily: FONT_MONO }}>{r[0]}</span>
                   <span style={{ color: '#7FE3F5' }}>{r[1]}</span>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>{r[2]}</span>
+                  <span style={{ fontFamily: FONT_MONO }}>{r[2]}</span>
                   <span style={{ color: 'rgba(220, 240, 250, 0.65)' }}>{r[3]}</span>
-                  <span style={{ color: '#5DF0B0', fontFamily: "'JetBrains Mono', monospace" }}>{r[4]}</span>
+                  <span style={{ color: '#5DF0B0', fontFamily: FONT_MONO }}>{r[4]}</span>
                 </TableRow>
               ))}
             </TableCard>
@@ -426,7 +427,7 @@ export default function DashboardPreview() {
               {SIGNALS.map((s, i) => (
                 <SignalRow key={i}>
                   <div style={{
-                    padding: '3px 7px', borderRadius: 3, fontSize: 9, fontFamily: "'JetBrains Mono', monospace",
+                    padding: '3px 7px', borderRadius: 3, fontSize: 9, fontFamily: FONT_MONO,
                     letterSpacing: 1,
                     border: `1px solid ${s.tag === 'BUY' ? 'rgba(93,240,176,0.4)' : s.tag === 'ALERT' ? 'rgba(245,168,107,0.4)' : 'rgba(125,230,245,0.3)'}`,
                     color: s.tag === 'BUY' ? '#5DF0B0' : s.tag === 'ALERT' ? '#F5A86B' : '#7FE3F5',
@@ -434,7 +435,7 @@ export default function DashboardPreview() {
                   <div style={{ flex: 1, fontSize: 12 }}>
                     <div style={{ color: '#E6F7FB' }}>{s.sym} <span style={{ color: 'rgba(180,230,245,0.6)' }}>· {s.txt}</span></div>
                   </div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: '#7FE3F5' }}>{s.conf}%</div>
+                  <div style={{ fontFamily: FONT_MONO, fontSize: 11, color: '#7FE3F5' }}>{s.conf}%</div>
                 </SignalRow>
               ))}
             </TableCard>

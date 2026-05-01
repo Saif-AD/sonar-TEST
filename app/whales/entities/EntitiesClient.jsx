@@ -154,7 +154,7 @@ const AddressCount = styled.div`
 `
 
 const AddressPreview = styled.div`
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--primary);
   opacity: 0.7;

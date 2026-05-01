@@ -31,58 +31,38 @@ const TAB_TITLES = {
 }
 
 const PageContainer = styled.div`
-  background: var(--background-dark);
-  padding: 0 2rem 2rem;
-
-  @media (max-width: 768px) {
-    padding: 0 1rem 1rem;
-  }
+  padding: 0 0 2rem;
 `
 
 const Container = styled.div`
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `
 
 const SubSectionTitle = styled.h2`
-  font-size: 1.05rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  margin: 0 0 1rem 0;
+  letter-spacing: 1.5px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  margin: 1.5rem 0 0.75rem 0;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  svg { width: 22px; height: 22px; }
+  gap: 0.55rem;
+  color: var(--neon-bright);
 `
-
-const WhaleIcon = () => (
-  <svg width="30" height="30" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-    <path d="M52 28c0-11-9-20-20-20S12 17 12 28c0 4.5 1.5 8.6 4 12l-4 8h8c3.5 2.5 7.6 4 12 4s8.5-1.5 12-4h8l-4-8c2.5-3.4 4-7.5 4-12z" fill="url(#wg)" />
-    <circle cx="24" cy="26" r="3" fill="#0a1621" />
-    <circle cx="24.5" cy="25.5" r="1" fill="#fff" />
-    <path d="M14 36c4 3 8 4.5 12 4.5" stroke="#0a1621" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
-    <path d="M48 18c2-4 6-6 10-5-2 3-5 6-10 5z" fill="url(#wg2)" opacity="0.7" />
-    <defs>
-      <linearGradient id="wg" x1="12" y1="8" x2="52" y2="52">
-        <stop stopColor="#00e5ff" />
-        <stop offset="1" stopColor="#00d4aa" />
-      </linearGradient>
-      <linearGradient id="wg2" x1="48" y1="13" x2="58" y2="18">
-        <stop stopColor="#00e5ff" />
-        <stop offset="1" stopColor="#36a6ba" />
-      </linearGradient>
-    </defs>
-  </svg>
-)
 
 const TopBar = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
   flex-wrap: wrap;
 `
 
@@ -94,32 +74,36 @@ const Controls = styled.div`
 `
 
 const Select = styled.select`
-  padding: 0.5rem 0.75rem;
-  background: var(--background-card);
-  border: 1px solid var(--secondary);
-  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  background: rgba(6, 14, 22, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 8px;
   color: var(--text-primary);
   font-size: 0.85rem;
   outline: none;
+  cursor: pointer;
+  transition: border-color 160ms ease;
 
-  &:focus {
-    border-color: var(--primary);
+  &:focus, &:hover {
+    border-color: rgba(34, 211, 238, 0.4);
   }
 `
 
 const ExportBtn = styled.button`
-  padding: 0.5rem 0.75rem;
-  background: var(--background-card);
-  border: 1px solid var(--secondary);
-  border-radius: 6px;
-  color: var(--primary);
+  padding: 0.55rem 0.9rem;
+  background: rgba(6, 14, 22, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 8px;
+  color: var(--neon-bright);
   font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.15s;
+  transition: border-color 160ms ease, background 160ms ease;
 
   &:hover {
-    border-color: var(--primary);
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(34, 211, 238, 0.05);
   }
 
   &:disabled {
@@ -131,7 +115,7 @@ const ExportBtn = styled.button`
 const Layout = styled.div`
   display: grid;
   grid-template-columns: 1fr 340px;
-  gap: 1.5rem;
+  gap: 1rem;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -139,17 +123,18 @@ const Layout = styled.div`
 `
 
 const MainCard = styled.div`
-  background: var(--background-card);
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: rgba(6, 14, 22, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
   overflow: hidden;
 `
 
 const Tabs = styled.div`
   display: flex;
-  gap: 0;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--secondary);
+  gap: 0.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(34, 211, 238, 0.12);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
@@ -157,44 +142,29 @@ const Tabs = styled.div`
   &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none;
   scrollbar-width: none;
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 2px;
-    width: 30px;
-    background: linear-gradient(to right, transparent, var(--background-dark));
-    pointer-events: none;
-    display: none;
-  }
-  @media (max-width: 768px) {
-    &::after { display: block; }
-  }
 `
 
 const Tab = styled.button`
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 0.9rem;
   background: none;
   border: none;
-  border-bottom: 2px solid ${({ $active }) => $active ? 'var(--primary)' : 'transparent'};
-  margin-bottom: -2px;
-  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
-  font-size: 0.95rem;
-  font-weight: ${({ $active }) => $active ? '600' : '400'};
+  border-bottom: 2px solid ${({ $active }) => ($active ? 'var(--neon-cyan)' : 'transparent')};
+  margin-bottom: -1px;
+  color: ${({ $active }) => ($active ? 'var(--neon-bright)' : 'var(--text-secondary)')};
+  font-size: 0.88rem;
+  font-weight: ${({ $active }) => ($active ? 600 : 500)};
   cursor: pointer;
-  transition: all 0.15s;
+  transition: color 160ms ease, border-color 160ms ease;
   white-space: nowrap;
   flex-shrink: 0;
 
   &:hover {
-    color: var(--primary);
+    color: var(--neon-bright);
   }
 
   @media (max-width: 768px) {
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.82rem;
   }
 `
 
@@ -324,8 +294,8 @@ export default function WalletTrackerWrapper() {
         {/* Page title moved to WalletTrackerHub (SSR) so the hub owns the
             outer header; the wrapper now just renders its own sub-tabs
             (Leaderboard / Following / Pods / etc.) and content. */}
+        {/* Cute whale icon archived to components/wallet-tracker/_archive/WhaleIcon.jsx */}
         <SubSectionTitle>
-          <WhaleIcon />
           <span>Whale research tools</span>
           <SonarPulse active />
         </SubSectionTitle>

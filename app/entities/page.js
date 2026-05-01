@@ -7,8 +7,16 @@ import {
   inferEntityType,
 } from '@/app/lib/entityHelpers'
 import EntitiesDirectoryClient from './EntitiesDirectoryClient'
+import HubPageHeader from '@/app/components/wallet-tracker/HubPageHeader'
 
-export const dynamic = 'force-dynamic'
+/**
+ * Aggregating /entities walks up to 30k whale-tx rows through the in-memory
+ * grouper which is too slow for `force-dynamic` per-request. ISR-revalidate
+ * caches the rendered HTML for 5 min so cold loads don't have to reaggregate;
+ * follow / search are still fully client-side and stay fresh. MAX_PAGES is
+ * also capped lower below for the same reason.
+ */
+export const revalidate = 300
 
 export const metadata = {
   title: 'Entity Tracker | Sonar',
@@ -49,7 +57,11 @@ function normalizeEntityName(label) {
 
 async function fetchLabeledEntities() {
   const PAGE = 1000
-  const MAX_PAGES = 30
+  // 30 → 12 pages: keeps the Top-N entity cards intact (the directory only
+  // shows the top ~200 by tx volume) and slashes cold-render latency. Older
+  // rows beyond 12k still flow into the live whale feeds — they just don't
+  // contribute to the cached aggregation.
+  const MAX_PAGES = 12
   const rows = []
   for (let i = 0; i < MAX_PAGES; i++) {
     const from = i * PAGE
@@ -239,47 +251,32 @@ export default async function EntitiesDirectoryPage({ searchParams }) {
   const clampedPage = Math.min(Math.max(1, page), totalPages)
   const totalTx = entities.reduce((a, e) => a + (e.tx_count || 0), 0)
 
+  const subtitle = (
+    <>
+      {totalCount.toLocaleString()} tracked entit
+      {totalCount === 1 ? 'y' : 'ies'} · Page {clampedPage} of {totalPages} · Sorted by{' '}
+      {SORT_LABELS[sort] || sort}
+      {totalTx > 0 ? (
+        <>
+          {' '}
+          · <span style={{ opacity: 0.75 }}>{totalTx.toLocaleString()} transactions indexed</span>
+        </>
+      ) : null}
+    </>
+  )
+
   return (
     <AuthGuard>
       <main
-        className="container"
         style={{
-          padding: '2rem 1rem',
-          maxWidth: '1200px',
+          width: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '1.5rem 2rem 2rem',
           color: 'var(--text-primary)',
         }}
       >
-        <div
-          style={{
-            background: 'linear-gradient(135deg, #0d2134 0%, #1a2f42 100%)',
-            border: '1px solid rgba(54, 166, 186, 0.25)',
-            borderRadius: '20px',
-            padding: '1.75rem',
-            marginBottom: '1.25rem',
-          }}
-        >
-          <h1
-            style={{
-              fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-              fontWeight: 800,
-              marginBottom: '0.35rem',
-              color: 'var(--text-primary)',
-            }}
-          >
-            Tracked Entities
-          </h1>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
-            {totalCount.toLocaleString()} tracked entit
-            {totalCount === 1 ? 'y' : 'ies'} · Page {clampedPage} of {totalPages} · Sorted by{' '}
-            {SORT_LABELS[sort] || sort}
-            {totalTx > 0 ? (
-              <>
-                {' '}
-                · <span style={{ opacity: 0.75 }}>{totalTx.toLocaleString()} transactions indexed</span>
-              </>
-            ) : null}
-          </div>
-        </div>
+        <HubPageHeader title="Tracked entities" subtitle={subtitle} />
 
         <WalletTrackerTabs activeOverride="entities" />
 

@@ -9,8 +9,7 @@
 
 import { useEffect, useRef, useState, useMemo, memo } from 'react'
 import styled from 'styled-components'
-
-const MONO = "'JetBrains Mono', 'Fira Code', monospace"
+import { FONT_MONO } from '@/src/styles/fontStacks'
 
 const Wrapper = styled.div`width: 100%; position: relative;`
 
@@ -25,12 +24,12 @@ const ChartFrame = styled.iframe`
 
 const WhaleBar = styled.div`
   display: flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem;
-  flex-wrap: wrap; font-family: ${MONO}; font-size: 0.65rem;
+  flex-wrap: wrap; font-family: ${FONT_MONO}; font-size: 0.65rem;
 `
 
 const WhaleToggle = styled.button`
   padding: 0.3rem 0.65rem; border-radius: 4px; cursor: pointer;
-  font-family: ${MONO}; font-size: 0.65rem; font-weight: 600;
+  font-family: ${FONT_MONO}; font-size: 0.65rem; font-weight: 600;
   letter-spacing: 0.3px; transition: all 0.12s ease;
   border: 1px solid ${p => p.$active ? 'rgba(255, 171, 0, 0.4)' : 'rgba(255, 255, 255, 0.06)'};
   background: ${p => p.$active ? 'rgba(255, 171, 0, 0.1)' : 'transparent'};
@@ -40,7 +39,7 @@ const WhaleToggle = styled.button`
 
 const DayBtn = styled.button`
   padding: 0.2rem 0.45rem; border-radius: 3px; cursor: pointer;
-  font-family: ${MONO}; font-size: 0.6rem; font-weight: 600;
+  font-family: ${FONT_MONO}; font-size: 0.6rem; font-weight: 600;
   border: 1px solid ${p => p.$active ? 'rgba(0, 229, 255, 0.4)' : 'rgba(255, 255, 255, 0.06)'};
   background: ${p => p.$active ? 'rgba(0, 229, 255, 0.12)' : 'transparent'};
   color: ${p => p.$active ? '#00e5ff' : '#5a6a7a'};
@@ -57,19 +56,19 @@ const WhaleChartBox = styled.div`
 
 const WhaleLabel = styled.div`
   display: flex; align-items: center; gap: 0.75rem; padding: 0.4rem 0.6rem;
-  font-family: ${MONO}; font-size: 0.55rem; color: #5a6a7a; letter-spacing: 0.5px;
+  font-family: ${FONT_MONO}; font-size: 0.55rem; color: #5a6a7a; letter-spacing: 0.5px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 `
 
 const ErrorMsg = styled.div`
   display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  font-family: ${MONO}; font-size: 0.7rem; color: #5a6a7a; padding: 2rem;
+  font-family: ${FONT_MONO}; font-size: 0.7rem; color: #5a6a7a; padding: 2rem;
   height: 500px; background: #0a0e17; border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.06);
 `
 
 const HoverBar = styled.div`
-  display: flex; gap: 0.6rem; font-family: ${MONO}; font-size: 0.6rem;
+  display: flex; gap: 0.6rem; font-family: ${FONT_MONO}; font-size: 0.6rem;
   color: #5a6a7a; padding: 0.3rem 0.6rem; flex-wrap: wrap; min-height: 1.4em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   background: rgba(0, 229, 255, 0.02);
@@ -188,7 +187,7 @@ function TradingViewChart({ symbol, height = 500 }) {
       layout: {
         background: { type: ColorType.Solid, color: '#0a0e17' },
         textColor: '#5a6a7a',
-        fontFamily: "'JetBrains Mono', monospace",
+        fontFamily: FONT_MONO,
         fontSize: 10,
       },
       grid: {

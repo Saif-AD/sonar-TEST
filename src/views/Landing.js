@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabaseBrowser } from '@/app/lib/supabaseBrowserClient';
 import Globe from '@/src/components/landing/GlobeV2';
 import DashboardPreview from '@/src/components/landing/DashboardPreview';
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks';
 
 /* ================================================================
    KEYFRAMES
@@ -557,7 +558,7 @@ const V2HeroContent = styled.div`
 
 const V2Eyebrow = styled.div`
   display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ${FONT_MONO};
   font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
   color: #5a7484;
   padding: 6px 14px; border-radius: 999px;
@@ -623,7 +624,7 @@ const V2Ticker = styled.div`
   backdrop-filter: blur(10px);
   max-width: 640px;
   margin: 0 auto 30px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ${FONT_MONO};
   font-size: 12px;
   color: #5a7484;
   @media (max-width: 700px) { flex-wrap: wrap; font-size: 11px; }
@@ -656,7 +657,7 @@ const V2BtnPrimary = styled.button`
   appearance: none; border: 0;
   padding: 13px 28px;
   border-radius: 999px;
-  font: 500 15px 'Inter', sans-serif;
+  font: 500 15px var(--font-sans);
   cursor: pointer;
   transition: transform .15s ease, box-shadow .2s ease;
   background: linear-gradient(180deg, #22d3ee, #0891b2);
@@ -672,7 +673,7 @@ const V2BtnGhost = styled.button`
   appearance: none;
   padding: 13px 28px;
   border-radius: 999px;
-  font: 500 15px 'Inter', sans-serif;
+  font: 500 15px var(--font-sans);
   cursor: pointer;
   transition: background .2s ease;
   background: rgba(8,16,25,0.5);
@@ -689,7 +690,7 @@ const DashSection = styled.section`
 `;
 const DashSectionLabel = styled.div`
   display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px;
+  font-family: ${FONT_MONO}; font-size: 11px; letter-spacing: 2px;
   text-transform: uppercase; color: rgba(180, 230, 245, 0.4);
   &::before { content: ''; width: 30px; height: 1px; background: #7FE3F5; opacity: 0.5; }
 `;
@@ -1380,7 +1381,7 @@ const Landing = () => {
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} whileHover={{ y: -6 }}
               style={{ background: 'linear-gradient(180deg, rgba(18, 24, 35, 1) 0%, rgba(13, 18, 28, 1) 100%)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '2rem', overflow: 'hidden', cursor: 'default' }}>
               {/* Animated dashboard mockup */}
-              <div style={{ background: 'rgba(8, 12, 20, 0.9)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', padding: '1.25rem', marginBottom: '2rem', fontFamily: "'JetBrains Mono', monospace" }}>
+              <div style={{ background: 'rgba(8, 12, 20, 0.9)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', padding: '1.25rem', marginBottom: '2rem', fontFamily: FONT_MONO }}>
                 {/* Mini title bar */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <div style={{ display: 'flex', gap: '0.4rem' }}>
@@ -1442,10 +1443,10 @@ const Landing = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'linear-gradient(135deg, #9b59b6, #00e5ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', fontWeight: 800, color: '#fff' }}>AI</div>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#c0d0e0', fontFamily: "'JetBrains Mono', monospace" }}>ORCA 2.0</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#c0d0e0', fontFamily: FONT_MONO }}>ORCA 2.0</span>
                   </div>
                   <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
-                    style={{ fontSize: '0.6rem', color: '#00e676', fontFamily: "'JetBrains Mono', monospace" }}>● Online</motion.span>
+                    style={{ fontSize: '0.6rem', color: '#00e676', fontFamily: FONT_MONO }}>● Online</motion.span>
                 </div>
                 {/* User message */}
                 <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
@@ -1464,12 +1465,12 @@ const Landing = () => {
                 {/* Confidence bar */}
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 2.8 }}
                   style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(0, 230, 118, 0.05)', borderRadius: '8px', border: '1px solid rgba(0, 230, 118, 0.1)' }}>
-                  <span style={{ fontSize: '0.6rem', color: '#5a6a7a', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '1px' }}>CONFIDENCE</span>
+                  <span style={{ fontSize: '0.6rem', color: '#5a6a7a', fontFamily: FONT_MONO, letterSpacing: '1px' }}>CONFIDENCE</span>
                   <div style={{ flex: 1, height: 4, background: 'rgba(255,255,255,0.04)', borderRadius: 2, overflow: 'hidden' }}>
                     <motion.div initial={{ width: 0 }} whileInView={{ width: '87%' }} viewport={{ once: true }} transition={{ duration: 1, delay: 3.0, ease: [0.16, 1, 0.3, 1] }}
                       style={{ height: '100%', background: 'linear-gradient(90deg, #ffab00, #00e676)', borderRadius: 2 }} />
                   </div>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#00e676', fontFamily: "'JetBrains Mono', monospace" }}>87%</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#00e676', fontFamily: FONT_MONO }}>87%</span>
                 </motion.div>
               </div>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#e8edf2', marginBottom: '0.5rem', letterSpacing: '-0.01em' }}>ORCA AI Analysis</h3>
@@ -1497,12 +1498,12 @@ const Landing = () => {
                   <motion.div key={ni} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 + ni * 0.2 }}
                     style={{ padding: '0.75rem', marginBottom: '0.5rem', borderRadius: '8px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                      <span style={{ fontSize: '0.55rem', fontWeight: 700, color: n.tagColor, background: `${n.tagColor}12`, padding: '0.15rem 0.5rem', borderRadius: '4px', letterSpacing: '0.5px', fontFamily: "'JetBrains Mono', monospace" }}>{n.tag}</span>
-                      <span style={{ fontSize: '0.55rem', color: '#4a5a6a', fontFamily: "'JetBrains Mono', monospace" }}>{n.time}</span>
+                      <span style={{ fontSize: '0.55rem', fontWeight: 700, color: n.tagColor, background: `${n.tagColor}12`, padding: '0.15rem 0.5rem', borderRadius: '4px', letterSpacing: '0.5px', fontFamily: FONT_MONO }}>{n.tag}</span>
+                      <span style={{ fontSize: '0.55rem', color: '#4a5a6a', fontFamily: FONT_MONO }}>{n.time}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.8rem', color: '#c0d0e0', fontWeight: 500 }}>{n.title}</span>
-                      <span style={{ fontSize: '0.7rem', fontWeight: 700, color: n.sentiment.startsWith('+') ? '#00e676' : '#ff5252', fontFamily: "'JetBrains Mono', monospace", marginLeft: '0.75rem', flexShrink: 0 }}>{n.sentiment}</span>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 700, color: n.sentiment.startsWith('+') ? '#00e676' : '#ff5252', fontFamily: FONT_MONO, marginLeft: '0.75rem', flexShrink: 0 }}>{n.sentiment}</span>
                     </div>
                   </motion.div>
                 ))}
@@ -1514,7 +1515,7 @@ const Landing = () => {
             {/* Panel 4: Token Analytics */}
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }} whileHover={{ y: -6 }}
               style={{ background: 'linear-gradient(180deg, rgba(18, 24, 35, 1) 0%, rgba(13, 18, 28, 1) 100%)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '2rem', overflow: 'hidden', cursor: 'default' }}>
-              <div style={{ background: 'rgba(8, 12, 20, 0.9)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', padding: '1.25rem', marginBottom: '2rem', fontFamily: "'JetBrains Mono', monospace" }}>
+              <div style={{ background: 'rgba(8, 12, 20, 0.9)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', padding: '1.25rem', marginBottom: '2rem', fontFamily: FONT_MONO }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#c0d0e0' }}>ETH Analytics</span>
                   <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
@@ -1573,7 +1574,7 @@ const Landing = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start', maxWidth: '1050px', margin: '0 auto' }}>
             {/* Sample ORCA Response */}
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.1 }} viewport={{ once: true }}
-              style={{ background: 'rgba(13, 17, 28, 0.9)', border: '1px solid rgba(0, 229, 255, 0.15)', borderRadius: '16px', padding: '1.5rem', fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}>
+              style={{ background: 'rgba(13, 17, 28, 0.9)', border: '1px solid rgba(0, 229, 255, 0.15)', borderRadius: '16px', padding: '1.5rem', fontFamily: FONT_MONO }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0, 229, 255, 0.08)' }}>
                 <span style={{ fontSize: '0.7rem', color: '#00e5ff', fontWeight: 700, letterSpacing: '2px' }}>ORCA_TERMINAL</span>
                 <span style={{ marginLeft: 'auto', fontSize: '0.65rem', color: '#00e676', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>

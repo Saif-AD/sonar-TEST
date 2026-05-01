@@ -169,8 +169,8 @@ export default function EntitiesDirectoryClient({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '1rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: '0.85rem',
           }}
         >
           {visible.map((e) => (
@@ -364,33 +364,26 @@ function EntityCard({ entity, showFollowIcon, isFollowed = false, onFollowChange
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.65rem',
-          background: hover
-            ? 'linear-gradient(135deg, #112a40 0%, #1a3550 100%)'
-            : 'linear-gradient(135deg, #0d2134 0%, #112a40 100%)',
+          gap: '0.5rem',
+          background: hover ? 'rgba(10, 22, 32, 0.7)' : 'rgba(6, 14, 22, 0.6)',
           border: hover
-            ? '1px solid rgba(54, 166, 186, 0.55)'
+            ? '1px solid rgba(34, 211, 238, 0.32)'
             : isFollowed || isVerified
-              ? '1px solid rgba(54, 166, 186, 0.4)'
-              : '1px solid rgba(54, 166, 186, 0.2)',
-          // Big verified entities get a bold 3px teal accent on the
-          // left edge for instant visual hierarchy.
+              ? '1px solid rgba(34, 211, 238, 0.2)'
+              : '1px solid rgba(34, 211, 238, 0.12)',
           borderLeft: isBigVerified
-            ? '3px solid #36a6ba'
+            ? '2px solid var(--neon-cyan)'
             : hover
-              ? '1px solid rgba(54, 166, 186, 0.55)'
+              ? '1px solid rgba(34, 211, 238, 0.32)'
               : isFollowed || isVerified
-                ? '1px solid rgba(54, 166, 186, 0.4)'
-                : '1px solid rgba(54, 166, 186, 0.2)',
-          borderRadius: '16px',
-          padding: isBigVerified ? '1.25rem 1.35rem' : isDormant ? '0.95rem 1.1rem' : '1.2rem 1.25rem',
+                ? '1px solid rgba(34, 211, 238, 0.2)'
+                : '1px solid rgba(34, 211, 238, 0.12)',
+          borderRadius: '10px',
+          padding: '0.85rem 0.95rem',
           color: 'var(--text-primary)',
           textDecoration: 'none',
-          transform: hover ? 'scale(1.02) translateY(-2px)' : 'scale(1) translateY(0)',
-          boxShadow: hover
-            ? '0 8px 24px rgba(54, 166, 186, 0.18)'
-            : '0 2px 6px rgba(0, 0, 0, 0.15)',
-          transition: 'all 160ms ease',
+          boxShadow: hover ? '0 4px 16px rgba(34, 211, 238, 0.1)' : 'none',
+          transition: 'background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
           minWidth: 0,
         }}
       >
@@ -414,16 +407,16 @@ function EntityCard({ entity, showFollowIcon, isFollowed = false, onFollowChange
             ) : null}
             <div
               style={{
-                fontSize: '1.05rem',
-                fontWeight: 800,
-                lineHeight: 1.3,
+                fontSize: '0.92rem',
+                fontWeight: 700,
+                lineHeight: 1.25,
                 color: 'var(--text-primary)',
                 wordBreak: 'break-word',
                 minWidth: 0,
-                paddingRight: showFollowIcon ? '2.5rem' : 0,
+                paddingRight: showFollowIcon ? '2.2rem' : 0,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                gap: '0.35rem',
                 flexWrap: 'wrap',
               }}
             >

@@ -9,7 +9,7 @@ const Banner = styled.div`
   border-top: 1px solid rgba(0, 229, 255, 0.15);
   padding: 1rem 2rem; display: flex; align-items: center;
   justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-  font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #b0b8c4;
+  font-family: var(--font-sans); font-size: 0.85rem; color: #b0b8c4;
 `
 
 const Text = styled.p`
@@ -22,7 +22,7 @@ const Buttons = styled.div`display: flex; gap: 0.5rem; flex-shrink: 0; flex-wrap
 const Btn = styled.button`
   padding: 0.5rem 1.2rem; border-radius: 4px; font-weight: 600;
   font-size: 0.8rem; cursor: pointer; transition: all 0.15s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
 `
 
 const PrimaryBtn = styled(Btn)`

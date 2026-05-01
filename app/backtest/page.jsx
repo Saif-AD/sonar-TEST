@@ -2,9 +2,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
-import Navbar from '@/src/components/Navbar'
-import Footer from '@/src/components/Footer'
-
 const PageWrapper = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, #0a1621 0%, #0f1922 50%, #0a1621 100%);
@@ -108,7 +105,7 @@ const SummaryBox = styled.div`
   padding: 1.5rem;
   margin-bottom: 2rem;
   white-space: pre-line;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
   color: var(--text-primary);
   line-height: 1.8;
 `
@@ -222,9 +219,7 @@ export default function BacktestPage() {
   const totalPnl = results?.aggregate?.cumulative_pnl_gbp ? Number(results.aggregate.cumulative_pnl_gbp) : 0
 
   return (
-    <>
-      <Navbar />
-      <PageWrapper>
+    <PageWrapper>
         <Container>
           <Title>🧪 Signal Validation Backtest</Title>
           <Subtitle>
@@ -484,9 +479,7 @@ export default function BacktestPage() {
             </ResultsCard>
           )}
         </Container>
-      </PageWrapper>
-      <Footer />
-    </>
+    </PageWrapper>
   )
 }
 
