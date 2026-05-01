@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { supabaseBrowser } from '@/app/lib/supabaseBrowserClient'
-import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
+import { FONT_SANS } from '@/src/styles/fontStacks'
 import Footer from '@/src/components/Footer'
 import TokenSearchField from '@/src/components/nav/TokenSearchField'
 import { isWalletTrackerPath } from '@/src/components/nav/navUtils'
@@ -498,10 +498,9 @@ const ShellRailItem = styled(motion.div)`
 `
 
 /**
- * Visual twin of ShellRailItem's `<a>` styling but rendered as a non-link div
- * for coming-soon nav entries (e.g. Mobile app). Looks active (full color,
- * default cursor, "Soon" badge) but doesn't navigate anywhere — same pattern
- * as the Telegram footer row.
+ * Coming-soon rail entry (e.g. Mobile app). Mirrors the Telegram FooterRow
+ * pattern visually — slight opacity dim, cyan hover restore, identical
+ * "SOON" badge — but lives in the main rail next to real nav items.
  */
 const DisabledRailRow = styled.div`
   position: relative;
@@ -518,8 +517,17 @@ const DisabledRailRow = styled.div`
   color: ${S.muted};
   background: transparent;
   border: 1px solid transparent;
-  cursor: default;
+  cursor: not-allowed;
   user-select: none;
+  opacity: 0.78;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+
+  &:hover {
+    color: var(--neon-bright);
+    background: rgba(34, 211, 238, 0.06);
+    border-color: rgba(34, 211, 238, 0.1);
+    opacity: 1;
+  }
 
   .ico {
     flex-shrink: 0;
@@ -530,6 +538,7 @@ const DisabledRailRow = styled.div`
     justify-content: center;
     line-height: 0;
     color: inherit;
+    opacity: 0.9;
   }
   .ico svg { width: 20px; height: 20px; display: block; }
 
@@ -543,16 +552,15 @@ const DisabledRailRow = styled.div`
 
   .badge {
     flex-shrink: 0;
-    font-family: ${FONT_MONO};
-    font-size: 0.55rem;
+    font-size: 0.58rem;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    padding: 0.12rem 0.36rem;
+    border-radius: 6px;
+    border: 1px solid rgba(34, 211, 238, 0.28);
     color: var(--neon-bright);
-    background: rgba(34, 211, 238, 0.1);
-    border: 1px solid rgba(34, 211, 238, 0.25);
-    padding: 0.1rem 0.35rem;
-    border-radius: 4px;
+    background: rgba(34, 211, 238, 0.08);
   }
 `
 
