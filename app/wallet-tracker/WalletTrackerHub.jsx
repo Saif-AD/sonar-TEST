@@ -31,12 +31,12 @@ export default function WalletTrackerHub({ featuredFigures = [] }) {
       }}
       className="sonar-wt-hub"
     >
-      <AlertBanner />
       <HubHeader />
       <WalletTrackerTabs activeOverride="research" />
       <HeroSearch />
       <FeaturedFiguresStrip figures={featuredFigures} />
       <WalletWatchlistStrip />
+      <AlertBanner />
       <style>{`
         @media (max-width: 768px) {
           .sonar-wt-hub { padding: 1rem 1rem 1.5rem; }

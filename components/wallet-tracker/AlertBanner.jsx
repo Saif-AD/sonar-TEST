@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import styled, { keyframes } from 'styled-components'
 import { shortenAddress, formatUsd, timeAgo } from '@/lib/wallet-tracker'
@@ -25,7 +25,7 @@ const BannerWrap = styled.div`
   align-items: center;
   gap: 0.6rem;
   position: relative;
-  margin-bottom: 0.75rem;
+  margin: 1rem 0 0.5rem;
   backdrop-filter: blur(8px);
 
   @media (max-width: 768px) {
@@ -92,34 +92,11 @@ const TimeLabel = styled.span`
   flex-shrink: 0;
 `
 
-const DismissBtn = styled.button`
-  background: transparent;
-  border: none;
-  color: #5a6a7a;
-  font-size: 0.8rem;
-  cursor: pointer;
-  padding: 0.15rem 0.35rem;
-  line-height: 1;
-  border-radius: 3px;
-  flex-shrink: 0;
-  transition: all 0.15s;
-
-  &:hover { color: #e0e6ed; background: rgba(255, 255, 255, 0.05); }
-`
-
 export default function AlertBanner() {
   const [signals, setSignals] = useState([])
   const [currentIdx, setCurrentIdx] = useState(0)
-  const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    try {
-      if (typeof window !== 'undefined' && sessionStorage.getItem('sonar_alert_dismissed')) {
-        setDismissed(true)
-        return
-      }
-    } catch {}
-
     async function fetchSignals() {
       try {
         const res = await fetch('/api/wallet-tracker/signals?limit=5')
@@ -139,14 +116,7 @@ export default function AlertBanner() {
     return () => clearInterval(timer)
   }, [signals.length])
 
-  const handleDismiss = useCallback((e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDismissed(true)
-    try { sessionStorage.setItem('sonar_alert_dismissed', '1') } catch {}
-  }, [])
-
-  if (dismissed || signals.length === 0) return null
+  if (signals.length === 0) return null
 
   const signal = signals[currentIdx]
   if (!signal) return null
@@ -171,7 +141,6 @@ export default function AlertBanner() {
         <Value>{usd}</Value>
         <TimeLabel>— {ago}</TimeLabel>
       </SignalText>
-      <DismissBtn onClick={handleDismiss} title="Dismiss">&times;</DismissBtn>
     </BannerWrap>
   )
 }
