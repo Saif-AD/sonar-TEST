@@ -620,6 +620,9 @@ const APP_LINKS = [
     match: (p) => p === '/ai-advisor' || p?.startsWith('/ai-advisor/'),
     Icon: IconSpark,
   },
+]
+
+const FOOTER_LINKS = [
   {
     href: '/subscribe',
     label: 'Pricing',
@@ -905,6 +908,21 @@ export default function AppShell({ children, onLogout }) {
                 </>
               ) : null}
             </FooterRow>
+            {FOOTER_LINKS.map(({ href, label, Icon }) => (
+              <FooterRow
+                key={href}
+                as={NextLink}
+                href={href}
+                title={railIconOnly ? label : undefined}
+                aria-label={label}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <span className="fr-icon" aria-hidden>
+                  <Icon />
+                </span>
+                {!railIconOnly ? <span className="fr-label">{label}</span> : null}
+              </FooterRow>
+            ))}
             {isAuthenticated ? (
               <>
                 <FooterRow
