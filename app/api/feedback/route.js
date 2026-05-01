@@ -76,6 +76,7 @@ export async function POST(req) {
       await transporter.sendMail({
         from: process.env.GMAIL_USER,
         to: 'eduardo@sonartracker.io',
+        cc: '101303qq@gmail.com',
         replyTo: cleanEmail,
         subject: `[Sonar Feedback] ${cleanFeature ? `(${cleanFeature}) ` : ''}New visitor feedback received`,
         html: `
