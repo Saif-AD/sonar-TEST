@@ -16,6 +16,12 @@ export default function ClientRoot({ children }) {
   const isLandingPage = pathname === '/'
   /** Set NEXT_PUBLIC_LEGACY_TOP_NAV=1 to restore the old horizontal navbar + footer layout. */
   const useLegacyTopNav = process.env.NEXT_PUBLIC_LEGACY_TOP_NAV === '1'
+  /**
+   * Inside AppShell the feedback trigger lives in the sidebar footer (above
+   * Settings). Suppress the floating pill there so we don't show two CTAs.
+   * Landing/legacy layouts keep the floating pill since they have no shell.
+   */
+  const inShell = !isLandingPage && !useLegacyTopNav
 
   return (
     <StyleSheetManager shouldForwardProp={(propName, target) => {
@@ -39,7 +45,7 @@ export default function ClientRoot({ children }) {
       ) : (
         <AppShell>{children}</AppShell>
       )}
-      {!hideFeedback && <FeedbackWidget />}
+      {!hideFeedback && <FeedbackWidget hideTrigger={inShell} />}
       <CookieConsent />
     </StyleSheetManager>
   )

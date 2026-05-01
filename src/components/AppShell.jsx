@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { supabaseBrowser } from '@/app/lib/supabaseBrowserClient'
-import { FONT_SANS } from '@/src/styles/fontStacks'
+import { FONT_SANS, FONT_MONO } from '@/src/styles/fontStacks'
 import Footer from '@/src/components/Footer'
 import TokenSearchField from '@/src/components/nav/TokenSearchField'
 import { isWalletTrackerPath } from '@/src/components/nav/navUtils'
@@ -497,6 +497,65 @@ const ShellRailItem = styled(motion.div)`
   }
 `
 
+/**
+ * Visual twin of ShellRailItem's `<a>` styling but rendered as a non-link div
+ * for coming-soon nav entries (e.g. Mobile app). Looks active (full color,
+ * default cursor, "Soon" badge) but doesn't navigate anywhere — same pattern
+ * as the Telegram footer row.
+ */
+const DisabledRailRow = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: flex-start;
+  padding: 0.5rem 0.55rem;
+  min-height: 40px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: ${S.muted};
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: default;
+  user-select: none;
+
+  .ico {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    color: inherit;
+  }
+  .ico svg { width: 20px; height: 20px; display: block; }
+
+  .lab {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .badge {
+    flex-shrink: 0;
+    font-family: ${FONT_MONO};
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--neon-bright);
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+  }
+`
+
 const itemVariants = { hidden: { opacity: 0, x: -5 }, visible: { opacity: 1, x: 0 } }
 
 /** Token mark — outer ring with a centered diamond, à la Nansen "Tokens". */
@@ -636,6 +695,46 @@ const FOOTER_LINKS = [
     Icon: IconHelp,
   },
 ]
+
+/** Double sparkle / stars — line-art, matches the rail. */
+function IconStars() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M14 4l1.4 3.6L19 9l-3.6 1.4L14 14l-1.4-3.6L9 9l3.6-1.4L14 4z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.5 13l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4L4.2 16.3l2.4-.9.9-2.4z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+/** Speech bubble — for the sidebar Feedback row. */
+function IconFeedback() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5V14a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.4a.6.6 0 0 1-1-.46V16.5A2.5 2.5 0 0 1 4 14V6.5Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.2 9.5h7.6M8.2 12h5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
 
 function IconGear() {
   return (
@@ -888,6 +987,20 @@ export default function AppShell({ children, onLogout }) {
                 </NextLink>
               </ShellRailItem>
             ))}
+            <DisabledRailRow
+              title={railIconOnly ? 'Mobile app — coming soon' : 'Coming soon'}
+              aria-label="Mobile app — coming soon"
+            >
+              <span className="ico" aria-hidden>
+                <IconStars />
+              </span>
+              {!railIconOnly ? (
+                <>
+                  <span className="lab">Mobile app</span>
+                  <span className="badge">Soon</span>
+                </>
+              ) : null}
+            </DisabledRailRow>
           </NavStack>
           <SidebarFooter>
             <FooterRow
@@ -923,6 +1036,22 @@ export default function AppShell({ children, onLogout }) {
                 {!railIconOnly ? <span className="fr-label">{label}</span> : null}
               </FooterRow>
             ))}
+            <FooterRow
+              type="button"
+              title={railIconOnly ? 'Feedback' : undefined}
+              aria-label="Feedback"
+              onClick={() => {
+                setDrawerOpen(false)
+                if (typeof window !== 'undefined') {
+                  window.dispatchEvent(new CustomEvent('sonar:feedback:open'))
+                }
+              }}
+            >
+              <span className="fr-icon" aria-hidden>
+                <IconFeedback />
+              </span>
+              {!railIconOnly ? <span className="fr-label">Feedback</span> : null}
+            </FooterRow>
             {isAuthenticated ? (
               <>
                 <FooterRow

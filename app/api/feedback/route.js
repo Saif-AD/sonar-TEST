@@ -4,11 +4,20 @@ import { supabaseAdmin } from '@/app/lib/supabaseAdmin'
 
 export async function POST(req) {
   try {
-    const { name, email, message } = await req.json()
+    const body = await req.json()
+    const { name, email, message, feature, screenshot } = body || {}
 
     const cleanName = name?.trim()
     const cleanEmail = email?.trim().toLowerCase()
     const cleanMessage = message?.trim()
+    const cleanFeature = typeof feature === 'string' ? feature.trim().slice(0, 64) : null
+    const screenshotMeta =
+      screenshot && typeof screenshot === 'object'
+        ? {
+            name: typeof screenshot.name === 'string' ? screenshot.name.slice(0, 200) : null,
+            size: Number.isFinite(screenshot.size) ? screenshot.size : null,
+          }
+        : null
 
     if (!cleanName || !cleanMessage || !cleanEmail) {
       return NextResponse.json(
@@ -25,12 +34,27 @@ export async function POST(req) {
     const userAgent = req.headers.get('user-agent') || null
     const ipHeader = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null
 
+    /**
+     * `feature` and `screenshot` metadata are appended to the message body
+     * so we don't depend on a schema migration for the new fields. If/when
+     * `feedback_submissions` adds a `metadata jsonb` column, swap to that.
+     */
+    const annotatedMessage = [
+      cleanFeature ? `Feature: ${cleanFeature}` : null,
+      screenshotMeta?.name
+        ? `Screenshot: ${screenshotMeta.name} (${Math.round((screenshotMeta.size || 0) / 1024)}KB)`
+        : null,
+      cleanMessage,
+    ]
+      .filter(Boolean)
+      .join('\n\n')
+
     const { error: dbError } = await supabaseAdmin
       .from('feedback_submissions')
       .insert({
         name: cleanName,
         email: cleanEmail,
-        message: cleanMessage,
+        message: annotatedMessage,
         user_agent: userAgent,
         ip_address: ipHeader,
         source: 'widget'
@@ -53,11 +77,13 @@ export async function POST(req) {
         from: process.env.GMAIL_USER,
         to: 'eduardo@sonartracker.io',
         replyTo: cleanEmail,
-        subject: '[Sonar Feedback] New visitor feedback received',
+        subject: `[Sonar Feedback] ${cleanFeature ? `(${cleanFeature}) ` : ''}New visitor feedback received`,
         html: `
           <h2>New Feedback Submission</h2>
           <p><strong>Name:</strong> ${cleanName}</p>
           <p><strong>Email:</strong> ${cleanEmail}</p>
+          ${cleanFeature ? `<p><strong>Feature:</strong> ${cleanFeature}</p>` : ''}
+          ${screenshotMeta?.name ? `<p><strong>Screenshot:</strong> ${screenshotMeta.name} (${Math.round((screenshotMeta.size || 0) / 1024)}KB)</p>` : ''}
           <p style="margin-top: 1rem;"><strong>Feedback:</strong></p>
           <p style="white-space: pre-wrap; font-size: 15px;">${cleanMessage}</p>
         `
